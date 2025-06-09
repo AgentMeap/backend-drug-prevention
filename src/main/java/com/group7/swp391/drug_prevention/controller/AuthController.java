@@ -26,7 +26,7 @@ public class AuthController {
         this.securityUtil = securityUtil;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO reqLoginDTO) {
         //Nạp input gồm username/password vào Security
         UsernamePasswordAuthenticationToken authenticationToken
