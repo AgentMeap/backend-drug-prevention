@@ -28,25 +28,19 @@ public class AuthController {
 
     @PostMapping("/auth/login")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO reqLoginDTO) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(reqLoginDTO.getUsername(), reqLoginDTO.getPassword());
+        //Nạp input gồm username/password vào Security
+        UsernamePasswordAuthenticationToken authenticationToken
+                = new UsernamePasswordAuthenticationToken(reqLoginDTO.getUsername(), reqLoginDTO.getPassword());
 
+        //xác thực người dùng => cần viết hàm loadUserByUsername
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        //create a token
+        String access_token = this.securityUtil.createToken(authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String accessToken = this.securityUtil.createToken(authentication);
-
-        // Lấy role và remove "ROLE_"
-        String role = authentication.getAuthorities().stream()
-                .findFirst()
-                .map(auth -> auth.getAuthority().replace("ROLE_", ""))
-                .orElse("UNKNOWN");
-
-        // Set cả token và role
         ResLoginDTO res = new ResLoginDTO();
-        res.setAccessToken(accessToken);
-        res.setRole(role);
-
+        res.setAccessToken(access_token);
         return ResponseEntity.ok().body(res);
     }
 }

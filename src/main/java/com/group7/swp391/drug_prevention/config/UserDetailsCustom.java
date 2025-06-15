@@ -25,12 +25,9 @@ public class UserDetailsCustom implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Username/password không hợp lệ");
         }
-
-        String role = user.getRole(); // lấy role từ DB (ví dụ: "ADMIN" hoặc "USER")
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority(role))
-        );
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
     }
 }
