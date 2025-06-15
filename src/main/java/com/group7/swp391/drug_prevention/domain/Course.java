@@ -8,26 +8,37 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
-@Table(name = "bookings")
+@Table(name = "courses")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class Booking {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime bookingTime;
+    @Column(name = "name",columnDefinition = "VARCHAR(50)",nullable = false)
+    private String name;
+    @Column(name = "description",columnDefinition = "VARCHAR(250)",nullable = false)
+    private String description;
+    @Column(name = "video",columnDefinition = "VARCHAR(250)",nullable = false)
+    private String video;
+    @Column(name = "status",columnDefinition = "VARCHAR(10)",nullable = false)
+    private String status;
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime createdAt;
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime updatedAt;
 
+    @OneToOne
+    @JoinColumn(name = "ageGroupId")
     @JsonIgnore
-    @ManyToOne
+    private AgeGroup ageGroup;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId")
     private User member;
-
 }
