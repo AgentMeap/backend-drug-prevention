@@ -1,21 +1,19 @@
 package com.group7.swp391.drug_prevention.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.aspectj.weaver.Member;
 import org.hibernate.annotations.Nationalized;
 
 import java.time.Instant;
+import java.util.List;
 
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +35,27 @@ public class User {
     private String dateOfBirth;
     private String role;
 
-//    private Instant createdAt;
-//    private Instant updatedAt;
+    @JsonIgnore
+    @OneToMany(mappedBy = "consultant", cascade = CascadeType.ALL)
+    private List<Schedule> listSchedule;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    private List<Booking> listBooking;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    private List<Course> listCourse;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "manager",cascade = CascadeType.ALL)
+    private List<Event> listEvents;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Comment> listComments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "manager")
+    private List<Blog> listBlogs;
 }
