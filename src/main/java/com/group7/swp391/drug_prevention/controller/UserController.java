@@ -26,7 +26,7 @@ public class UserController {
     public ResponseEntity<User> createNewUser(@Valid @RequestBody User user) {
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
         user.setPassword(hashPassword);
-        user.setRole("ADMIN");
+        user.setRole("CONSULTANT");
         User newUser = this.userService.handleCreateUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }

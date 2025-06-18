@@ -5,16 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalTime;
+import java.time.Instant;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class ReqScheduleDTO {
     private long consultantId;
-    @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime startTime;
-    @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime endTime;
+    private Instant startTime;
+    private Instant endTime;
     private String dayOfWeek;
 }
