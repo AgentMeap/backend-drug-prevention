@@ -4,9 +4,11 @@ import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.response.ResultPaginationDTO;
 import com.group7.swp391.drug_prevention.service.UserService;
 import com.group7.swp391.drug_prevention.util.error.IdInvalidException;
+import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,15 +40,10 @@ public class UserController {
     //fetch all user
     @GetMapping("/users")
     public ResponseEntity<ResultPaginationDTO> getAllUser(
-            @RequestParam("current")Optional<String> currentOpttional,
-            @RequestParam("pageSize")Optional<String> pageSizeOptional) {
-        String sCurrent = currentOpttional.isPresent()?currentOpttional.get():"";
-        String sPageSize = pageSizeOptional.isPresent()?pageSizeOptional.get():"";
-        int current = Integer.parseInt(sCurrent);
-        int pageSize = Integer.parseInt(sPageSize);
-        Pageable pageable = PageRequest.of(current -1, pageSize);
+            @Filter Specification<User> spec,
+            Pageable pageable) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.fetchAllUser(pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.fetchAllUser(spec, pageable));
     }
 
     //fetch user by id
