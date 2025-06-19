@@ -44,9 +44,12 @@ public class Schedule {
     @PrePersist
     public void handleBeforeCreate(){
         this.createdAt = Instant.now();
-        this.updatedAt = Instant.now();
         this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : null;
-        this.updatedBy = "system";
     }
 
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updatedAt = Instant.now();
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+    }
 }

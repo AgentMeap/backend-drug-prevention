@@ -24,6 +24,12 @@ public class ScheduleController {
         return ResponseEntity.ok(schedules);
     }
 
+    @PutMapping("/schedules")
+    public ResponseEntity<Schedule> updateSchedule(@Valid @RequestBody Schedule reqSchedule) {
+        Schedule updateSchedule = this.scheduleService.handleUpdateSchedule(reqSchedule);
+        return ResponseEntity.ok(updateSchedule);
+    }
+
     @PostMapping("/schedules")
     public ResponseEntity<?> createSchedule(@Valid @RequestBody ReqScheduleDTO reqScheduleDTO) {
         try {
@@ -39,8 +45,8 @@ public class ScheduleController {
     }
 
     @DeleteMapping("/schedules/{id}")
-    public ResponseEntity<?> deleteSchedule(@RequestParam long id) {
-        scheduleService.deleteSchedule(id);
-        return new ResponseEntity<>("The schedule deleted!!!", HttpStatus.OK);
+    public ResponseEntity<?> deleteSchedule(@PathVariable("id") long id) {
+        this.scheduleService.deleteSchedule(id);
+        return ResponseEntity.ok(null);
     }
 }

@@ -1,8 +1,11 @@
 package com.group7.swp391.drug_prevention.service;
 
 import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.domain.response.ResultPaginationDTO;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +33,20 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
-    public List<User> fetchAllUser() {
-        return this.userRepository.findAll();
+    public ResultPaginationDTO fetchAllUser(Pageable pageable) {
+        Page<User> userPage = this.userRepository.findAll(pageable);
+        ResultPaginationDTO rs = new ResultPaginationDTO();
+        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
+
+        mt.setPage(userPage.getNumber()+1);
+        mt.setPageSize(userPage.getSize());
+
+        mt.setPages(userPage.getTotalPages());
+        mt.setTotal(userPage.getTotalElements());
+
+        rs.setMeta(mt);
+        rs.setResult(userPage.getContent());
+        return rs;
     }
 
     public User handleUpdateUser(long id, User user) {

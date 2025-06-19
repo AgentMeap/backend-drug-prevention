@@ -1,15 +1,19 @@
 package com.group7.swp391.drug_prevention.controller;
 
 import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.domain.response.ResultPaginationDTO;
 import com.group7.swp391.drug_prevention.service.UserService;
 import com.group7.swp391.drug_prevention.util.error.IdInvalidException;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -33,8 +37,16 @@ public class UserController {
 
     //fetch all user
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUser() {
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.fetchAllUser());
+    public ResponseEntity<ResultPaginationDTO> getAllUser(
+            @RequestParam("current")Optional<String> currentOpttional,
+            @RequestParam("pageSize")Optional<String> pageSizeOptional) {
+        String sCurrent = currentOpttional.isPresent()?currentOpttional.get():"";
+        String sPageSize = pageSizeOptional.isPresent()?pageSizeOptional.get():"";
+        int current = Integer.parseInt(sCurrent);
+        int pageSize = Integer.parseInt(sPageSize);
+        Pageable pageable = PageRequest.of(current -1, pageSize);
+
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.fetchAllUser(pageable));
     }
 
     //fetch user by id
