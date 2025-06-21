@@ -6,12 +6,14 @@ import com.group7.swp391.drug_prevention.domain.Schedule;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqCourseDTO;
 import com.group7.swp391.drug_prevention.domain.request.ReqScheduleDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResCourseDTO;
 import com.group7.swp391.drug_prevention.repository.AgeGroupRepository;
 import com.group7.swp391.drug_prevention.repository.CourseRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,7 +34,11 @@ public class CourseService {
         course.setName(dto.getName());
         course.setDescription(dto.getDescription());
         course.setStatus(dto.getStatus());
-        course.setVideo(dto.getVideo());
+        course.setDuration(dto.getDuration());
+        course.setImage(dto.getImage());
+        course.setVideoUrl(dto.getVideoUrl());
+
+
         course.setCreatedAt(LocalTime.now());
         course.setUpdatedAt(LocalTime.now());
 
@@ -50,12 +56,24 @@ public class CourseService {
         course.setName(dto.getName());
         course.setDescription(dto.getDescription());
         course.setStatus(dto.getStatus());
-        course.setVideo(dto.getVideo());
+        course.setDuration(dto.getDuration());
+        course.setImage(dto.getImage());
+        course.setVideoUrl(dto.getVideoUrl());
+
         course.setUpdatedAt(LocalTime.now());
+
         return courseRepository.save(course);
     }
 
-    public List<Course> getAllCourses() {
-        return courseRepository.findAll();
+    public List<ResCourseDTO> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+        List<ResCourseDTO> list = courses.stream().map(course -> new ResCourseDTO(
+                course.getName(),
+                course.getDescription(),
+                course.getImage(),
+                course.getVideoUrl(),
+                course.getDuration(),
+                course.getAgeGroup().getId())).toList();
+        return list;
     }
 }

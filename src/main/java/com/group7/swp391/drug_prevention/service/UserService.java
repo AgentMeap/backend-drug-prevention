@@ -59,8 +59,7 @@ public class UserService {
         // Update the existing user's fields
         existingUser.setUsername(user.getUsername());
         existingUser.setPassword(user.getPassword());
-        existingUser.setFirstName(user.getFirstName());
-        existingUser.setLastName(user.getLastName());
+        existingUser.setFullName(user.getFullName());
         existingUser.setPhoneNumber(user.getPhoneNumber());
         existingUser.setEmail(user.getEmail());
         existingUser.setDateOfBirth(user.getDateOfBirth());

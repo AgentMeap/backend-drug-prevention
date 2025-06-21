@@ -23,10 +23,13 @@ public class Course {
     private String name;
     @Column(name = "description",columnDefinition = "VARCHAR(250)",nullable = false)
     private String description;
+    @Column(name = "image",columnDefinition = "VARCHAR(250)",nullable = false)
+    private String image;
     @Column(name = "video",columnDefinition = "VARCHAR(250)",nullable = false)
-    private String video;
+    private String videoUrl;
     @Column(name = "status",columnDefinition = "VARCHAR(10)",nullable = false)
     private String status;
+    private int duration;
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime createdAt;
     @JsonFormat(pattern = "HH:mm:ss")
@@ -38,7 +41,6 @@ public class Course {
     private AgeGroup ageGroup;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
-    private User member;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<User> member;
 }

@@ -2,6 +2,7 @@ package com.group7.swp391.drug_prevention.controller;
 
 import com.group7.swp391.drug_prevention.domain.Course;
 import com.group7.swp391.drug_prevention.domain.request.ReqCourseDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResCourseDTO;
 import com.group7.swp391.drug_prevention.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class CourseController {
     }
 
     @GetMapping("/getAllCourse")
-    public List<Course> getAllCourse() {
-        return courseService.getAllCourses();
+    public ResponseEntity<?> getAllCourse() {
+        return new ResponseEntity<>(courseService.getAllCourses(),HttpStatus.OK);
     }
 }

@@ -48,4 +48,13 @@ public class BookingService {
             return false;
         }
     }
+
+    public List<Booking> getBookingsByMemberId(long id) {
+        if(bookingRepository.findById(id) != null) {
+            return bookingRepository.findByMemberId(id);
+        }else{
+            return null;
+        }
+
+    }
 }

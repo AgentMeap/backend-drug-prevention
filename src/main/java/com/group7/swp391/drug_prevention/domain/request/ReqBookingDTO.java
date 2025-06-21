@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -13,7 +15,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class ReqBookingDTO {
     private long memberId;
-    @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime bookingTime;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime bookingTime;
 
 }

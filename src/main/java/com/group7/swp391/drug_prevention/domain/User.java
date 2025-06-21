@@ -25,10 +25,7 @@ public class User {
     private String password;
 
     @Nationalized
-    private String firstName;
-
-    @Nationalized
-    private String lastName;
+    private String fullName;
 
     private String phoneNumber;
     private String email;
@@ -44,7 +41,7 @@ public class User {
     private List<Booking> listBooking;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Course> listCourse;
 
     @JsonIgnore

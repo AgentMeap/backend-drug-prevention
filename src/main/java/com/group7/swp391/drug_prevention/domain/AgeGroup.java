@@ -1,9 +1,11 @@
 package com.group7.swp391.drug_prevention.domain;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "ageGroups")
+@Data
 public class AgeGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

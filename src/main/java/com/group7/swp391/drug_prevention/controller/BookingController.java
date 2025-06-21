@@ -38,11 +38,20 @@ public class BookingController {
 
     @DeleteMapping("/deletes/{id}")
     public ResponseEntity<?> deleteBooking(@RequestParam Long id) {
-        boolean check = false;
         if(bookingService.deleteBookingById(id)) {
             return new ResponseEntity<>("Booking deleted!!", HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Id is not exist!!", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/getBymemberId/{id}")
+    public ResponseEntity<?> getBookingByUserId(@PathVariable Long id) {
+        if(bookingService.getBookingsByMemberId(id) != null) {
+            return new ResponseEntity<>(bookingService.getBookingsByMemberId(id), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("No booking at list!!",HttpStatus.BAD_REQUEST);
+        }
+
     }
 }
