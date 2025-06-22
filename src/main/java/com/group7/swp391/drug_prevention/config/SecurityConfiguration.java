@@ -63,10 +63,10 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(authz -> authz.requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                         .requestMatchers(whiteList).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole("ADMIN","CONSULTANT") // Allow GET requests for users by ADMIN and CONSULTANT
-                        // Restrict to admin only
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole("ADMIN","CONSULTANT")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(customAuthenticationEntryPoint))

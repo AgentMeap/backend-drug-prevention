@@ -1,6 +1,9 @@
 package com.group7.swp391.drug_prevention.service;
 
 import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.domain.response.ResCreateUserDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResUpdateUserDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResUserDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResultPaginationDTO;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -35,40 +39,94 @@ public class UserService {
     }
 
     public ResultPaginationDTO fetchAllUser(Specification<User> spec, Pageable pageable) {
-        Page<User> userPage = this.userRepository.findAll(spec, pageable);
+        Page<User> pageUser = this.userRepository.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
         ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
 
-        mt.setPage(userPage.getNumber()+1);
-        mt.setPageSize(userPage.getSize());
+        mt.setPage(pageable.getPageNumber()+1);
+        mt.setPageSize(pageable.getPageSize());
 
-        mt.setPages(userPage.getTotalPages());
-        mt.setTotal(userPage.getTotalElements());
+        mt.setPages(pageUser.getTotalPages());
+        mt.setTotal(pageUser.getTotalElements());
 
         rs.setMeta(mt);
-        rs.setResult(userPage.getContent());
+        rs.setResult(pageUser.getContent());
+
+        List<ResUserDTO> listUser = pageUser.getContent().stream().map(item -> new ResUserDTO(
+                item.getId(),
+                item.getUsername(),
+                item.getFirstName(),
+                item.getLastName(),
+                item.getPhoneNumber(),
+                item.getEmail(),
+                item.getDateOfBirth(),
+                item.getRole(),
+                item.getCreatedAt(),
+                item.getUpdatedAt())).collect(Collectors.toList());
+        rs.setResult(listUser);
         return rs;
     }
 
     public User handleUpdateUser(long id, User user) {
         User existingUser = fetchUserById(id);
-        if (existingUser == null) {
-            return null;
+        if(existingUser != null) {
+            existingUser.setFirstName(user.getFirstName());
+            existingUser.setLastName(user.getLastName());
+            existingUser.setPhoneNumber(user.getPhoneNumber());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setDateOfBirth(user.getDateOfBirth());
+
+            // update
+            existingUser = this.userRepository.save(existingUser);
         }
-
-        // Update the existing user's fields
-        existingUser.setUsername(user.getUsername());
-        existingUser.setPassword(user.getPassword());
-        existingUser.setFullName(user.getFullName());
-        existingUser.setPhoneNumber(user.getPhoneNumber());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setDateOfBirth(user.getDateOfBirth());
-        existingUser.setRole(user.getRole());
-
-        return userRepository.save(existingUser);
+        return existingUser;
     }
 
     public User handleGetUserByUsername(String username) {
         return this.userRepository.findByUsername(username);
+    }
+
+    public boolean isUsernameExist(String username) {
+        return this.userRepository.existsByUsername(username);
+    }
+
+    public ResCreateUserDTO convertToResCreateUserDTO(User createdUser) {
+        ResCreateUserDTO res = new ResCreateUserDTO();
+        res.setId(createdUser.getId());
+        res.setUsername(createdUser.getUsername());
+        res.setFirstName(createdUser.getFirstName());
+        res.setLastName(createdUser.getLastName());
+        res.setPhoneNumber(createdUser.getPhoneNumber());
+        res.setEmail(createdUser.getEmail());
+        res.setDateOfBirth(createdUser.getDateOfBirth());
+        res.setRole(createdUser.getRole());
+        return res;
+
+    }
+
+    public ResUserDTO convertToResUserDTO(User fetchUser) {
+        ResUserDTO res = new ResUserDTO();
+        res.setId(fetchUser.getId());
+        res.setUsername(fetchUser.getUsername());
+        res.setFirstName(fetchUser.getFirstName());
+        res.setLastName(fetchUser.getLastName());
+        res.setPhoneNumber(fetchUser.getPhoneNumber());
+        res.setEmail(fetchUser.getEmail());
+        res.setDateOfBirth(fetchUser.getDateOfBirth());
+        res.setRole(fetchUser.getRole());
+        res.setCreatedAt(fetchUser.getCreatedAt());
+        res.setUpdatedAt(fetchUser.getUpdatedAt());
+        return res;
+    }
+
+    public ResUpdateUserDTO convertToResUpdateUserDTO(User updatedUser) {
+        ResUpdateUserDTO res = new ResUpdateUserDTO();
+        res.setId(updatedUser.getId());
+        res.setFirstName(updatedUser.getFirstName());
+        res.setLastName(updatedUser.getLastName());
+        res.setPhoneNumber(updatedUser.getPhoneNumber());
+        res.setEmail(updatedUser.getEmail());
+        res.setDateOfBirth(updatedUser.getDateOfBirth());
+        return res;
     }
 }

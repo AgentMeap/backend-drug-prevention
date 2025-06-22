@@ -5,6 +5,7 @@ import com.group7.swp391.drug_prevention.util.annotation.ApiMessage;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
@@ -39,6 +40,11 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
 
         if (status >= 400) {
+            if (body == null && status == HttpStatus.UNAUTHORIZED.value()) {
+                res.setError("Unauthorized");
+                res.setMessage("Vui lòng đăng nhập để tiếp tục.");
+                return res;
+            }
             return body;
         } else {
             res.setData(body);
@@ -47,5 +53,6 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         }
 
         return res;
+
     }
 }

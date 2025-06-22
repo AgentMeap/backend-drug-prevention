@@ -6,6 +6,7 @@ import com.group7.swp391.drug_prevention.service.ScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/schedules")
+    @PreAuthorize("hasRole('CONSULTANT')")
     public ResponseEntity<?> createSchedule(@Valid @RequestBody ReqScheduleDTO reqScheduleDTO) {
         try {
             Schedule savedSchedule = scheduleService.createSchedule(reqScheduleDTO);

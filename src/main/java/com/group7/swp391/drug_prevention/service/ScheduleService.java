@@ -5,8 +5,10 @@ import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqScheduleDTO;
 import com.group7.swp391.drug_prevention.repository.ScheduleRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
+import com.group7.swp391.drug_prevention.util.error.IdInvalidException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,18 +26,18 @@ public class ScheduleService {
         return scheduleRepository.findAll();
     }
 
-    public Schedule createSchedule(ReqScheduleDTO dto) {
-        User consultant = userRepository.findById(dto.getConsultantId()).orElse(null);
-        if (consultant != null && consultant.getRole().equalsIgnoreCase("consultant")) {
-            Schedule schedule = new Schedule();
-            schedule.setConsultant(consultant);
-            schedule.setStartTime(dto.getStartTime());
-            schedule.setEndTime(dto.getEndTime());
-            schedule.setDayOfWeek(dto.getDayOfWeek());
-            return scheduleRepository.save(schedule);
-        }
-        return null;
+    public Schedule createSchedule(ReqScheduleDTO dto) throws IdInvalidException {
+        User consultant = userRepository.findById(dto.getConsultantId())
+                .orElseThrow(() -> new IdInvalidException("Không tìm thấy tư vấn viên với ID: " + dto.getConsultantId()));
+
+        Schedule schedule = new Schedule();
+        schedule.setConsultant(consultant);
+        schedule.setStartTime(dto.getStartTime());
+        schedule.setEndTime(dto.getEndTime());
+        schedule.setDayOfWeek(dto.getDayOfWeek());
+        return scheduleRepository.save(schedule);
     }
+
 
     public void deleteSchedule(long id) {
         this.scheduleRepository.deleteById(id);

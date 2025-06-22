@@ -3,6 +3,7 @@ package com.group7.swp391.drug_prevention.controller;
 import com.group7.swp391.drug_prevention.domain.request.ReqLoginDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResLoginDTO;
 import com.group7.swp391.drug_prevention.util.SecurityUtil;
+import com.group7.swp391.drug_prevention.util.annotation.ApiMessage;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
+    @ApiMessage("Login thành công")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO reqLoginDTO) {
         //Nạp input gồm username/password vào Security
         UsernamePasswordAuthenticationToken authenticationToken

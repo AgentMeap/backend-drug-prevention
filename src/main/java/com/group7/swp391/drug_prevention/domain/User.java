@@ -1,7 +1,10 @@
 package com.group7.swp391.drug_prevention.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.group7.swp391.drug_prevention.util.SecurityUtil;
+import com.group7.swp391.drug_prevention.util.constant.RoleEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.aspectj.weaver.Member;
 import org.hibernate.annotations.Nationalized;
@@ -20,17 +23,33 @@ public class User {
     @Column(name = "id")
     private long id;
 
-
+    @NotBlank(message = "Username không được để trống")
     private String username;
+    @NotBlank(message = "Password không được để trống")
     private String password;
 
     @Nationalized
-    private String fullName;
+    @NotBlank(message = "Tên không được để trống")
+    private String firstName;
+
+    @Nationalized
+    @NotBlank(message = "Họ không được để trống")
+    private String lastName;
 
     private String phoneNumber;
     private String email;
     private String dateOfBirth;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
+
+    private Instant createdAt;
+    private Instant updatedAt;
+    private String createdBy;
+    private String updatedBy;
+
+    private String refreshToken;
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "consultant", cascade = CascadeType.ALL)
@@ -55,4 +74,16 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "manager")
     private List<Blog> listBlogs;
+
+    @PrePersist
+    public void handleBeforeCreate(){
+        this.createdAt = Instant.now();
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : null;
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updatedAt = Instant.now();
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+    }
 }
