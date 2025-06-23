@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Instant;
 import java.time.LocalTime;
 
 @Entity
@@ -17,8 +18,8 @@ public class Comment {
     private String description;
     @Column(name = "liked",nullable = true)
     private int liked;
-    private LocalTime createdAt;
-    private LocalTime updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userId")

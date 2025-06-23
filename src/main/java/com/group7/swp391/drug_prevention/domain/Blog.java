@@ -3,6 +3,7 @@ package com.group7.swp391.drug_prevention.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class Blog {
     private String content;
     @Column(name = "type",columnDefinition = "NVARCHAR(100)")
     private String type;
-    private LocalTime createdAt;
-    private LocalTime updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "managerId")

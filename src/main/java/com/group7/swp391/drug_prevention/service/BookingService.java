@@ -24,11 +24,11 @@ public class BookingService {
     public Booking createBooking(ReqBookingDTO dto) {
         Booking booking = new Booking();
         User member = userRepository.findById(dto.getMemberId()).orElse(null);
-        if(member != null && member.getRole().equals("member")) {
+        if(member != null) {
             booking.setMember(member);
             booking.setBookingTime(dto.getBookingTime());
             booking.setCreatedAt(LocalTime.now());
-
+            booking.setStatus("Pending");
             booking.setUpdatedAt(LocalTime.now());
             return bookingRepository.save(booking);
 
@@ -58,6 +58,7 @@ public class BookingService {
     public ResBookingDTO cancelBookingById(long id) {
         Booking booking = bookingRepository.findById(id).orElse(null);
         booking.setStatus("Cancelled");
+        bookingRepository.save(booking);
         if(booking != null) {
             ResBookingDTO resBookingDTO = new ResBookingDTO();
             resBookingDTO.setStatus("Cancelled");
@@ -71,6 +72,7 @@ public class BookingService {
 
         Booking booking = bookingRepository.findById(id).orElse(null);
         booking.setStatus("Confirmed");
+        bookingRepository.save(booking);
         if(booking != null) {
             ResBookingDTO resBookingDTO = new ResBookingDTO();
             resBookingDTO.setStatus("Confirmed");

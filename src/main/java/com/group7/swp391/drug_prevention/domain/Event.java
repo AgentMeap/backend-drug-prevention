@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -21,12 +22,12 @@ public class Event {
     private String location;
     @Column(name = "programCoordinator",columnDefinition = "NVARCHAR(100)", nullable = false)
     private String programCoordinator;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private Instant startTime;
+    private Instant endTime;
 
-    private LocalTime createdAt;
+    private Instant createdAt;
     @Column(name = "updateAt",nullable = true)
-    private LocalTime updatedAt;
+    private Instant updatedAt;
 
     @JsonIgnore
     @ManyToOne

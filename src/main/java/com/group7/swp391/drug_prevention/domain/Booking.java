@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -22,11 +23,11 @@ public class Booking {
     private long id;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    private LocalDateTime bookingTime;
+    private Instant bookingTime;
     @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime createdAt;
+    private Instant createdAt;
     @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime updatedAt;
+    private Instant updatedAt;
 
     private String status;
 

@@ -17,14 +17,10 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    @PostMapping("/createBooking")
+    @PostMapping("/")
     public ResponseEntity<?> createBooking(@RequestBody ReqBookingDTO dto) {
         Booking booking = bookingService.createBooking(dto);
-        if(booking != null) {
-            return new ResponseEntity<>(booking, HttpStatus.CREATED);
-        }else{
-            return new ResponseEntity<>("the id is not member!!",HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
 
     @GetMapping("/findAllBookings")
