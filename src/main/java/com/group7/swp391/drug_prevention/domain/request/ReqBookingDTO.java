@@ -17,5 +17,4 @@ public class ReqBookingDTO {
     private long memberId;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime bookingTime;
-
 }

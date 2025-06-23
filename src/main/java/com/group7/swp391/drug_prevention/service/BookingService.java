@@ -3,6 +3,7 @@ package com.group7.swp391.drug_prevention.service;
 import com.group7.swp391.drug_prevention.domain.Booking;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqBookingDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResBookingDTO;
 import com.group7.swp391.drug_prevention.repository.BookingRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -49,12 +50,33 @@ public class BookingService {
         }
     }
 
-    public List<Booking> getBookingsByMemberId(long id) {
-        if(bookingRepository.findById(id) != null) {
-            return bookingRepository.findByMemberId(id);
-        }else{
-            return null;
-        }
+    public List<Booking> getBookingsByMembeUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        return bookingRepository.findByMemberUsername(user.getUsername());
+    }
 
+    public ResBookingDTO cancelBookingById(long id) {
+        Booking booking = bookingRepository.findById(id).orElse(null);
+        booking.setStatus("Cancelled");
+        if(booking != null) {
+            ResBookingDTO resBookingDTO = new ResBookingDTO();
+            resBookingDTO.setStatus("Cancelled");
+            resBookingDTO.setBookingTime(booking.getBookingTime());
+            return resBookingDTO;
+        }
+        return null;
+    }
+
+    public ResBookingDTO confirmBookingById(long id) {
+
+        Booking booking = bookingRepository.findById(id).orElse(null);
+        booking.setStatus("Confirmed");
+        if(booking != null) {
+            ResBookingDTO resBookingDTO = new ResBookingDTO();
+            resBookingDTO.setStatus("Confirmed");
+            resBookingDTO.setBookingTime(booking.getBookingTime());
+            return resBookingDTO;
+        }
+        return null;
     }
 }

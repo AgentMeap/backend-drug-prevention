@@ -38,6 +38,7 @@ public class BookingController {
 
     @DeleteMapping("/deletes/{id}")
     public ResponseEntity<?> deleteBooking(@RequestParam Long id) {
+        boolean check = false;
         if(bookingService.deleteBookingById(id)) {
             return new ResponseEntity<>("Booking deleted!!", HttpStatus.OK);
         }else{
@@ -45,13 +46,30 @@ public class BookingController {
         }
     }
 
-    @GetMapping("/getBymemberId/{id}")
-    public ResponseEntity<?> getBookingByUserId(@PathVariable Long id) {
-        if(bookingService.getBookingsByMemberId(id) != null) {
-            return new ResponseEntity<>(bookingService.getBookingsByMemberId(id), HttpStatus.OK);
+    @GetMapping("/getByMemberUserName/{username}")
+    public ResponseEntity<?> getBookingByUserId(@PathVariable String username) {
+        if(bookingService.getBookingsByMembeUsername(username) != null) {
+            return new ResponseEntity<>(bookingService.getBookingsByMembeUsername(username), HttpStatus.OK);
         }else{
             return new ResponseEntity<>("No booking at list!!",HttpStatus.BAD_REQUEST);
         }
 
+    }
+    @PutMapping("/cancelBookingById{id}")
+    public ResponseEntity<?> cancelBookingById(@PathVariable long id) {
+        if(bookingService.cancelBookingById(id) != null){
+            return new ResponseEntity<>(bookingService.cancelBookingById(id), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Id is not exist!!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/confirmBookingById{id}")
+    public ResponseEntity<?> confirmBookingById(@PathVariable long id) {
+        if(bookingService.confirmBookingById(id) != null){
+            return new ResponseEntity<>(bookingService.confirmBookingById(id), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Id is not exist!!", HttpStatus.BAD_REQUEST);
+        }
     }
 }

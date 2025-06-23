@@ -28,6 +28,8 @@ public class Booking {
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime updatedAt;
 
+    private String status;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "memberId")
