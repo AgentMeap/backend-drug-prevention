@@ -3,6 +3,7 @@ package com.group7.swp391.drug_prevention.service;
 import com.group7.swp391.drug_prevention.domain.AgeGroup;
 import com.group7.swp391.drug_prevention.domain.Course;
 
+import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqCourseDTO;
 
 import com.group7.swp391.drug_prevention.domain.response.ResCourseDTO;
