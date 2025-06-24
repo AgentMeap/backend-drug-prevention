@@ -1,4 +1,5 @@
 package com.group7.swp391.drug_prevention.util.constant;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.group7.swp391.drug_prevention.util.SecurityUtil;
 import jakarta.persistence.*;
 
@@ -14,10 +15,16 @@ import java.time.Instant;
 @Setter
 public abstract class BaseEntity {
 
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Instant createdAt;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Instant updatedAt;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String createdBy;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String updatedBy;
 
     @PrePersist
