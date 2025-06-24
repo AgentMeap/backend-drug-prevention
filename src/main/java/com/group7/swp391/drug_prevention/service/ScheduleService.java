@@ -3,6 +3,7 @@ package com.group7.swp391.drug_prevention.service;
 import com.group7.swp391.drug_prevention.domain.Schedule;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqScheduleDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResConsultantDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResScheduleDTO;
 import com.group7.swp391.drug_prevention.repository.ScheduleRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
@@ -11,6 +12,8 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +39,7 @@ public class ScheduleService {
         schedule.setConsultant(consultant);
         schedule.setStartTime(dto.getStartTime());
         schedule.setEndTime(dto.getEndTime());
+        schedule.setDay(dto.getDay());
         return scheduleRepository.save(schedule);
     }
 
@@ -60,5 +64,20 @@ public class ScheduleService {
         List<ResScheduleDTO> dtos = lists.stream().map(schedule -> new ResScheduleDTO(schedule.getStartTime(),
                 schedule.getEndTime())).toList();
         return  dtos;
+    }
+
+    public ResConsultantDTO getConsultantByDay(LocalDate day){
+        Schedule schedule = scheduleRepository.getConsultantByDay(day);
+
+        User consultant = userRepository.getReferenceById(schedule.getConsultant().getId());
+
+
+        ResConsultantDTO resConsultantDTO = new ResConsultantDTO();
+
+        resConsultantDTO.setId(consultant.getId());
+        resConsultantDTO.setLastName(consultant.getLastName());
+        resConsultantDTO.setFirstName(consultant.getFirstName());
+
+        return resConsultantDTO;
     }
 }

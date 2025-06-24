@@ -1,6 +1,7 @@
 package com.group7.swp391.drug_prevention.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.group7.swp391.drug_prevention.util.SecurityUtil;
@@ -10,6 +11,8 @@ import lombok.*;
 
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 
@@ -25,8 +28,12 @@ public class Schedule extends BaseEntity {
     @JoinColumn(name = "consultantId")
     private User consultant;
 
-    private Instant startTime;
-    private Instant endTime;
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime startTime;
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime endTime;
+
+    private LocalDate day;
 
     private Instant createdAt;
 

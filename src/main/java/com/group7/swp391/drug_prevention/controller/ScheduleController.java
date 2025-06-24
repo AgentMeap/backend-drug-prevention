@@ -1,7 +1,9 @@
 package com.group7.swp391.drug_prevention.controller;
 
 import com.group7.swp391.drug_prevention.domain.Schedule;
+import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqScheduleDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResConsultantDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResScheduleDTO;
 import com.group7.swp391.drug_prevention.service.ScheduleService;
 import jakarta.validation.Valid;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 @RestController
 @RequestMapping("/api/v1")
@@ -53,8 +56,13 @@ public class ScheduleController {
         return ResponseEntity.ok(null);
     }
 
-    @GetMapping("/getScheduleByConsultantId{consultantId}")
+    @GetMapping("/getScheduleByConsultantId/{consultantId}")
     public List<ResScheduleDTO>  getScheduleByConsultantId(@PathVariable long consultantId) {
         return scheduleService.getScheduleByConsultantId(consultantId);
+    }
+
+    @GetMapping("/getConsultantByDay/{day}")
+    public ResConsultantDTO getScheduleByDay(@PathVariable LocalDate day) {
+        return scheduleService.getConsultantByDay(day);
     }
 }
