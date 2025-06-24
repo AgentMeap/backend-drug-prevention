@@ -86,4 +86,5 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Feedback>  userFeedbacks;
 
+    private String googleMeetLink;
 }
