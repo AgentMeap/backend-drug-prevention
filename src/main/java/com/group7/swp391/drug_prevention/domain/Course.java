@@ -42,4 +42,7 @@ public class Course extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<User> member;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "course")
+    private List<Feedback>  feedbacks;
 }

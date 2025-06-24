@@ -96,8 +96,16 @@ public class CourseService {
 
     }
 
-    public List<Course> getListCourseByMemberId(Long memberId) {
-        return courseRepository.getListCourseByMemberId(memberId);
+    public List<ResCourseDTO> getListCourseByMemberId(Long memberId) {
+        List<Course> courses = courseRepository.getListCourseByMemberId(memberId);
+        List<ResCourseDTO> list = courses.stream().map(course -> new ResCourseDTO(
+                course.getName(),
+                course.getDescription(),
+                course.getImage(),
+                course.getVideoUrl(),
+                course.getDuration(),
+                course.getAgeGroup().getId())).toList();
+        return  list;
     }
 
 }

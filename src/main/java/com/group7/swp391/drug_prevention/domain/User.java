@@ -78,5 +78,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Test>  listTests;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<Feedback>  userFeedbacks;
 
 }
