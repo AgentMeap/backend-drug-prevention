@@ -19,8 +19,7 @@ public class Blog extends BaseEntity {
     private String content;
     @Column(name = "type",columnDefinition = "NVARCHAR(100)")
     private String type;
-    private LocalTime createdAt;
-    private LocalTime updatedAt;
+
 
     @ManyToOne
     @JoinColumn(name = "managerId")
