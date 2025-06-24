@@ -1,7 +1,9 @@
 package com.group7.swp391.drug_prevention.controller;
 
+import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqLoginDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResLoginDTO;
+import com.group7.swp391.drug_prevention.repository.UserRepository;
 import com.group7.swp391.drug_prevention.util.SecurityUtil;
 import com.group7.swp391.drug_prevention.util.annotation.ApiMessage;
 import jakarta.validation.Valid;
@@ -21,10 +23,12 @@ public class AuthController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
+    private final UserRepository userRepository;
 
-    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder, SecurityUtil securityUtil) {
+    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder, SecurityUtil securityUtil,UserRepository userRepository) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/auth/login")
@@ -37,12 +41,27 @@ public class AuthController {
         //xác thực người dùng => cần viết hàm loadUserByUsername
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
+        // Get user information
+        User user = userRepository.findByUsername(reqLoginDTO.getUsername());
+
         //create a token
         String access_token = this.securityUtil.createToken(authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         ResLoginDTO res = new ResLoginDTO();
         res.setAccessToken(access_token);
+        // Set user information
+        ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin();
+        userLogin.setId(user.getId());
+        userLogin.setUsername(user.getUsername());
+        userLogin.setFirstName(user.getFirstName());
+        userLogin.setLastName(user.getLastName());
+        userLogin.setPhoneNumber(user.getPhoneNumber());
+        userLogin.setEmail(user.getEmail());
+        userLogin.setDateOfBirth(user.getDateOfBirth());
+        userLogin.setRole(user.getRole());
+
+
+        res.setUser(userLogin);
         return ResponseEntity.ok().body(res);
     }
 }
