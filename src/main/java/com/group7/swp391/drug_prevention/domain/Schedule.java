@@ -3,6 +3,7 @@ package com.group7.swp391.drug_prevention.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.group7.swp391.drug_prevention.util.SecurityUtil;
 import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,10 +12,7 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Data
 @Table(name = "schedules")
 public class Schedule extends BaseEntity {
@@ -30,8 +28,13 @@ public class Schedule extends BaseEntity {
     private Instant startTime;
     private Instant endTime;
 
+    private Instant createdAt;
+
+    private Instant updatedAt;
+
+    private String createdBy;
+    private String updatedBy;
 
 
-    private String dayOfWeek;
 
 }

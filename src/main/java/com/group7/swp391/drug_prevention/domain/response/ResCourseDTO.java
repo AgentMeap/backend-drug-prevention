@@ -1,14 +1,14 @@
 package com.group7.swp391.drug_prevention.domain.response;
 
 import jakarta.persistence.Column;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalTime;
 
 @Getter
 @Setter
-
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResCourseDTO {
     private String name;
     private String description;

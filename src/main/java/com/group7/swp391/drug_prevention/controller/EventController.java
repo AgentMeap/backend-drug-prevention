@@ -2,7 +2,10 @@ package com.group7.swp391.drug_prevention.controller;
 
 import com.group7.swp391.drug_prevention.domain.Event;
 import com.group7.swp391.drug_prevention.domain.request.ReqEventDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResEventDTO;
 import com.group7.swp391.drug_prevention.service.EventService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,5 +38,14 @@ public class EventController {
         return eventService.findEventById(id);
     }
 
+    @PutMapping("/registerEvent/{memberId}/{id}")
+    public ResponseEntity<?> registerEvent(@PathVariable long memberId,@PathVariable long id) {
+        eventService.registerEvent(id, memberId);
+        return new ResponseEntity<>("Registered Successfully",HttpStatus.OK);
+    }
 
+    @GetMapping("/findListEventByMemberId{memberId}")
+    public List<Event> findListEventByMemberId(@PathVariable long memberId) {
+        return eventService.findEventByMemberId(memberId);
+    }
 }

@@ -29,6 +29,8 @@ public class Course extends BaseEntity {
     @Column(name = "status",columnDefinition = "VARCHAR(10)",nullable = false)
     private String status;
     private int duration;
+    private Instant createdAt;
+    private Instant updatedAt;
 
     @OneToOne
     @JoinColumn(name = "ageGroupId")

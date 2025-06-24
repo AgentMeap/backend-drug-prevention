@@ -34,7 +34,6 @@ public class ScheduleService {
         schedule.setConsultant(consultant);
         schedule.setStartTime(dto.getStartTime());
         schedule.setEndTime(dto.getEndTime());
-        schedule.setDayOfWeek(dto.getDayOfWeek());
         return scheduleRepository.save(schedule);
     }
 
@@ -49,7 +48,6 @@ public class ScheduleService {
             Schedule schedule = scheduleOptional.get();
             schedule.setStartTime(reqSchedule.getStartTime());
             schedule.setEndTime(reqSchedule.getEndTime());
-            schedule.setDayOfWeek(reqSchedule.getDayOfWeek());
             return this.scheduleRepository.save(schedule);
         }
         return null;

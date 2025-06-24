@@ -3,10 +3,12 @@ package com.group7.swp391.drug_prevention.service;
 import com.group7.swp391.drug_prevention.domain.Event;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqEventDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResEventDTO;
 import com.group7.swp391.drug_prevention.repository.EventRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -33,6 +35,9 @@ public class EventService {
         event.setLocation(dto.getLocation());
         event.setTitle(dto.getTitle());
         event.setProgramCoordinator(dto.getProgramCoordinator());
+        event.setStartTime(dto.getStartTime());
+        event.setEndTime(dto.getEndTime());
+        event.setCreatedAt(Instant.now());
         return eventRepository.save(event);
     }
 
@@ -43,10 +48,34 @@ public class EventService {
         event.setLocation(dto.getLocation());
         event.setTitle(dto.getTitle());
         event.setProgramCoordinator(dto.getProgramCoordinator());
+        event.setStartTime(dto.getStartTime());
+        event.setEndTime(dto.getEndTime());
+        event.setUpdatedAt(Instant.now());
         return eventRepository.save(event);
     }
 
     public Event findEventById(Long id) {
         return eventRepository.findById(id).orElse(null);
+    }
+
+
+    public void registerEvent(Long memberId,long id) {
+        Event event = eventRepository.findById(id).orElse(null);
+        User user = userRepository.findById(memberId).orElse(null);
+
+        List<Event> listevents = user.getListEvents();
+        listevents.add(event);
+        user.setListEvents(listevents);
+        userRepository.save(user);
+
+        List<User> listUser = event.getMember();
+        listUser.add(user);
+        event.setMember(listUser);
+        eventRepository.save(event);
+
+    }
+
+    public List<Event> findEventByMemberId(Long memberId) {
+        return eventRepository.getListEventByMemberId(memberId);
     }
 }

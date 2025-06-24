@@ -1,4 +1,4 @@
-package com.group7.swp391.drug_prevention.domain.request;
+package com.group7.swp391.drug_prevention.domain.response;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
@@ -7,16 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class ReqEventDTO {
+@NoArgsConstructor
+public class ResEventDTO {
     private String title;
-    private long managerId;
     private String description;
     private String location;
     @Column(name = "programCoordinator",columnDefinition = "NVARCHAR(100)", nullable = false)

@@ -12,8 +12,6 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 public class ReqBookingDTO {
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private long memberId;
     private Instant bookingTime;
-    private Long memberId;
-
 }

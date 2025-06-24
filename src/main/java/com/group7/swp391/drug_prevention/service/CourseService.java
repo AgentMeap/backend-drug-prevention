@@ -11,6 +11,7 @@ import com.group7.swp391.drug_prevention.repository.CourseRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +20,12 @@ import java.util.List;
 public class CourseService {
     private CourseRepository courseRepository;
     private AgeGroupRepository ageGroupRepository;
+    private UserRepository userRepository;
 
-    public CourseService(CourseRepository courseRepository, AgeGroupRepository ageGroupRepository) {
+    public CourseService(CourseRepository courseRepository, AgeGroupRepository ageGroupRepository, UserRepository userRepository) {
         this.courseRepository = courseRepository;
         this.ageGroupRepository = ageGroupRepository;
+        this.userRepository = userRepository;
     }
 
     public Course createCourse(ReqCourseDTO dto) {
@@ -37,6 +40,9 @@ public class CourseService {
         course.setImage(dto.getImage());
         course.setVideoUrl(dto.getVideoUrl());
 
+
+        course.setCreatedAt(Instant.now());
+        course.setUpdatedAt(Instant.now());
 
         return courseRepository.save(course);
 
@@ -56,6 +62,7 @@ public class CourseService {
         course.setImage(dto.getImage());
         course.setVideoUrl(dto.getVideoUrl());
 
+        course.setUpdatedAt(Instant.now());
 
         return courseRepository.save(course);
     }
@@ -71,4 +78,25 @@ public class CourseService {
                 course.getAgeGroup().getId())).toList();
         return list;
     }
+
+    public void registerCourse(Long memberId,long id) {
+        User member = userRepository.findById(memberId).orElse(null);
+        Course course = courseRepository.findById(id).orElse(null);
+
+        List<User> users = course.getMember();
+        users.add(member);
+        course.setMember(users);
+        courseRepository.save(course);
+
+        List<Course>  courses = member.getListCourse();
+        courses.add(course);
+        member.setListCourse(courses);
+        userRepository.save(member);
+
+    }
+
+    public List<Course> getListCourseByMemberId(Long memberId) {
+        return courseRepository.getListCourseByMemberId(memberId);
+    }
+
 }

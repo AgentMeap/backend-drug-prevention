@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -30,5 +31,9 @@ public class Event extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "managerId")
     private User manager;
+
+    @JsonIgnore
+    @ManyToMany
+    private List<User> member;
 
 }

@@ -21,8 +21,10 @@ public class Booking extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Instant bookingTime;
+    private Instant createdAt;
+    private Instant updatedAt;
+
     private String status;
 
     @JsonIgnore

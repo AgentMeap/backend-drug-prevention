@@ -9,6 +9,7 @@ import com.group7.swp391.drug_prevention.repository.CommentRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -35,6 +36,8 @@ public class CommentService {
         }
 
         comment.setDescription(dto.getDescription());
+        comment.setCreatedAt(Instant.now());
+        comment.setUpdatedAt(Instant.now());
         return commentRepository.save(comment);
     }
 

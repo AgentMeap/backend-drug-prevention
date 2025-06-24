@@ -2,6 +2,7 @@ package com.group7.swp391.drug_prevention.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
+import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import com.group7.swp391.drug_prevention.util.constant.RoleEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -62,12 +63,20 @@ public class User extends BaseEntity {
     private List<Event> listEvents;
 
     @JsonIgnore
+    @ManyToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    private List<Event> listEventUsers;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Comment> listComments;
 
     @JsonIgnore
     @OneToMany(mappedBy = "manager")
     private List<Blog> listBlogs;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<Test>  listTests;
 
 
 }

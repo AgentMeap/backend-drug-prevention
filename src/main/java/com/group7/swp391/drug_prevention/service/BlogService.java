@@ -7,6 +7,7 @@ import com.group7.swp391.drug_prevention.repository.BlogRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class BlogService {
         Blog blog = new Blog();
         blog.setContent(dto.getContent());
         blog.setTitle(dto.getTitle());
+        blog.setCreatedAt(Instant.now());
+        blog.setUpdatedAt(Instant.now());
         blog.setType(dto.getType());
         User manager = userRepository.findById(dto.getManagerId()).orElse(null);
         blog.setManager(manager);
