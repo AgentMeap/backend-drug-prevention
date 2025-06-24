@@ -29,13 +29,13 @@ public class TestController {
     }
 
     @GetMapping("/")
-    public List<ResTestDTO> getAllTests() {
+    public List<Test> getAllTests() {
 
         return testService.getAllTests();
     }
 
     @GetMapping("/getAllTestsByMemberId/{id}")
-    public List<Test> getAllTestsByMemberId(@PathVariable Long id) {
+    public List<ResTestDTO> getAllTestsByMemberId(@PathVariable Long id) {
         return testService.getAllTestsByMemberId(id);
     }
 

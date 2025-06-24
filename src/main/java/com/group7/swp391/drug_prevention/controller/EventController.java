@@ -45,7 +45,7 @@ public class EventController {
     }
 
     @GetMapping("/findListEventByMemberId{memberId}")
-    public List<Event> findListEventByMemberId(@PathVariable long memberId) {
+    public List<ResEventDTO> findListEventByMemberId(@PathVariable long memberId) {
         return eventService.findEventByMemberId(memberId);
     }
 }

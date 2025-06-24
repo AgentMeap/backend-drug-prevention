@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -75,7 +76,15 @@ public class EventService {
 
     }
 
-    public List<Event> findEventByMemberId(Long memberId) {
-        return eventRepository.getListEventByMemberId(memberId);
+    public List<ResEventDTO> findEventByMemberId(Long memberId) {
+        List<Event> events = eventRepository.getListEventByMemberId(memberId);
+        List<ResEventDTO> dtos = events.stream().map(event -> new ResEventDTO(event.getTitle(),
+                event.getDescription(),
+                event.getLocation(),
+                event.getProgramCoordinator(),
+                event.getStartTime(),
+                event.getEndTime()
+                )).toList();
+        return dtos;
     }
 }

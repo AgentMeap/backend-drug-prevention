@@ -17,5 +17,4 @@ public class ReqScheduleDTO {
     private long consultantId;
     private Instant startTime;
     private Instant endTime;
-    private String dayOfWeek;
 }

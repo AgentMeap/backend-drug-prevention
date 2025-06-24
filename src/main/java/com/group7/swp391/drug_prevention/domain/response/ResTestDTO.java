@@ -12,11 +12,8 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResTestDTO {
-    private Long id;
     private String category;
     private double score;
     private String riskLevel;
-    private Instant createdAt;
     private long memberId;
-
 }

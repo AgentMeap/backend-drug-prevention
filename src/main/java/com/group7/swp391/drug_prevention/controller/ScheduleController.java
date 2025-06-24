@@ -2,6 +2,7 @@ package com.group7.swp391.drug_prevention.controller;
 
 import com.group7.swp391.drug_prevention.domain.Schedule;
 import com.group7.swp391.drug_prevention.domain.request.ReqScheduleDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResScheduleDTO;
 import com.group7.swp391.drug_prevention.service.ScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -50,5 +51,10 @@ public class ScheduleController {
     public ResponseEntity<?> deleteSchedule(@PathVariable("id") long id) {
         this.scheduleService.deleteSchedule(id);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/getScheduleByConsultantId{consultantId}")
+    public List<ResScheduleDTO>  getScheduleByConsultantId(@PathVariable long consultantId) {
+        return scheduleService.getScheduleByConsultantId(consultantId);
     }
 }

@@ -3,6 +3,7 @@ package com.group7.swp391.drug_prevention.service;
 import com.group7.swp391.drug_prevention.domain.Schedule;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqScheduleDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResScheduleDTO;
 import com.group7.swp391.drug_prevention.repository.ScheduleRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import com.group7.swp391.drug_prevention.util.error.IdInvalidException;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,5 +53,12 @@ public class ScheduleService {
             return this.scheduleRepository.save(schedule);
         }
         return null;
+    }
+
+    public List<ResScheduleDTO> getScheduleByConsultantId(Long consultantId) {
+        List<Schedule> lists = scheduleRepository.findAll();
+        List<ResScheduleDTO> dtos = lists.stream().map(schedule -> new ResScheduleDTO(schedule.getStartTime(),
+                schedule.getEndTime())).toList();
+        return  dtos;
     }
 }

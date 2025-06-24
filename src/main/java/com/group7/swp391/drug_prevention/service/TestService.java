@@ -9,6 +9,7 @@ import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,16 +35,17 @@ public class TestService {
         return testRepository.save(test);
     }
 
-    public List<ResTestDTO> getAllTests() {
-        return testRepository.findAll().stream().map(test -> new ResTestDTO(test.getId(),
+    public List<Test> getAllTests() {
+        return testRepository.findAll();
+    }
+
+    public List<ResTestDTO> getAllTestsByMemberId(Long memberId) {
+        List<Test> tests = testRepository.getAllTestsByMemberId(memberId);
+        List<ResTestDTO> list = tests.stream().map(test -> new ResTestDTO(
                 test.getCategory(),
                 test.getScore(),
                 test.getRiskLevel(),
-                test.getCreatedAt(),
                 test.getMember().getId())).toList();
-    }
-
-    public List<Test> getAllTestsByMemberId(Long memberId) {
-        return testRepository.getAllTestsByMemberId(memberId);
+        return list;
     }
 }
