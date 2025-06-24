@@ -8,7 +8,7 @@ import com.group7.swp391.drug_prevention.repository.BookingRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -27,9 +27,8 @@ public class BookingService {
         if(member != null) {
             booking.setMember(member);
             booking.setBookingTime(dto.getBookingTime());
-            booking.setCreatedAt(LocalTime.now());
             booking.setStatus("Pending");
-            booking.setUpdatedAt(LocalTime.now());
+
             return bookingRepository.save(booking);
 
         }

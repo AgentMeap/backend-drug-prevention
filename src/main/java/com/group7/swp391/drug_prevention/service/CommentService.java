@@ -35,8 +35,6 @@ public class CommentService {
         }
 
         comment.setDescription(dto.getDescription());
-        comment.setCreatedAt(LocalTime.now());
-        comment.setUpdatedAt(LocalTime.now());
         return commentRepository.save(comment);
     }
 

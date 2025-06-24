@@ -1,12 +1,15 @@
 package com.group7.swp391.drug_prevention.domain;
 
+
+import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+
 
 @Entity
 @Table(name = "ageGroups")
 @Data
-public class AgeGroup {
+public class AgeGroup extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

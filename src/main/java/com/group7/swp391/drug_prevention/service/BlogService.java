@@ -27,8 +27,6 @@ public class BlogService {
         Blog blog = new Blog();
         blog.setContent(dto.getContent());
         blog.setTitle(dto.getTitle());
-        blog.setCreatedAt(LocalTime.now());
-        blog.setUpdatedAt(LocalTime.now());
         blog.setType(dto.getType());
         User manager = userRepository.findById(dto.getManagerId()).orElse(null);
         blog.setManager(manager);

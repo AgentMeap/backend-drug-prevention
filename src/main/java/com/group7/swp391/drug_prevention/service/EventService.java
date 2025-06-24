@@ -33,9 +33,6 @@ public class EventService {
         event.setLocation(dto.getLocation());
         event.setTitle(dto.getTitle());
         event.setProgramCoordinator(dto.getProgramCoordinator());
-        event.setStartTime(dto.getStartTime());
-        event.setEndTime(dto.getEndTime());
-        event.setCreatedAt(LocalTime.now());
         return eventRepository.save(event);
     }
 
@@ -48,7 +45,6 @@ public class EventService {
         event.setProgramCoordinator(dto.getProgramCoordinator());
         event.setStartTime(dto.getStartTime());
         event.setEndTime(dto.getEndTime());
-        event.setUpdatedAt(LocalTime.now());
         return eventRepository.save(event);
     }
 

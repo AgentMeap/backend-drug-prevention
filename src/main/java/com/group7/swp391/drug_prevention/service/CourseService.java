@@ -2,10 +2,9 @@ package com.group7.swp391.drug_prevention.service;
 
 import com.group7.swp391.drug_prevention.domain.AgeGroup;
 import com.group7.swp391.drug_prevention.domain.Course;
-import com.group7.swp391.drug_prevention.domain.Schedule;
-import com.group7.swp391.drug_prevention.domain.User;
+
 import com.group7.swp391.drug_prevention.domain.request.ReqCourseDTO;
-import com.group7.swp391.drug_prevention.domain.request.ReqScheduleDTO;
+
 import com.group7.swp391.drug_prevention.domain.response.ResCourseDTO;
 import com.group7.swp391.drug_prevention.repository.AgeGroupRepository;
 import com.group7.swp391.drug_prevention.repository.CourseRepository;
@@ -39,9 +38,6 @@ public class CourseService {
         course.setVideoUrl(dto.getVideoUrl());
 
 
-        course.setCreatedAt(LocalTime.now());
-        course.setUpdatedAt(LocalTime.now());
-
         return courseRepository.save(course);
 
     }
@@ -60,7 +56,6 @@ public class CourseService {
         course.setImage(dto.getImage());
         course.setVideoUrl(dto.getVideoUrl());
 
-        course.setUpdatedAt(LocalTime.now());
 
         return courseRepository.save(course);
     }

@@ -1,14 +1,12 @@
 package com.group7.swp391.drug_prevention.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -16,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course {
+public class Course extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -31,10 +29,6 @@ public class Course {
     @Column(name = "status",columnDefinition = "VARCHAR(10)",nullable = false)
     private String status;
     private int duration;
-    @JsonFormat(pattern = "HH:mm:ss")
-    private Instant createdAt;
-    @JsonFormat(pattern = "HH:mm:ss")
-    private Instant updatedAt;
 
     @OneToOne
     @JoinColumn(name = "ageGroupId")
@@ -44,4 +38,5 @@ public class Course {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     private List<User> member;
+
 }

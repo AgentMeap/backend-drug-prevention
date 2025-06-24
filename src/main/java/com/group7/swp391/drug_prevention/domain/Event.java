@@ -1,18 +1,18 @@
 package com.group7.swp391.drug_prevention.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "events")
 @Data
-public class Event {
+public class Event extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -25,9 +25,6 @@ public class Event {
     private Instant startTime;
     private Instant endTime;
 
-    private Instant createdAt;
-    @Column(name = "updateAt",nullable = true)
-    private Instant updatedAt;
 
     @JsonIgnore
     @ManyToOne

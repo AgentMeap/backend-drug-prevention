@@ -1,15 +1,13 @@
 package com.group7.swp391.drug_prevention.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.group7.swp391.drug_prevention.util.SecurityUtil;
+import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import com.group7.swp391.drug_prevention.util.constant.RoleEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.aspectj.weaver.Member;
 import org.hibernate.annotations.Nationalized;
 
-import java.time.Instant;
 import java.util.List;
 
 
@@ -17,7 +15,7 @@ import java.util.List;
 @Table(name = "users")
 @Data
 
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -43,10 +41,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
-    private Instant createdAt;
-    private Instant updatedAt;
-    private String createdBy;
-    private String updatedBy;
 
     private String refreshToken;
 
@@ -75,15 +69,5 @@ public class User {
     @OneToMany(mappedBy = "manager")
     private List<Blog> listBlogs;
 
-    @PrePersist
-    public void handleBeforeCreate(){
-        this.createdAt = Instant.now();
-        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : null;
-    }
 
-    @PreUpdate
-    public void handleBeforeUpdate() {
-        this.updatedAt = Instant.now();
-        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
-    }
 }

@@ -1,16 +1,16 @@
 package com.group7.swp391.drug_prevention.domain;
 
+import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.Instant;
 import java.time.LocalTime;
 import java.util.List;
 
 @Entity
 @Table(name = "blogs")
 @Data
-public class Blog {
+public class Blog extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -19,8 +19,8 @@ public class Blog {
     private String content;
     @Column(name = "type",columnDefinition = "NVARCHAR(100)")
     private String type;
-    private Instant createdAt;
-    private Instant updatedAt;
+    private LocalTime createdAt;
+    private LocalTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "managerId")
