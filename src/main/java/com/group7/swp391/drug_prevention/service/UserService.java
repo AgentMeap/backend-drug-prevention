@@ -1,6 +1,7 @@
 package com.group7.swp391.drug_prevention.service;
 
 import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.domain.request.ReqUpdateUserDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResCreateUserDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResUpdateUserDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResUserDTO;
@@ -67,14 +68,14 @@ public class UserService {
         return rs;
     }
 
-    public User handleUpdateUser(long id, User user) {
+    public User handleUpdateUser(long id, ReqUpdateUserDTO updateDTO) {
         User existingUser = fetchUserById(id);
         if(existingUser != null) {
-            existingUser.setFirstName(user.getFirstName());
-            existingUser.setLastName(user.getLastName());
-            existingUser.setPhoneNumber(user.getPhoneNumber());
-            existingUser.setEmail(user.getEmail());
-            existingUser.setDateOfBirth(user.getDateOfBirth());
+            existingUser.setFirstName(updateDTO.getFirstName());
+            existingUser.setLastName(updateDTO.getLastName());
+            existingUser.setPhoneNumber(updateDTO.getPhoneNumber());
+            existingUser.setEmail(updateDTO.getEmail());
+            existingUser.setDateOfBirth(updateDTO.getDateOfBirth());
 
             // update
             existingUser = this.userRepository.save(existingUser);

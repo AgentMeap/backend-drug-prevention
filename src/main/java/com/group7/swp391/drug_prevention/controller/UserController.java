@@ -1,6 +1,7 @@
 package com.group7.swp391.drug_prevention.controller;
 
 import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.domain.request.ReqUpdateUserDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResCreateUserDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResUpdateUserDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResUserDTO;
@@ -78,10 +79,11 @@ public class UserController {
     }
 
     //update a user
-    @PutMapping("/users/{id}")
+    @PatchMapping("/users/{id}")
     @ApiMessage("Update a user")
-    public ResponseEntity<ResUpdateUserDTO> updateUser(@PathVariable("id") long id, @Valid @RequestBody User user) throws IdInvalidException {
-        User updatedUser = userService.handleUpdateUser(id, user);
+    public ResponseEntity<ResUpdateUserDTO> updateUser(@PathVariable("id") long id, @Valid @RequestBody ReqUpdateUserDTO updateDTO
+    ) throws IdInvalidException {
+        User updatedUser = userService.handleUpdateUser(id, updateDTO);
         if (updatedUser == null) {
             throw new IdInvalidException("Không tìm thấy người dùng với ID: " + id);
         }
