@@ -62,7 +62,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/getConsultantByDay/{day}")
-    public ResConsultantDTO getScheduleByDay(@PathVariable LocalDate day) {
+    public List<ResConsultantDTO> getScheduleByDay(@PathVariable LocalDate day) {
         return scheduleService.getConsultantByDay(day);
     }
 }

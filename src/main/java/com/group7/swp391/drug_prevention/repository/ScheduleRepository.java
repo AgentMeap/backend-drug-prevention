@@ -7,10 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    Schedule getConsultantByDay(LocalDate day);
+    List<Schedule> getConsultantByDay(LocalDate day);
 
 }

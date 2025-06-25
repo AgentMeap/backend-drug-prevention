@@ -1,10 +1,16 @@
 package com.group7.swp391.drug_prevention.domain.response;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResConsultantDTO {
     private String firstName;
     private String lastName;
-    private long id;
+    private long consultantId;
+
+
 }

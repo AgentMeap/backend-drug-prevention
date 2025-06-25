@@ -66,18 +66,16 @@ public class ScheduleService {
         return  dtos;
     }
 
-    public ResConsultantDTO getConsultantByDay(LocalDate day){
-        Schedule schedule = scheduleRepository.getConsultantByDay(day);
+    public List<ResConsultantDTO> getConsultantByDay(LocalDate day){
+        List<Schedule> schedule = scheduleRepository.getConsultantByDay(day);
 
-        User consultant = userRepository.getReferenceById(schedule.getConsultant().getId());
+        List<User> lists = schedule.stream().map(Schedule::getConsultant).toList();
 
 
-        ResConsultantDTO resConsultantDTO = new ResConsultantDTO();
+        List<ResConsultantDTO> resConsultantDTOs = lists.stream().map(user -> new ResConsultantDTO(user.getFirstName(),
+                user.getLastName(),
+                user.getId())).toList();
 
-        resConsultantDTO.setId(consultant.getId());
-        resConsultantDTO.setLastName(consultant.getLastName());
-        resConsultantDTO.setFirstName(consultant.getFirstName());
-
-        return resConsultantDTO;
+        return resConsultantDTOs;
     }
 }

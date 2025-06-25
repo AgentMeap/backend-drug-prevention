@@ -29,7 +29,7 @@ public class EventService {
     public Event createEvent(ReqEventDTO dto) {
         Event event = new Event();
 
-        User manager = userRepository.getById(dto.getManagerId());
+        User manager = userRepository.getReferenceById(dto.getManagerId());
         event.setManager(manager);
 
         event.setDescription(dto.getDescription());
