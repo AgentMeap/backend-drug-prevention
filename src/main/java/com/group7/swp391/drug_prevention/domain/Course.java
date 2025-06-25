@@ -33,9 +33,8 @@ public class Course extends BaseEntity {
     private Instant createdAt;
     private Instant updatedAt;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ageGroupId")
-    @JsonIgnore
     private AgeGroup ageGroup;
 
     @JsonIgnore

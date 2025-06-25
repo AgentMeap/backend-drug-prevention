@@ -1,9 +1,12 @@
 package com.group7.swp391.drug_prevention.domain.response;
 
+import com.group7.swp391.drug_prevention.domain.AgeGroup;
+import com.group7.swp391.drug_prevention.domain.Course;
 import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,12 +21,4 @@ public class ResCourseDTO {
     private int duration;
 
 
-    public ResCourseDTO(String name, String description, String image, String videoUrl, int duration, long ageGroupId) {
-        this.name = name;
-        this.description = description;
-        this.ageGroupId = ageGroupId;
-        this.image = image;
-        this.videoUrl = videoUrl;
-        this.duration = duration;
-    }
 }

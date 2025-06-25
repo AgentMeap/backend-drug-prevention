@@ -23,7 +23,7 @@ public class Comment extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "memberId")
     private User user;
     @JsonIgnore
     @ManyToOne

@@ -42,15 +42,6 @@ public class BookingController {
         }
     }
 
-    @GetMapping("/getByMemberUserName/{username}")
-    public ResponseEntity<?> getBookingByUserId(@PathVariable String username) {
-        if(bookingService.getBookingsByMembeUsername(username) != null) {
-            return new ResponseEntity<>(bookingService.getBookingsByMembeUsername(username), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("No booking at list!!",HttpStatus.BAD_REQUEST);
-        }
-
-    }
     @PutMapping("/cancelBookingById{id}")
     public ResponseEntity<?> cancelBookingById(@PathVariable long id) {
         if(bookingService.cancelBookingById(id) != null){

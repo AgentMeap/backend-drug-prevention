@@ -1,9 +1,12 @@
 package com.group7.swp391.drug_prevention.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 
 @Entity
@@ -20,6 +23,7 @@ public class AgeGroup extends BaseEntity {
     @Column(name = "minAge",nullable = false)
     private int minAge;
 
-    @OneToOne(mappedBy = "ageGroup",cascade = CascadeType.ALL)
-    private Course course;
+    @OneToMany(mappedBy = "ageGroup")
+    @JsonIgnore
+    private List<Course> courses;
 }

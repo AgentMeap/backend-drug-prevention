@@ -16,10 +16,10 @@ public class Feedback extends BaseEntity {
     private String status; //hide,active,flagged
 
     @ManyToOne
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "memberId")
     private User member;
 
     @ManyToOne
-    @JoinColumn(name = "course")
+    @JoinColumn(name = "courseId")
     private Course course;
 }

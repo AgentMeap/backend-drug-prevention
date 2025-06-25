@@ -16,12 +16,14 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
-    private CourseRepository courseRepository;
-    private AgeGroupRepository ageGroupRepository;
-    private UserRepository userRepository;
+    private final CourseRepository courseRepository;
+    private final AgeGroupRepository ageGroupRepository;
+    private final UserRepository userRepository;
 
     public CourseService(CourseRepository courseRepository, AgeGroupRepository ageGroupRepository, UserRepository userRepository) {
         this.courseRepository = courseRepository;
@@ -30,10 +32,11 @@ public class CourseService {
     }
 
     public Course createCourse(ReqCourseDTO dto) {
+        AgeGroup ageGroup = ageGroupRepository.getById(dto.getAgeGroupId());
         Course course = new Course();
-        AgeGroup ageGroup = ageGroupRepository.findById(dto.getAgeGroupId()).orElse(null);
-        course.setAgeGroup(ageGroup);
 
+
+        course.setAgeGroup(ageGroup);
         course.setName(dto.getName());
         course.setDescription(dto.getDescription());
         course.setStatus(dto.getStatus());
@@ -45,6 +48,7 @@ public class CourseService {
         course.setCreatedAt(Instant.now());
         course.setUpdatedAt(Instant.now());
 
+
         return courseRepository.save(course);
 
     }
@@ -53,7 +57,7 @@ public class CourseService {
     public Course updateSchedule(long id, ReqCourseDTO dto) {
         Course course = courseRepository.findById(id).orElse(null);
 
-        AgeGroup ageGroup = ageGroupRepository.findById(dto.getAgeGroupId()).orElse(null);
+        AgeGroup ageGroup = ageGroupRepository.getById(dto.getAgeGroupId());
         course.setAgeGroup(ageGroup);
 
         course.setName(dto.getName());
@@ -68,16 +72,14 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    public List<ResCourseDTO> getAllCourses() {
-        List<Course> courses = courseRepository.findAll();
-        List<ResCourseDTO> list = courses.stream().map(course -> new ResCourseDTO(
+    public List<ResCourseDTO> getAllCoursesForMember() {
+        return courseRepository.findAll().stream().map(course -> new ResCourseDTO(
                 course.getName(),
                 course.getDescription(),
+                course.getAgeGroup().getId(),
                 course.getImage(),
                 course.getVideoUrl(),
-                course.getDuration(),
-                course.getAgeGroup().getId())).toList();
-        return list;
+                course.getDuration())).toList();
     }
 
     public void registerCourse(Long memberId,long id) {
@@ -98,14 +100,18 @@ public class CourseService {
 
     public List<ResCourseDTO> getListCourseByMemberId(Long memberId) {
         List<Course> courses = courseRepository.getListCourseByMemberId(memberId);
-        List<ResCourseDTO> list = courses.stream().map(course -> new ResCourseDTO(
+
+        return  courses.stream().map(course -> new ResCourseDTO(
                 course.getName(),
                 course.getDescription(),
+                course.getAgeGroup().getId(),
                 course.getImage(),
                 course.getVideoUrl(),
-                course.getDuration(),
-                course.getAgeGroup().getId())).toList();
-        return  list;
+                course.getDuration())).toList();
+    }
+
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
     }
 
 }

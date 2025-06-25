@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/course")
 public class CourseController {
@@ -14,7 +16,7 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @PostMapping("/createCourse")
+    @PostMapping("/createCourse/")
     public ResponseEntity<?> createCourse(@RequestBody ReqCourseDTO dto) {
         courseService.createCourse(dto);
         return new ResponseEntity<>("Created!!!",HttpStatus.CREATED);
@@ -29,6 +31,11 @@ public class CourseController {
     @GetMapping("/getAllCourse")
     public ResponseEntity<?> getAllCourse() {
         return new ResponseEntity<>(courseService.getAllCourses(),HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllCourseForMember")
+    public ResponseEntity<?> getAllCourseForMember() {
+        return new ResponseEntity<>(courseService.getAllCoursesForMember(),HttpStatus.OK);
     }
 
     @PutMapping("/registerCourse/{memberId}/{id}")

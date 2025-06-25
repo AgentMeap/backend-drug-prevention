@@ -19,7 +19,6 @@ public class Test {
     private Instant createdAt; // ngày giờ member làm bài test//
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "memberId")
     private User member;
 }

@@ -52,11 +52,6 @@ public class BookingService {
         }
     }
 
-    public List<Booking> getBookingsByMembeUsername(String username) {
-        User user = userRepository.findByUsername(username);
-        return bookingRepository.findByMemberUsername(user.getUsername());
-    }
-
     public ResBookingDTO cancelBookingById(long id) {
         Booking booking = bookingRepository.findById(id).orElse(null);
         booking.setStatus("Cancelled");
