@@ -17,11 +17,10 @@ public class AgeGroup extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "name",columnDefinition = "NVARCHAR(250)",nullable = false)
+
     private String name;
-    @Column(name = "maxAge",nullable = false)
-    private int maxAge;
-    @Column(name = "minAge",nullable = false)
-    private int minAge;
+
+    private String age;
 
     @OneToMany(mappedBy = "ageGroup")
     @JsonIgnore
