@@ -168,4 +168,27 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, resCookie.toString())
                 .body(res);
     }
+
+    @PostMapping("/auth/logout")
+    @ApiMessage("Logout User Successfully")
+    public ResponseEntity<Void> logout() throws IdInvalidException {
+        String username = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+        if(username.equals("")) {
+            throw new IdInvalidException("Access token không hợp lệ");
+        }
+
+        //update refresh token = null
+        this.userService.updateUserToken(null, username);
+
+        //remove refresh token cookie
+        ResponseCookie resCookie = ResponseCookie.from("refresh_token", null)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0) // Set max age to 0 to delete the cookie
+                .build();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, resCookie.toString())
+                .build();
+    }
 }
