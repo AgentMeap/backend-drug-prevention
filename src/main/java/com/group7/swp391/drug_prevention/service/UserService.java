@@ -101,9 +101,10 @@ public class UserService {
         res.setEmail(createdUser.getEmail());
         res.setDateOfBirth(createdUser.getDateOfBirth());
         res.setRole(createdUser.getRole());
+        res.setCreatedAt(createdUser.getCreatedAt());
         return res;
-
     }
+
 
     public ResUserDTO convertToResUserDTO(User fetchUser) {
         ResUserDTO res = new ResUserDTO();
@@ -129,5 +130,17 @@ public class UserService {
         res.setEmail(updatedUser.getEmail());
         res.setDateOfBirth(updatedUser.getDateOfBirth());
         return res;
+    }
+
+    public void updateUserToken(String token, String username){
+        User currentUser = this.userRepository.findByUsername(username);
+        if(currentUser != null){
+            currentUser.setRefreshToken(token);
+            this.userRepository.save(currentUser);
+        }
+    }
+
+    public User getUserByRefreshTokenAndUsername(String refreshToken, String username) {
+        return this.userRepository.findByRefreshTokenAndUsername(refreshToken, username);
     }
 }

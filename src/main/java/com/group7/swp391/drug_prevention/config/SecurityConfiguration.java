@@ -89,22 +89,30 @@ public class SecurityConfiguration {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
             Map<String, Object> claims = jwt.getClaims();
             Map<String, Object> user = (Map<String, Object>) claims.get("user");
-            List<Map<String, String>> authorities = (List<Map<String, String>>) user.get("authorities");
 
-            return authorities.stream()
-                    .map(auth -> auth.get("role"))
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Adding ROLE_ prefix back
-                    .collect(Collectors.toSet());
+            // Handle case where user claim might be missing
+            if (user == null) {
+                return java.util.Collections.emptySet();
+            }
+
+            // Get the role directly from the "role" field
+            Object roleClaim = user.get("role");
+
+            // Handle case where role might be missing or not a String
+            if (roleClaim == null || !(roleClaim instanceof String)) {
+                return java.util.Collections.emptySet();
+            }
+
+            String role = (String) roleClaim;
+
+            // Create a single authority from the role string
+            Collection<GrantedAuthority> authorities = java.util.Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role));
+
+            return authorities;
         });
-
 
         return jwtAuthenticationConverter;
     }
-
-
-
-
-
 
     @Bean
     public JwtDecoder jwtDecoder() {

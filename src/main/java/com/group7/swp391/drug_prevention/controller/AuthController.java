@@ -3,19 +3,21 @@ package com.group7.swp391.drug_prevention.controller;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqLoginDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResLoginDTO;
-import com.group7.swp391.drug_prevention.repository.UserRepository;
+import com.group7.swp391.drug_prevention.service.UserService;
 import com.group7.swp391.drug_prevention.util.SecurityUtil;
 import com.group7.swp391.drug_prevention.util.annotation.ApiMessage;
+import com.group7.swp391.drug_prevention.util.error.IdInvalidException;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -23,12 +25,16 @@ public class AuthController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder, SecurityUtil securityUtil,UserRepository userRepository) {
+    @Value("${project.jwt.refresh-token-validity-in-seconds}")
+    private long refreshTokenExpiration;
+
+    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder, SecurityUtil securityUtil, UserService userService) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
-        this.userRepository = userRepository;
+
+        this.userService = userService;
     }
 
     @PostMapping("/auth/login")
@@ -41,27 +47,125 @@ public class AuthController {
         //xác thực người dùng => cần viết hàm loadUserByUsername
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        // Get user information
-        User user = userRepository.findByUsername(reqLoginDTO.getUsername());
-
-        //create a token
-        String access_token = this.securityUtil.createToken(authentication);
+        //set thông tin người dùng đăng nhập vào context (có thể sử dụng sau này)
         SecurityContextHolder.getContext().setAuthentication(authentication);
         ResLoginDTO res = new ResLoginDTO();
+
+        User currentUserDB = userService.handleGetUserByUsername(reqLoginDTO.getUsername());
+        if (currentUserDB != null) {
+            ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
+                    currentUserDB.getId(),
+                    currentUserDB.getUsername(),
+                    currentUserDB.getFirstName(),
+                    currentUserDB.getLastName(),
+                    currentUserDB.getPhoneNumber(),
+                    currentUserDB.getEmail(),
+                    currentUserDB.getDateOfBirth(),
+                    currentUserDB.getRole()
+            );
+            res.setUser(userLogin);
+        }
+
+        String access_token = this.securityUtil.createAccessToken(authentication.getName(), res.getUser());
         res.setAccessToken(access_token);
-        // Set user information
+
+
+        //create refresh token
+        String refresh_token = this.securityUtil.createRefreshToken(reqLoginDTO.getUsername(), res);
+
+        //update user
+        this.userService.updateUserToken(refresh_token, reqLoginDTO.getUsername());
+
+        //set cookies
+        ResponseCookie resCookie = ResponseCookie.from("refresh_token", refresh_token)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(refreshTokenExpiration)
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, resCookie.toString())
+                .body(res);
+    }
+
+    @GetMapping("/auth/account")
+    @ApiMessage("Lấy thông tin tài khoản")
+    public ResponseEntity<ResLoginDTO.UserLogin> getAccount() {
+        String username = SecurityUtil.getCurrentUserLogin().isPresent()
+                ? SecurityUtil.getCurrentUserLogin().get() :
+                "";
+        User currentUserDB = userService.handleGetUserByUsername(username);
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin();
-        userLogin.setId(user.getId());
-        userLogin.setUsername(user.getUsername());
-        userLogin.setFirstName(user.getFirstName());
-        userLogin.setLastName(user.getLastName());
-        userLogin.setPhoneNumber(user.getPhoneNumber());
-        userLogin.setEmail(user.getEmail());
-        userLogin.setDateOfBirth(user.getDateOfBirth());
-        userLogin.setRole(user.getRole());
+        if (currentUserDB != null) {
+            userLogin.setId(currentUserDB.getId());
+            userLogin.setUsername(currentUserDB.getUsername());
+            userLogin.setFirstName(currentUserDB.getFirstName());
+            userLogin.setLastName(currentUserDB.getLastName());
+            userLogin.setPhoneNumber(currentUserDB.getPhoneNumber());
+            userLogin.setEmail(currentUserDB.getEmail());
+            userLogin.setDateOfBirth(currentUserDB.getDateOfBirth());
+            userLogin.setRole(currentUserDB.getRole());
+        }
+        return ResponseEntity.ok().body(userLogin);
+    }
 
+    @GetMapping("/auth/refresh")
+    @ApiMessage("Get User by refresh token")
+    public ResponseEntity<ResLoginDTO> getUserByRefreshToken(
+            @CookieValue(name = "refresh_token", defaultValue = "abc") String refreshToken
+    ) throws IdInvalidException {
+        if (refreshToken.equals("abc")) {
+            throw new IdInvalidException("Bạn không có refresh token ở cookies");
+        }
 
-        res.setUser(userLogin);
-        return ResponseEntity.ok().body(res);
+        // Check valid
+        Jwt decodedToken = this.securityUtil.checkValidRefreshToken(refreshToken);
+        String username = decodedToken.getSubject();
+
+        // Check user by token + username
+        User currentUser = this.userService.getUserByRefreshTokenAndUsername(refreshToken, username);
+        if (currentUser == null) {
+            throw new IdInvalidException("Refresh token không hợp lệ");
+        }
+
+        // Issue new token/set refresh token as cookies
+        ResLoginDTO res = new ResLoginDTO();
+
+        User currentUserDB = userService.handleGetUserByUsername(username);
+        if (currentUserDB != null) {
+            ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
+                    currentUserDB.getId(),
+                    currentUserDB.getUsername(),
+                    currentUserDB.getFirstName(),
+                    currentUserDB.getLastName(),
+                    currentUserDB.getPhoneNumber(),
+                    currentUserDB.getEmail(),
+                    currentUserDB.getDateOfBirth(),
+                    currentUserDB.getRole()
+            );
+            res.setUser(userLogin);
+        }
+
+        String access_token = this.securityUtil.createAccessToken(username, res.getUser());
+        res.setAccessToken(access_token);
+
+        // Create new refresh token
+        String new_refresh_token = this.securityUtil.createRefreshToken(username, res);
+
+        // Update user
+        this.userService.updateUserToken(new_refresh_token, username);
+
+        // Set cookies
+        ResponseCookie resCookie = ResponseCookie.from("refresh_token", new_refresh_token)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(refreshTokenExpiration)
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, resCookie.toString())
+                .body(res);
     }
 }

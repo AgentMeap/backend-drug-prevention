@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.time.Instant;
 
-@Table(name = "Test")
+@Table(name = "tests")
 @Entity
 @Data
 public class Test {

@@ -1,41 +1,58 @@
 package com.group7.swp391.drug_prevention.util.constant;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.group7.swp391.drug_prevention.util.SecurityUtil;
-import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 
-@MappedSuperclass // Specifies that this is a superclass and its mappings are applied to subclasses.
-@EntityListeners(AuditingEntityListener.class) // Enables auditing for entities that extend this class.
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+@Data
 @Getter
 @Setter
 public abstract class BaseEntity {
 
+    @CreatedDate
+    @Column(updatable = false)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Instant createdAt;
 
+    @LastModifiedDate
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Instant updatedAt;
 
+    @CreatedBy
+    @Column(updatable = false)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String createdBy;
 
+    @LastModifiedBy
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String updatedBy;
 
     @PrePersist
-    public void handleBeforeCreate(){
-        this.createdAt = Instant.now();
-        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : null;
+    public void prePersist() {
+        if (this.createdAt == null) {
+            this.createdAt = Instant.now();
+        }
+        if (this.createdBy == null) {
+            this.createdBy = "system";
+        }
     }
 
     @PreUpdate
-    public void handleBeforeUpdate() {
+    public void preUpdate() {
         this.updatedAt = Instant.now();
-        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+        if (this.updatedBy == null) {
+            this.updatedBy = "system";
+        }
     }
 }
