@@ -6,10 +6,12 @@ import com.group7.swp391.drug_prevention.domain.request.ReqBookingDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResBookingDTO;
 import com.group7.swp391.drug_prevention.repository.BookingRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
+import com.group7.swp391.drug_prevention.util.constant.RoleEnum;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -78,4 +80,27 @@ public class BookingService {
         }
         return null;
     }
+
+    public List<ResBookingDTO> findAllBookingsByMemberId(long memberId) {
+        User member = userRepository.findById(memberId).orElse(null);
+        if (member.getRole() != RoleEnum.MEMBER) {
+            return null;
+        }
+
+        return member.getListBooking().stream()
+                .map(booking -> new ResBookingDTO(booking.getBookingTime(), booking.getStatus()))
+                .toList();
+    }
+
+    public List<ResBookingDTO> findAllBookingByConsultantId(long consultantId) {
+        User consultant = userRepository.findById(consultantId).orElse(null);
+        if (consultant.getRole() != RoleEnum.CONSULTANT) {
+            return null;
+        }
+
+        return consultant.getListBooking().stream()
+                .map(booking -> new ResBookingDTO(booking.getBookingTime(), booking.getStatus()))
+                .toList();
+    }
+
 }

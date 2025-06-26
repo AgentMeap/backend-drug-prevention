@@ -27,7 +27,6 @@ public class Booking extends BaseEntity {
 
     private String status;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "memberId")
     private User member;

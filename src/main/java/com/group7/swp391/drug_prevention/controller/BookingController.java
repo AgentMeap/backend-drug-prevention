@@ -2,6 +2,7 @@ package com.group7.swp391.drug_prevention.controller;
 
 import com.group7.swp391.drug_prevention.domain.Booking;
 import com.group7.swp391.drug_prevention.domain.request.ReqBookingDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResBookingDTO;
 import com.group7.swp391.drug_prevention.service.BookingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,4 +60,23 @@ public class BookingController {
             return new ResponseEntity<>("Id is not exist!!", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/getListBookingByMemberId/{memberId}")
+    public ResponseEntity<?> getListBookingByMemberId(@PathVariable long memberId) {
+        List<ResBookingDTO> dtos = bookingService.findAllBookingsByMemberId(memberId);
+        if (dtos == null) {
+            return new ResponseEntity<>("You must be MEMBER !!!", HttpStatus.FORBIDDEN); // 403 rõ ràng hơn
+        }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/getListBookingByConsultantId/{consultantId}")
+    public ResponseEntity<?> getListBookingByConsultantId(@PathVariable long consultantId) {
+        List<ResBookingDTO> dtos = bookingService.findAllBookingByConsultantId(consultantId);
+        if (dtos == null) {
+            return new ResponseEntity<>("You must be CONSULTANT !!!", HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
 }
