@@ -86,12 +86,16 @@ public class BookingService {
 
     public List<ResBookingDTO> findAllBookingsByMemberId(long memberId) {
         User member = userRepository.findById(memberId).orElse(null);
+
         if (member.getRole() != RoleEnum.MEMBER) {
             return null;
         }
 
         return member.getListBooking().stream()
-                .map(booking -> new ResBookingDTO(booking.getBookingTime(), booking.getStatus()))
+                .map(booking -> new ResBookingDTO(booking.getBookingTime(),
+                        booking.getStatus(),
+                        booking.getConsultant()
+                        ))
                 .toList();
     }
 
@@ -101,9 +105,12 @@ public class BookingService {
             return null;
         }
 
-        return consultant.getListBooking().stream()
-                .map(booking -> new ResBookingDTO(booking.getBookingTime(), booking.getStatus()))
-                .toList();
+        return consultant.getBookedList().stream().map(booking -> new ResBookingDTO(
+                booking.getMember(),
+                booking.getStatus(),
+                booking.getBookingTime()
+        )).toList();
+
     }
 
 }
