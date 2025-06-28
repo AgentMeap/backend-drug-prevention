@@ -19,15 +19,15 @@ public class Course extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "name",columnDefinition = "VARCHAR(50)",nullable = false)
+    @Column(name = "name",columnDefinition = "NVARCHAR(50)",nullable = false)
     private String name;
-    @Column(name = "description",columnDefinition = "VARCHAR(250)",nullable = false)
+    @Column(name = "description",columnDefinition = "NVARCHAR(250)",nullable = false)
     private String description;
     @Column(name = "image",columnDefinition = "VARCHAR(250)",nullable = false)
     private String image;
     @Column(name = "video",columnDefinition = "VARCHAR(250)",nullable = false)
     private String videoUrl;
-    @Column(name = "status",columnDefinition = "VARCHAR(10)",nullable = false)
+    @Column(name = "status",columnDefinition = "NVARCHAR(10)",nullable = false)
     private String status;
     private int duration;
     private Instant createdAt;

@@ -25,10 +25,15 @@ public class Booking extends BaseEntity {
     private Instant createdAt;
     private Instant updatedAt;
 
+    @Column(name = "status",columnDefinition = "NVARCHAR(250)",nullable = false)
     private String status;
 
     @ManyToOne
     @JoinColumn(name = "memberId")
     private User member;
+
+    @ManyToOne
+    @JoinColumn(name = "consultantId")
+    private User consultant;
 
 }

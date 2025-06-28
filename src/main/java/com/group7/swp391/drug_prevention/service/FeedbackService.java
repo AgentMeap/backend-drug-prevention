@@ -52,7 +52,8 @@ public class FeedbackService {
         List<ResFeedbackDTO> list = feedbacks.stream().map(feedback -> new ResFeedbackDTO(
                 feedback.getComment(),
                 feedback.getRate(),
-                feedback.getStatus())).toList();
+                feedback.getStatus(),
+                feedback.getMember().getUsername())).toList();
         return list;
     }
 

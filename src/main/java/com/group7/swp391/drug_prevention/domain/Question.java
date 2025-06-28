@@ -13,6 +13,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "questions",columnDefinition = "NVARCHAR(100)")
     private String questions;
 
     @OneToOne

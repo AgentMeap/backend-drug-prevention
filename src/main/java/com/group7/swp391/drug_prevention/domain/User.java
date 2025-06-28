@@ -56,6 +56,10 @@ public class User extends BaseEntity {
     private List<Booking> listBooking;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "consultant", cascade = CascadeType.ALL)
+    private List<Booking> bookedList;
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Course> listCourse;
 

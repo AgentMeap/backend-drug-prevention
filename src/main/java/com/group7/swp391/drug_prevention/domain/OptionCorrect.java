@@ -11,7 +11,7 @@ public class OptionCorrect {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "optionKeyCorrect",columnDefinition = "CHAR", nullable = false)
+    @Column(name = "optionKeyCorrect",columnDefinition = "CHAR(1)", nullable = false)
     private String optionKey;
 
     @Column(name = "optionValueCorrect",columnDefinition = "NVARCHAR(250)", nullable = false)

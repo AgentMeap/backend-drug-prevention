@@ -16,6 +16,7 @@ public class Blog extends BaseEntity {
     private int id;
     @Column(name = "title",columnDefinition = "NVARCHAR(100)")
     private String title;
+    @Column(name = "content",columnDefinition = "NVARCHAR(100)")
     private String content;
     @Column(name = "type",columnDefinition = "NVARCHAR(100)")
     private String type;

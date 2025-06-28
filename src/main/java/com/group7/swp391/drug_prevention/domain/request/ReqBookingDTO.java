@@ -14,4 +14,5 @@ import java.time.Instant;
 public class ReqBookingDTO {
     private long memberId;
     private Instant bookingTime;
+    private long consultantId;
 }

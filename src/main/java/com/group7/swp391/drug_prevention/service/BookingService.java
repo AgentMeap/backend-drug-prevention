@@ -27,12 +27,15 @@ public class BookingService {
     public Booking createBooking(ReqBookingDTO dto) {
         Booking booking = new Booking();
         User member = userRepository.findById(dto.getMemberId()).orElse(null);
+        User consultant = userRepository.findById(dto.getConsultantId()).orElse(null);
         if(member != null) {
             booking.setMember(member);
             booking.setBookingTime(dto.getBookingTime());
             booking.setCreatedAt(Instant.now());
             booking.setStatus("Pending");
             booking.setUpdatedAt(Instant.now());
+            booking.setConsultant(consultant);
+
 
             return bookingRepository.save(booking);
 

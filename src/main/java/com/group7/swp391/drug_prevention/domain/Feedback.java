@@ -13,6 +13,8 @@ public class Feedback extends BaseEntity {
     private Long id;
     private String comment;
     private int rate;
+
+    @Column(name = "status",columnDefinition = "NVARCHAR(250)",nullable = false)
     private String status; //hide,active,flagged
 
     @ManyToOne
