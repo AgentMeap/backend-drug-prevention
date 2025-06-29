@@ -16,23 +16,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
-
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
-import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.Collection;
-
-
-
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -41,8 +32,17 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
 
-    @Value("${project.jwt.base64-secret}")
-    private String jwtKey;
+    private final String jwtKey;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
+
+    public SecurityConfiguration(@Value("${project.jwt.base64-secret}") String jwtKey,
+                                 CustomAuthenticationEntryPoint authenticationEntryPoint,
+                                 CustomAccessDeniedHandler accessDeniedHandler) {
+        this.jwtKey = jwtKey;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -50,7 +50,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         String[] whiteList = {
                 "/",
@@ -69,14 +69,11 @@ public class SecurityConfiguration {
                         .requestMatchers(whiteList).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole("ADMIN","CONSULTANT")
                         .anyRequest().authenticated())
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
-                        .authenticationEntryPoint(customAuthenticationEntryPoint))
-                .exceptionHandling(
-                        exceptions -> exceptions
-                                .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) //401
-                                .accessDeniedHandler(new BearerTokenAccessDeniedHandler())) //403
-
-
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(Customizer.withDefaults())
+                        .authenticationEntryPoint(authenticationEntryPoint)) // 401
+                .exceptionHandling(exceptions -> exceptions
+                        .accessDeniedHandler(accessDeniedHandler)) // 403
                 .formLogin(form -> form.disable())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -91,22 +88,17 @@ public class SecurityConfiguration {
             Map<String, Object> claims = jwt.getClaims();
             Map<String, Object> user = (Map<String, Object>) claims.get("user");
 
-            // Handle case where user claim might be missing
             if (user == null) {
                 return java.util.Collections.emptySet();
             }
 
-            // Get the role directly from the "role" field
             Object roleClaim = user.get("role");
 
-            // Handle case where role might be missing or not a String
             if (roleClaim == null || !(roleClaim instanceof String)) {
                 return java.util.Collections.emptySet();
             }
 
             String role = (String) roleClaim;
-
-            // Create a single authority from the role string
             Collection<GrantedAuthority> authorities = java.util.Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role));
 
             return authorities;
@@ -139,5 +131,4 @@ public class SecurityConfiguration {
         return new SecretKeySpec(keyBytes, 0, keyBytes.length,
                 SecurityUtil.JWT_ALGORITHM.getName());
     }
-
 }
