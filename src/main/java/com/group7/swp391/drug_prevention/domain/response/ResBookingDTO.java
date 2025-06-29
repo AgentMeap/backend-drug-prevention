@@ -12,20 +12,24 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class ResBookingDTO {
+    private long id;
     private Instant bookingTime;
     private String status;
     private User consultant;
     private User member;
 
-    public ResBookingDTO(Instant bookingTime, String status, User consultant) {
+    public ResBookingDTO(long id, Instant bookingTime, String status, User consultant) {
+        this.id = id;
         this.bookingTime = bookingTime;
         this.status = status;
         this.consultant = consultant;
     }
 
-    public ResBookingDTO(User member, String status, Instant bookingTime) {
+    public ResBookingDTO(long id, User member, String status, Instant bookingTime, User consultant) {
+        this.id = id;
         this.member = member;
         this.status = status;
         this.bookingTime = bookingTime;
+        this.consultant = consultant;
     }
 }

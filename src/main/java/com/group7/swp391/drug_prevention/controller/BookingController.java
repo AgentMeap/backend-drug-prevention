@@ -43,7 +43,7 @@ public class BookingController {
         }
     }
 
-    @PutMapping("/cancelBookingById{id}")
+    @PutMapping("/cancelBookingById/{id}")
     public ResponseEntity<?> cancelBookingById(@PathVariable long id) {
         if(bookingService.cancelBookingById(id) != null){
             return new ResponseEntity<>(bookingService.cancelBookingById(id), HttpStatus.OK);
@@ -52,7 +52,7 @@ public class BookingController {
         }
     }
 
-    @PutMapping("/confirmBookingById{id}")
+    @PutMapping("/confirmBookingById/{id}")
     public ResponseEntity<?> confirmBookingById(@PathVariable long id) {
         if(bookingService.confirmBookingById(id) != null){
             return new ResponseEntity<>(bookingService.confirmBookingById(id), HttpStatus.OK);

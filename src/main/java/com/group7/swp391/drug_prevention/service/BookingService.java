@@ -28,7 +28,7 @@ public class BookingService {
         Booking booking = new Booking();
         User member = userRepository.findById(dto.getMemberId()).orElse(null);
         User consultant = userRepository.findById(dto.getConsultantId()).orElse(null);
-        if(member != null) {
+        if (member != null) {
             booking.setMember(member);
             booking.setBookingTime(dto.getBookingTime());
             booking.setCreatedAt(Instant.now());
@@ -49,10 +49,10 @@ public class BookingService {
 
     public boolean deleteBookingById(long id) {
         Booking booking = bookingRepository.findById(id).orElse(null);
-        if(booking != null) {
+        if (booking != null) {
             bookingRepository.delete(booking);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -61,7 +61,7 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id).orElse(null);
         booking.setStatus("Đã huỷ");
         bookingRepository.save(booking);
-        if(booking != null) {
+        if (booking != null) {
             ResBookingDTO resBookingDTO = new ResBookingDTO();
             resBookingDTO.setStatus("Đã huỷ");
             resBookingDTO.setBookingTime(booking.getBookingTime());
@@ -77,7 +77,7 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id).orElse(null);
         booking.setStatus("Đã xác nhận");
         bookingRepository.save(booking);
-        if(booking != null) {
+        if (booking != null) {
             ResBookingDTO resBookingDTO = new ResBookingDTO();
             resBookingDTO.setStatus("Đã xác nhận");
             resBookingDTO.setBookingTime(booking.getBookingTime());
@@ -96,10 +96,12 @@ public class BookingService {
         }
 
         return member.getListBooking().stream()
-                .map(booking -> new ResBookingDTO(booking.getBookingTime(),
+                .map(booking -> new ResBookingDTO(
+                        booking.getId(),
+                        booking.getBookingTime(),
                         booking.getStatus(),
                         booking.getConsultant()
-                        ))
+                ))
                 .toList();
     }
 
@@ -110,9 +112,12 @@ public class BookingService {
         }
 
         return consultant.getBookedList().stream().map(booking -> new ResBookingDTO(
+                booking.getId(),
                 booking.getMember(),
                 booking.getStatus(),
-                booking.getBookingTime()
+                booking.getBookingTime(),
+                booking.getConsultant()
+
         )).toList();
 
     }
@@ -123,14 +128,14 @@ public class BookingService {
         booking.setStatus("Hoàn thành");
         bookingRepository.save(booking);
         ResBookingDTO resBookingDTO = new ResBookingDTO();
-        if(booking != null) {
+        if (booking != null) {
             resBookingDTO.setStatus("Hoàn thành");
             resBookingDTO.setBookingTime(booking.getBookingTime());
             resBookingDTO.setConsultant(booking.getConsultant());
             resBookingDTO.setMember(booking.getMember());
             return resBookingDTO;
         }
-        return  null;
+        return null;
     }
 
 
