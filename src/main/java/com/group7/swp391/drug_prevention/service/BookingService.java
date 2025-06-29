@@ -35,6 +35,7 @@ public class BookingService {
             booking.setStatus("Chờ xác nhận");
             booking.setUpdatedAt(Instant.now());
             booking.setConsultant(consultant);
+            booking.setNote(dto.getNote());
 
 
             return bookingRepository.save(booking);
@@ -100,8 +101,9 @@ public class BookingService {
                         booking.getId(),
                         booking.getBookingTime(),
                         booking.getStatus(),
-                        booking.getConsultant()
-                ))
+                        booking.getConsultant(),
+                        booking.getNote()
+                        ))
                 .toList();
     }
 
@@ -117,6 +119,7 @@ public class BookingService {
                 booking.getStatus(),
                 booking.getBookingTime(),
                 booking.getConsultant()
+                booking.getNote()
         )).toList();
 
     }
@@ -132,6 +135,7 @@ public class BookingService {
             resBookingDTO.setBookingTime(booking.getBookingTime());
             resBookingDTO.setConsultant(booking.getConsultant());
             resBookingDTO.setMember(booking.getMember());
+            resBookingDTO.setNote(booking.getNote());
             return resBookingDTO;
         }
         return null;

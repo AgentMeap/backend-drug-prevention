@@ -36,4 +36,7 @@ public class Booking extends BaseEntity {
     @JoinColumn(name = "consultantId")
     private User consultant;
 
+    @Column(name = "note",columnDefinition = "NVARCHAR(250)")
+    private String note;
+
 }
