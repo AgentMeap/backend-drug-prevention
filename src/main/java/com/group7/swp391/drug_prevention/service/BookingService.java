@@ -117,7 +117,6 @@ public class BookingService {
                 booking.getStatus(),
                 booking.getBookingTime(),
                 booking.getConsultant()
-
         )).toList();
 
     }
