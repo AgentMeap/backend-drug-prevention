@@ -32,7 +32,7 @@ public class BookingService {
             booking.setMember(member);
             booking.setBookingTime(dto.getBookingTime());
             booking.setCreatedAt(Instant.now());
-            booking.setStatus("Pending");
+            booking.setStatus("Chờ xác nhận");
             booking.setUpdatedAt(Instant.now());
             booking.setConsultant(consultant);
 
@@ -59,12 +59,14 @@ public class BookingService {
 
     public ResBookingDTO cancelBookingById(long id) {
         Booking booking = bookingRepository.findById(id).orElse(null);
-        booking.setStatus("Cancelled");
+        booking.setStatus("Đã huỷ");
         bookingRepository.save(booking);
         if(booking != null) {
             ResBookingDTO resBookingDTO = new ResBookingDTO();
-            resBookingDTO.setStatus("Cancelled");
+            resBookingDTO.setStatus("Đã huỷ");
             resBookingDTO.setBookingTime(booking.getBookingTime());
+            resBookingDTO.setConsultant(booking.getConsultant());
+            resBookingDTO.setMember(booking.getMember());
             return resBookingDTO;
         }
         return null;
@@ -73,12 +75,14 @@ public class BookingService {
     public ResBookingDTO confirmBookingById(long id) {
 
         Booking booking = bookingRepository.findById(id).orElse(null);
-        booking.setStatus("Confirmed");
+        booking.setStatus("Đã xác nhận");
         bookingRepository.save(booking);
         if(booking != null) {
             ResBookingDTO resBookingDTO = new ResBookingDTO();
-            resBookingDTO.setStatus("Confirmed");
+            resBookingDTO.setStatus("Đã xác nhận");
             resBookingDTO.setBookingTime(booking.getBookingTime());
+            resBookingDTO.setConsultant(booking.getConsultant());
+            resBookingDTO.setMember(booking.getMember());
             return resBookingDTO;
         }
         return null;
@@ -112,5 +116,22 @@ public class BookingService {
         )).toList();
 
     }
+
+
+    public ResBookingDTO afterConsultationDone(long id) {
+        Booking booking = bookingRepository.findById(id).orElse(null);
+        booking.setStatus("Hoàn thành");
+        bookingRepository.save(booking);
+        ResBookingDTO resBookingDTO = new ResBookingDTO();
+        if(booking != null) {
+            resBookingDTO.setStatus("Hoàn thành");
+            resBookingDTO.setBookingTime(booking.getBookingTime());
+            resBookingDTO.setConsultant(booking.getConsultant());
+            resBookingDTO.setMember(booking.getMember());
+            return resBookingDTO;
+        }
+        return  null;
+    }
+
 
 }

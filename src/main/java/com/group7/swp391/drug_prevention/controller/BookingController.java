@@ -79,4 +79,8 @@ public class BookingController {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
+    @GetMapping("/afterConsultation/{id}")
+    public ResponseEntity<ResBookingDTO> afterConsultation(@PathVariable long id) {
+        return new ResponseEntity<>(bookingService.afterConsultationDone(id), HttpStatus.OK);
+    }
 }
