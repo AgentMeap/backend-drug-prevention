@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class ResBookingDTO {
+    private long id;
     private Instant bookingTime;
     private String status;
     private User consultant;
@@ -20,17 +21,20 @@ public class ResBookingDTO {
     @Column(name = "note",columnDefinition = "NVARCHAR(250)")
     private String note;
 
-    public ResBookingDTO(Instant bookingTime, String status, User consultant, String note) {
+    public ResBookingDTO(long id, Instant bookingTime, String status, User consultant, String note) {
+        this.id = id;
         this.bookingTime = bookingTime;
         this.status = status;
         this.consultant = consultant;
         this.note = note;
     }
 
-    public ResBookingDTO(User member, String status, Instant bookingTime, String note) {
+    public ResBookingDTO(long id, User member, String status, Instant bookingTime, User consultant, String note) {
+        this.id = id;
         this.member = member;
         this.status = status;
         this.bookingTime = bookingTime;
+        this.consultant = consultant;
         this.note = note;
     }
 }
