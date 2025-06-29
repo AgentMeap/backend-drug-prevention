@@ -35,6 +35,7 @@ public class BookingService {
             booking.setStatus("Chờ xác nhận");
             booking.setUpdatedAt(Instant.now());
             booking.setConsultant(consultant);
+            booking.setNote(dto.getNote());
 
 
             return bookingRepository.save(booking);
@@ -98,7 +99,8 @@ public class BookingService {
         return member.getListBooking().stream()
                 .map(booking -> new ResBookingDTO(booking.getBookingTime(),
                         booking.getStatus(),
-                        booking.getConsultant()
+                        booking.getConsultant(),
+                        booking.getNote()
                         ))
                 .toList();
     }
@@ -112,7 +114,8 @@ public class BookingService {
         return consultant.getBookedList().stream().map(booking -> new ResBookingDTO(
                 booking.getMember(),
                 booking.getStatus(),
-                booking.getBookingTime()
+                booking.getBookingTime(),
+                booking.getNote()
         )).toList();
 
     }
@@ -128,6 +131,7 @@ public class BookingService {
             resBookingDTO.setBookingTime(booking.getBookingTime());
             resBookingDTO.setConsultant(booking.getConsultant());
             resBookingDTO.setMember(booking.getMember());
+            resBookingDTO.setNote(booking.getNote());
             return resBookingDTO;
         }
         return  null;

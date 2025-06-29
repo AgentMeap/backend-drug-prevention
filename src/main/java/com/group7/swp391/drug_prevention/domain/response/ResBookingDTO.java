@@ -1,6 +1,7 @@
 package com.group7.swp391.drug_prevention.domain.response;
 
 import com.group7.swp391.drug_prevention.domain.User;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,16 +17,20 @@ public class ResBookingDTO {
     private String status;
     private User consultant;
     private User member;
+    @Column(name = "note",columnDefinition = "NVARCHAR(250)")
+    private String note;
 
-    public ResBookingDTO(Instant bookingTime, String status, User consultant) {
+    public ResBookingDTO(Instant bookingTime, String status, User consultant, String note) {
         this.bookingTime = bookingTime;
         this.status = status;
         this.consultant = consultant;
+        this.note = note;
     }
 
-    public ResBookingDTO(User member, String status, Instant bookingTime) {
+    public ResBookingDTO(User member, String status, Instant bookingTime, String note) {
         this.member = member;
         this.status = status;
         this.bookingTime = bookingTime;
+        this.note = note;
     }
 }
