@@ -118,7 +118,7 @@ public class BookingService {
                 booking.getMember(),
                 booking.getStatus(),
                 booking.getBookingTime(),
-                booking.getConsultant()
+                booking.getConsultant(),
                 booking.getNote()
         )).toList();
 
