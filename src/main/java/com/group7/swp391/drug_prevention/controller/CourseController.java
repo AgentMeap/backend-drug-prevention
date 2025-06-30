@@ -38,14 +38,4 @@ public class CourseController {
         return new ResponseEntity<>(courseService.getAllCoursesForMember(),HttpStatus.OK);
     }
 
-    @PutMapping("/registerCourse/{memberId}/{id}")
-    public ResponseEntity<?> registerCourse(@PathVariable long memberId,@PathVariable long id) {
-        courseService.registerCourse(memberId,id);
-        return new ResponseEntity<>("Registered!!!",HttpStatus.OK);
-    }
-
-    @GetMapping("/getCourseByMemberId/{memberId}")
-    public ResponseEntity<?> getCourseByMemberId(@PathVariable long memberId) {
-        return new ResponseEntity<>(courseService.getListCourseByMemberId(memberId),HttpStatus.OK);
-    }
 }

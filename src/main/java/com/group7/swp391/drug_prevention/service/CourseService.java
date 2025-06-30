@@ -82,34 +82,6 @@ public class CourseService {
                 course.getDuration())).toList();
     }
 
-    public void registerCourse(Long memberId,long id) {
-        User member = userRepository.findById(memberId).orElse(null);
-        Course course = courseRepository.findById(id).orElse(null);
-
-        List<User> users = course.getMember();
-        users.add(member);
-        course.setMember(users);
-        courseRepository.save(course);
-
-        List<Course>  courses = member.getListCourse();
-        courses.add(course);
-        member.setListCourse(courses);
-        userRepository.save(member);
-
-    }
-
-    public List<ResCourseDTO> getListCourseByMemberId(Long memberId) {
-        List<Course> courses = courseRepository.getListCourseByMemberId(memberId);
-
-        return  courses.stream().map(course -> new ResCourseDTO(
-                course.getName(),
-                course.getDescription(),
-                course.getAgeGroup().getId(),
-                course.getImage(),
-                course.getVideoUrl(),
-                course.getDuration())).toList();
-    }
-
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }

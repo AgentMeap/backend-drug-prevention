@@ -38,8 +38,8 @@ public class Course extends BaseEntity {
     private AgeGroup ageGroup;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<User> member;
+    @OneToMany(mappedBy = "course")
+    private List<Registration> listRegistration;
 
     @JsonIgnore
     @OneToMany(mappedBy = "course")
