@@ -1,7 +1,7 @@
 package com.group7.swp391.drug_prevention.service;
 
-import com.group7.swp391.drug_prevention.domain.Course;
-import com.group7.swp391.drug_prevention.domain.Feedback;
+import com.group7.swp391.drug_prevention.domain.OnlineCourse;
+import com.group7.swp391.drug_prevention.domain.FeedbackCourse;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqFeedbackDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResFeedbackDTO;
@@ -11,7 +11,6 @@ import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class FeedbackService {
@@ -25,31 +24,31 @@ public class FeedbackService {
         this.courseRepository = courseRepository;
     }
 
-    public List<Feedback> findAll() {
+    public List<FeedbackCourse> findAll() {
         return feedbackRepository.findAll();
     }
 
-    public Feedback create(ReqFeedbackDTO dto) {
+    public FeedbackCourse create(ReqFeedbackDTO dto) {
         User member = userRepository.findById(dto.getMemberId()).orElse(null);
-        Course course = courseRepository.findById(dto.getCourseId()).orElse(null);
+        OnlineCourse onlineCourse = courseRepository.findById(dto.getCourseId()).orElse(null);
 
-        Feedback feedback = new Feedback();
+        FeedbackCourse feedbackCourse = new FeedbackCourse();
 
-        feedback.setComment(dto.getComment());
-        feedback.setRate(dto.getRate());
-        feedback.setStatus(dto.getStatus());
+        feedbackCourse.setComment(dto.getComment());
+        feedbackCourse.setRate(dto.getRate());
+        feedbackCourse.setStatus(dto.getStatus());
 
-        feedback.setMember(member);
-        feedback.setCourse(course);
+        feedbackCourse.setMember(member);
+        feedbackCourse.setOnlineCourse(onlineCourse);
 
-        feedbackRepository.save(feedback);
-        return feedback;
+        feedbackRepository.save(feedbackCourse);
+        return feedbackCourse;
 
     }
 
     public List<ResFeedbackDTO> findByMemberId(Long memberId) {
-        List<Feedback> feedbacks = feedbackRepository.findByMemberId(memberId);
-        List<ResFeedbackDTO> list = feedbacks.stream().map(feedback -> new ResFeedbackDTO(
+        List<FeedbackCourse> feedbackCourses = feedbackRepository.findByMemberId(memberId);
+        List<ResFeedbackDTO> list = feedbackCourses.stream().map(feedback -> new ResFeedbackDTO(
                 feedback.getComment(),
                 feedback.getRate(),
                 feedback.getStatus(),

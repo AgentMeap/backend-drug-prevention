@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course extends BaseEntity {
+public class OnlineCourse extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -42,6 +42,6 @@ public class Course extends BaseEntity {
     private List<Registration> listRegistration;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "course")
-    private List<Feedback>  feedbacks;
+    @OneToMany(mappedBy = "onlineCourse", cascade = CascadeType.ALL)
+    private List<FeedbackCourse> feedbackCourses;
 }

@@ -1,7 +1,7 @@
 package com.group7.swp391.drug_prevention.service;
 
 import com.group7.swp391.drug_prevention.domain.AgeGroup;
-import com.group7.swp391.drug_prevention.domain.Course;
+import com.group7.swp391.drug_prevention.domain.OnlineCourse;
 
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqCourseDTO;
@@ -13,11 +13,7 @@ import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -31,45 +27,45 @@ public class CourseService {
         this.userRepository = userRepository;
     }
 
-    public Course createCourse(ReqCourseDTO dto) {
+    public OnlineCourse createCourse(ReqCourseDTO dto) {
         AgeGroup ageGroup = ageGroupRepository.getById(dto.getAgeGroupId());
-        Course course = new Course();
+        OnlineCourse onlineCourse = new OnlineCourse();
 
 
-        course.setAgeGroup(ageGroup);
-        course.setName(dto.getName());
-        course.setDescription(dto.getDescription());
-        course.setStatus(dto.getStatus());
-        course.setDuration(dto.getDuration());
-        course.setImage(dto.getImage());
-        course.setVideoUrl(dto.getVideoUrl());
+        onlineCourse.setAgeGroup(ageGroup);
+        onlineCourse.setName(dto.getName());
+        onlineCourse.setDescription(dto.getDescription());
+        onlineCourse.setStatus(dto.getStatus());
+        onlineCourse.setDuration(dto.getDuration());
+        onlineCourse.setImage(dto.getImage());
+        onlineCourse.setVideoUrl(dto.getVideoUrl());
 
 
-        course.setCreatedAt(Instant.now());
-        course.setUpdatedAt(Instant.now());
+        onlineCourse.setCreatedAt(Instant.now());
+        onlineCourse.setUpdatedAt(Instant.now());
 
 
-        return courseRepository.save(course);
+        return courseRepository.save(onlineCourse);
 
     }
 
 
-    public Course updateSchedule(long id, ReqCourseDTO dto) {
-        Course course = courseRepository.findById(id).orElse(null);
+    public OnlineCourse updateSchedule(long id, ReqCourseDTO dto) {
+        OnlineCourse onlineCourse = courseRepository.findById(id).orElse(null);
 
         AgeGroup ageGroup = ageGroupRepository.getById(dto.getAgeGroupId());
-        course.setAgeGroup(ageGroup);
+        onlineCourse.setAgeGroup(ageGroup);
 
-        course.setName(dto.getName());
-        course.setDescription(dto.getDescription());
-        course.setStatus(dto.getStatus());
-        course.setDuration(dto.getDuration());
-        course.setImage(dto.getImage());
-        course.setVideoUrl(dto.getVideoUrl());
+        onlineCourse.setName(dto.getName());
+        onlineCourse.setDescription(dto.getDescription());
+        onlineCourse.setStatus(dto.getStatus());
+        onlineCourse.setDuration(dto.getDuration());
+        onlineCourse.setImage(dto.getImage());
+        onlineCourse.setVideoUrl(dto.getVideoUrl());
 
-        course.setUpdatedAt(Instant.now());
+        onlineCourse.setUpdatedAt(Instant.now());
 
-        return courseRepository.save(course);
+        return courseRepository.save(onlineCourse);
     }
 
     public List<ResCourseDTO> getAllCoursesForMember() {
@@ -82,7 +78,7 @@ public class CourseService {
                 course.getDuration())).toList();
     }
 
-    public List<Course> getAllCourses() {
+    public List<OnlineCourse> getAllCourses() {
         return courseRepository.findAll();
     }
 

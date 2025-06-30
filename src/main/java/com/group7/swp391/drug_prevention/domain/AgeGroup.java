@@ -23,5 +23,5 @@ public class AgeGroup extends BaseEntity {
 
     @OneToMany(mappedBy = "ageGroup")
     @JsonIgnore
-    private List<Course> courses;
+    private List<OnlineCourse> cours;
 }

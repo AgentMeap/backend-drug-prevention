@@ -1,6 +1,6 @@
 package com.group7.swp391.drug_prevention.controller;
 
-import com.group7.swp391.drug_prevention.domain.Feedback;
+import com.group7.swp391.drug_prevention.domain.FeedbackCourse;
 import com.group7.swp391.drug_prevention.domain.request.ReqFeedbackDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResFeedbackDTO;
 import com.group7.swp391.drug_prevention.service.FeedbackService;
@@ -17,7 +17,7 @@ public class FeedbackController {
     }
 
     @GetMapping("/getAllFeedback")
-    public List<Feedback> getAllFeedback() {
+    public List<FeedbackCourse> getAllFeedback() {
         return feedbackService.findAll();
     }
 
@@ -27,7 +27,7 @@ public class FeedbackController {
     }
 
     @PostMapping("/create")
-    public Feedback createFeedback(@RequestBody ReqFeedbackDTO dto) {
+    public FeedbackCourse createFeedback(@RequestBody ReqFeedbackDTO dto) {
         return feedbackService.create(dto);
     }
 }

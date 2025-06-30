@@ -4,10 +4,10 @@ import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Table(name = "Feedback")
+@Table(name = "feedback_course")
 @Entity
 @Data
-public class Feedback extends BaseEntity {
+public class FeedbackCourse extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,5 +23,5 @@ public class Feedback extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "courseId")
-    private Course course;
+    private OnlineCourse onlineCourse;
 }

@@ -59,7 +59,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "consultant", cascade = CascadeType.ALL)
     private List<Booking> bookedList;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "member")
     private List<Registration> listRegistration;
 
@@ -85,7 +85,7 @@ public class User extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "member")
-    private List<Feedback>  userFeedbacks;
+    private List<FeedbackCourse> userFeedbackCourses;
 
     private String googleMeetLink;
 }
