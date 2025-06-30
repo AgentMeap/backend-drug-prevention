@@ -1,31 +1,39 @@
 package com.group7.swp391.drug_prevention.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalTime;
+
 import java.util.List;
 
 @Entity
-@Table(name = "blogs")
+@Table(name = "Blog")
 @Data
 public class Blog extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "title",columnDefinition = "NVARCHAR(100)")
+    private Long id;
+
+    @Column(name = "Title", columnDefinition = "NVARCHAR(100)")
     private String title;
-    @Column(name = "content",columnDefinition = "NVARCHAR(100)")
+
+    @Column(name = "Content", columnDefinition = "NVARCHAR(MAX)")
     private String content;
-    @Column(name = "type",columnDefinition = "NVARCHAR(100)")
+
+    @Column(name = "Type", columnDefinition = "NVARCHAR(50)")
     private String type;
 
+    @Column(name = "image_url", columnDefinition = "NVARCHAR(255)")
+    private String imageUrl;
 
     @ManyToOne
-    @JoinColumn(name = "managerId")
+    @JoinColumn(name = "Manager_id")
+    @JsonIgnore // ✅ Ngắt vòng lặp khi User → Blog → User
     private User manager;
 
-    @OneToMany(mappedBy = "blog")
-    private List<Comment> listComments;
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
+    @JsonIgnore // ✅ Ngắt vòng lặp khi Blog → Comment → Blog
+    private List<Comment> comments;
 }

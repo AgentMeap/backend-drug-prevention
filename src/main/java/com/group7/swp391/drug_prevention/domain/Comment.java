@@ -5,29 +5,28 @@ import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-
 @Entity
-@Table(name = "comments")
+@Table(name = "Comment")
 @Data
 public class Comment extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @Column(name = "description",columnDefinition = "NVARCHAR(100)")
+    @Column(name = "Description", columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
-    @Column(name = "liked",nullable = true)
-    private int liked;
+    @Column(name = "[Like]")
+    private int like;
 
-    @JsonIgnore
+
     @ManyToOne
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "User_id")
+    @JsonIgnore // ✅ Ngắt vòng lặp khi User → Comment → User
     private User user;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "blogId")
-    private Blog blog;
 
+    @ManyToOne
+    @JoinColumn(name = "Blog_id")
+    @JsonIgnore // ✅ Ngắt vòng lặp khi Blog → Comment → Blog
+    private Blog blog;
 }
