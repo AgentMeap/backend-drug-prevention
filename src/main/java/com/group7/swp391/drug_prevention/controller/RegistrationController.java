@@ -1,6 +1,6 @@
 package com.group7.swp391.drug_prevention.controller;
 
-import com.group7.swp391.drug_prevention.domain.Registration;
+import com.group7.swp391.drug_prevention.domain.RegistrationCourse;
 import com.group7.swp391.drug_prevention.domain.request.ReqRegistrationDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResRegistrationDTO;
 import com.group7.swp391.drug_prevention.service.RegistrationService;
@@ -24,12 +24,12 @@ public class RegistrationController {
     }
 
     @GetMapping("/")
-    public List<Registration> findAll() {
+    public List<RegistrationCourse> findAll() {
         return registrationService.getRegistrations();
     }
 
     @PostMapping("/create")
-    public Registration createRegistration(ReqRegistrationDTO dto) {
+    public RegistrationCourse createRegistration(ReqRegistrationDTO dto) {
         return registrationService.createRegistration(dto);
     }
 

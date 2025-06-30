@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "Comment")
+@Table(name = "comments")
 @Data
 public class Comment extends BaseEntity {
     @Id
@@ -21,12 +21,12 @@ public class Comment extends BaseEntity {
 
 
     @ManyToOne
-    @JoinColumn(name = "User_id")
+    @JoinColumn(name = "user_id")
     @JsonIgnore // ✅ Ngắt vòng lặp khi User → Comment → User
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "Blog_id")
+    @JoinColumn(name = "blog_id")
     @JsonIgnore // ✅ Ngắt vòng lặp khi Blog → Comment → Blog
     private Blog blog;
 }

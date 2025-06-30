@@ -61,7 +61,7 @@ public class User extends BaseEntity {
 
 
     @OneToMany(mappedBy = "member")
-    private List<Registration> listRegistration;
+    private List<RegistrationCourse> listRegistrationCourse;
 
     @JsonIgnore
     @OneToMany(mappedBy = "manager",cascade = CascadeType.ALL)

@@ -24,4 +24,9 @@ public class FeedbackCourse extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "courseId")
     private OnlineCourse onlineCourse;
+
+    @ManyToOne
+    @JoinColumn(name = "registrationId")
+    private RegistrationCourse registrationCourse;
+
 }

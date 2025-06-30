@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "Blog")
+@Table(name = "blogs")
 @Data
 public class Blog extends BaseEntity {
     @Id
@@ -29,11 +29,12 @@ public class Blog extends BaseEntity {
     private String imageUrl;
 
     @ManyToOne
-    @JoinColumn(name = "Manager_id")
-    @JsonIgnore // ✅ Ngắt vòng lặp khi User → Blog → User
+    @JoinColumn(name = "manager_id")
+    @JsonIgnore
     private User manager;
 
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-    @JsonIgnore // ✅ Ngắt vòng lặp khi Blog → Comment → Blog
+    @JsonIgnore
     private List<Comment> comments;
+
 }

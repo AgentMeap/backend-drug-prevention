@@ -1,7 +1,7 @@
 package com.group7.swp391.drug_prevention.service;
 
-import com.group7.swp391.drug_prevention.domain.Course;
-import com.group7.swp391.drug_prevention.domain.Registration;
+import com.group7.swp391.drug_prevention.domain.OnlineCourse;
+import com.group7.swp391.drug_prevention.domain.RegistrationCourse;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqRegistrationDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResRegistrationDTO;
@@ -25,33 +25,33 @@ public class RegistrationService {
         this.courseRepository = courseRepository;
     }
 
-    public List<Registration> getRegistrations() {
+    public List<RegistrationCourse> getRegistrations() {
         return registrationRepository.findAll();
     }
 
-    public Registration createRegistration(ReqRegistrationDTO dto) {
+    public RegistrationCourse createRegistration(ReqRegistrationDTO dto) {
         User member = userRepository.findById(dto.getMemberId()).orElse(null);
-        Course course = courseRepository.findById(dto.getCourseId()).orElse(null);
+        OnlineCourse course = courseRepository.findById(dto.getCourseId()).orElse(null);
 
 
-        Registration registration = new Registration();
+        RegistrationCourse registrationCourse = new RegistrationCourse();
 
-        registration.setMember(member);
-        registration.setCourse(course);
-        registration.setRegistrationDate(Instant.now());
-        registration.setStatus("Đang diễn ra");
+        registrationCourse.setMember(member);
+        registrationCourse.setOnlineCourse(course);
+        registrationCourse.setRegistrationDate(Instant.now());
+        registrationCourse.setStatus("Đang diễn ra");
 
-        return registrationRepository.save(registration);
+        return registrationRepository.save(registrationCourse);
 
     }
 
     public List<ResRegistrationDTO> getRegistrationByMemberId(long memberId) {
-        List<Registration> dtos = registrationRepository.findByMemberId(memberId);
+        List<RegistrationCourse> dtos = registrationRepository.findByMemberId(memberId);
         List<ResRegistrationDTO> dtoList = new ArrayList<>();
 
         return dtos.stream().map(registration -> new ResRegistrationDTO(
                 registration.getStatus(),
-                registration.getCourse()
+                registration.getOnlineCourse()
         )).toList();
     }
 

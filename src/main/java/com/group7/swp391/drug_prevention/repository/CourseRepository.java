@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CourseRepository extends JpaRepository<OnlineCourse, Long> {
-    List<OnlineCourse> getListCourseByMemberId(long memberId);
 
 }

@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name = "courses")
+@Table(name = "online_course")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,10 +38,7 @@ public class OnlineCourse extends BaseEntity {
     private AgeGroup ageGroup;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "course")
-    private List<Registration> listRegistration;
+    @OneToMany(mappedBy = "onlineCourse")
+    private List<RegistrationCourse> listRegistrationCourse;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "onlineCourse", cascade = CascadeType.ALL)
-    private List<FeedbackCourse> feedbackCourses;
 }

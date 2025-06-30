@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "ageGroups")
+@Table(name = "age_groups")
 @Data
 public class AgeGroup extends BaseEntity {
     @Id
