@@ -55,8 +55,7 @@ public class SecurityConfiguration {
         String[] whiteList = {
                 "/",
                 "/api/v1/auth/login", "/api/v1/auth/refresh", "/storage/**",
-                "/api/v1/users",
-                "/api/v1/auth/logout","/api/blogs/**","/edit-blog/**",
+                "/api/v1/auth/logout",
                 "/v3/api-docs/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html"
@@ -66,12 +65,19 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authz -> authz
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                         .requestMatchers(whiteList).permitAll()
+                        .requestMatchers("/api/blogs/**").permitAll()
+                        .requestMatchers("/edit-blog/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/events").hasRole("MANAGER")
+                        .requestMatchers("/api/events/**").permitAll()
+                        .requestMatchers("/api/feedback/event/**").permitAll()
+                        .requestMatchers("/api/feedback").permitAll()
+                        .requestMatchers("/api/registrations").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole("ADMIN","CONSULTANT")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
-                        )
+                        .jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(authenticationEntryPoint)) // 401
                 .exceptionHandling(exceptions -> exceptions
                         .accessDeniedHandler(accessDeniedHandler)) // 403

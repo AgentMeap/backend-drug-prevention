@@ -1,51 +1,111 @@
 package com.group7.swp391.drug_prevention.controller;
 
-import com.group7.swp391.drug_prevention.domain.Event;
-import com.group7.swp391.drug_prevention.domain.request.ReqEventDTO;
-import com.group7.swp391.drug_prevention.domain.response.ResEventDTO;
-import com.group7.swp391.drug_prevention.service.EventService;
-import org.springframework.http.HttpStatus;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.group7.swp391.drug_prevention.domain.Event;
+import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.service.EventService;
+import com.group7.swp391.drug_prevention.domain.response.ResEventDTO;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/events")
+@RequestMapping("/api/events")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class EventController {
     private final EventService eventService;
+
+    @Autowired
     public EventController(EventService eventService) {
         this.eventService = eventService;
     }
 
-    @GetMapping("/getAllEvent")
-    public List<Event> getAllEvent() {
-        return eventService.getAllEvents();
+    @GetMapping
+    public List<ResEventDTO> getAllEvents() {
+        return eventService.getAllEvents().stream().map(event -> {
+            ResEventDTO dto = new ResEventDTO();
+            dto.setId(event.getId());
+            dto.setTitle(event.getTitle());
+            dto.setDescription(event.getDescription());
+            dto.setLocation(event.getLocation());
+            dto.setImageUrl(event.getImageUrl());
+            dto.setProgramCoordinator(event.getProgramCoordinator());
+            dto.setStartDate(event.getStartDate() != null ? event.getStartDate().toString() : null);
+            dto.setEndDate(event.getEndDate() != null ? event.getEndDate().toString() : null);
+            dto.setCreatedAt(event.getCreatedAt() != null ? event.getCreatedAt().toString() : null);
+            dto.setUpdatedAt(event.getUpdatedAt() != null ? event.getUpdatedAt().toString() : null);
+            if (event.getManager() != null) {
+                dto.setManagerId(event.getManager().getId());
+                dto.setManagerName(event.getManager().getFirstName() + " " + event.getManager().getLastName());
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
 
-    @PostMapping("/createEvent")
-    public Event createEvent(@RequestBody ReqEventDTO dto) {
-        return eventService.createEvent(dto);
+    @GetMapping("/{id}")
+    public ResponseEntity<ResEventDTO> getEventById(@PathVariable Integer id) {
+        try {
+            Event event = eventService.getEventById(id);
+            if (event == null) {
+                return ResponseEntity.notFound().build();
+            }
+            ResEventDTO dto = new ResEventDTO();
+            dto.setId(event.getId());
+            dto.setTitle(event.getTitle());
+            dto.setDescription(event.getDescription());
+            dto.setLocation(event.getLocation());
+            dto.setImageUrl(event.getImageUrl());
+            dto.setProgramCoordinator(event.getProgramCoordinator());
+            dto.setStartDate(event.getStartDate() != null ? event.getStartDate().toString() : null);
+            dto.setEndDate(event.getEndDate() != null ? event.getEndDate().toString() : null);
+            dto.setCreatedAt(event.getCreatedAt() != null ? event.getCreatedAt().toString() : null);
+            dto.setUpdatedAt(event.getUpdatedAt() != null ? event.getUpdatedAt().toString() : null);
+            if (event.getManager() != null) {
+                dto.setManagerId(event.getManager().getId());
+                dto.setManagerName(event.getManager().getFirstName() + " " + event.getManager().getLastName());
+            }
+            return ResponseEntity.ok(dto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PutMapping("/updateEvent")
-    public Event updateEvent(@RequestParam long id,@RequestBody ReqEventDTO dto) {
-        return eventService.updateEvent(id, dto);
+    @PostMapping
+    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+        try {
+            Event createdEvent = eventService.createEvent(event);
+            return ResponseEntity.ok(createdEvent);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @GetMapping("/findEventById/{id}")
-    public Event findEventById(@PathVariable long id) {
-        return eventService.findEventById(id);
+    @PutMapping("/{id}")
+    public ResponseEntity<Event> updateEvent(@PathVariable Integer id, @RequestBody Event eventDetails) {
+        try {
+            Event updatedEvent = eventService.updateEvent(id, eventDetails);
+            return ResponseEntity.ok(updatedEvent);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PutMapping("/registerEvent/{memberId}/{id}")
-    public ResponseEntity<?> registerEvent(@PathVariable long memberId,@PathVariable long id) {
-        eventService.registerEvent(id, memberId);
-        return new ResponseEntity<>("Registered Successfully",HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Integer id) {
+        eventService.deleteEvent(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/findListEventByMemberId{memberId}")
-    public List<ResEventDTO> findListEventByMemberId(@PathVariable long memberId) {
-        return eventService.findEventByMemberId(memberId);
+    @GetMapping("/manager/{managerId}")
+    public List<Event> getEventsByManager(@PathVariable Long managerId) {
+        User manager = new User();
+        manager.setId(managerId);
+        return eventService.getEventsByManager(manager);
     }
 }
