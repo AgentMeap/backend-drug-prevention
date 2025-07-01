@@ -1,26 +1,28 @@
 package com.group7.swp391.drug_prevention.domain;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Instant;
 
 @Entity
-@Table(name = "FeedbackEvent")
 @Data
-public class FeedbackEvent {
+@Table(name = "TestResult")
+public class TestResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int rating;
-    @Column(name = "comment",columnDefinition = "NVARCHAR(250)")
-    private String comment;
+    private double score;
+    private Instant takenAt;
 
     @ManyToOne
-    @JoinColumn(name = "eventId")
-    private Event event;
+    @JoinColumn(name = "testId")
+    private Test test;
 
     @ManyToOne
     @JoinColumn(name = "memberId")
     private User member;
+
+    @OneToOne
+    private RiskRule riskRule;
 }

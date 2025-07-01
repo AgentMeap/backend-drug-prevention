@@ -13,6 +13,7 @@ import lombok.*;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 
@@ -43,5 +44,8 @@ public class Schedule extends BaseEntity {
     private String updatedBy;
 
 
+    @OneToMany(mappedBy = "schedule")
+    @JsonIgnore
+    private List<ConsultationSession> listOfConsultationSessions;
 
 }

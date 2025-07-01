@@ -22,30 +22,5 @@ public class TestService {
         this.userRepository = userRepository;
     }
 
-    public Test createTest(ReqTestDTO dto) {
-        Test test = new Test();
 
-        test.setCreatedAt(Instant.now());
-        test.setRiskLevel(dto.getRiskLevel());
-        test.setScore(dto.getScore());
-        test.setCategory(dto.getCategory());
-
-        User member = userRepository.findById(dto.getMemberId()).orElse(null);
-        test.setMember(member);
-        return testRepository.save(test);
-    }
-
-    public List<Test> getAllTests() {
-        return testRepository.findAll();
-    }
-
-    public List<ResTestDTO> getAllTestsByMemberId(Long memberId) {
-        List<Test> tests = testRepository.getAllTestsByMemberId(memberId);
-        List<ResTestDTO> list = tests.stream().map(test -> new ResTestDTO(
-                test.getCategory(),
-                test.getScore(),
-                test.getRiskLevel(),
-                test.getMember().getId())).toList();
-        return list;
-    }
 }

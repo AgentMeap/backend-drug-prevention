@@ -1,7 +1,5 @@
-package com.group7.swp391.drug_prevention.domain.response;
+package com.group7.swp391.drug_prevention.domain.request;
 
-import com.group7.swp391.drug_prevention.domain.Event;
-import com.group7.swp391.drug_prevention.domain.User;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,10 +10,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResFeedbackEventDTO {
-    private int rating;
+public class ReqFeedbackEventDTO {
     @Column(name = "comment",columnDefinition = "NVARCHAR(250)")
     private String comment;
-    private User member;
-    private Event event;
+    private long memberId;
+    private long eventId;
 }

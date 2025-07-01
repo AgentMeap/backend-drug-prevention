@@ -3,8 +3,10 @@ package com.group7.swp391.drug_prevention.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.apache.catalina.Manager;
 
 import java.time.Instant;
+import java.util.List;
 
 @Table(name = "tests")
 @Entity
@@ -13,15 +15,19 @@ public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "category",columnDefinition = "NVARCHAR(20)", nullable = false)
-    private String category;
-    private double score;
-    @Column(name = "riskLevel",columnDefinition = "NVARCHAR(10)", nullable = false)
-    private String riskLevel;
 
-    private Instant createdAt; // ngày giờ member làm bài test//
+    private double score;
+    private String name;
 
     @ManyToOne
-    @JoinColumn(name = "memberId")
-    private User member;
+    @JoinColumn(name = "categoryId")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "managerId")
+    private User manager;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "test")
+    private List<TestResult> testResults;
 }

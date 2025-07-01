@@ -28,23 +28,23 @@ public class TestController {
         this.testService = testService;
     }
 
-    @GetMapping("/")
-    public List<Test> getAllTests() {
-
-        return testService.getAllTests();
-    }
-
-    @GetMapping("/getAllTestsByMemberId/{id}")
-    public List<ResTestDTO> getAllTestsByMemberId(@PathVariable Long id) {
-        return testService.getAllTestsByMemberId(id);
-    }
-
-    @PostMapping("/createTest")
-    public ResponseEntity<Test> createTest(@RequestBody ReqTestDTO dto) {
-        User member = userService.fetchUserById(dto.getMemberId());
-        if(member==null){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(testService.createTest(dto), HttpStatus.CREATED);
-    }
+//    @GetMapping("/")
+//    public List<Test> getAllTests() {
+//
+//        return testService.getAllTests();
+//    }
+//
+//    @GetMapping("/getAllTestsByMemberId/{id}")
+//    public List<ResTestDTO> getAllTestsByMemberId(@PathVariable Long id) {
+//        return testService.getAllTestsByMemberId(id);
+//    }
+//
+//    @PostMapping("/createTest")
+//    public ResponseEntity<Test> createTest(@RequestBody ReqTestDTO dto) {
+//        User member = userService.fetchUserById(dto.getMemberId());
+//        if(member==null){
+//            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+//        }
+//        return new ResponseEntity<>(testService.createTest(dto), HttpStatus.CREATED);
+//    }
 }

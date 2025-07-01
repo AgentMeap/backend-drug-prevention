@@ -4,7 +4,7 @@ import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Table(name = "feedback_course")
+@Table(name = "FeedbackCourse")
 @Entity
 @Data
 public class FeedbackCourse extends BaseEntity {
@@ -18,8 +18,8 @@ public class FeedbackCourse extends BaseEntity {
     private String status; //hide,active,flagged
 
     @ManyToOne
-    @JoinColumn(name = "memberId")
-    private User member;
+    @JoinColumn(name = "registrationId")
+    private Registration registration;
 
     @ManyToOne
     @JoinColumn(name = "courseId")

@@ -7,70 +7,47 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.group7.swp391.drug_prevention.domain.FeedbackEvent;
-import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.domain.request.ReqFeedbackEventDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResFeedbackEventDTO;
 import com.group7.swp391.drug_prevention.service.FeedbackEventService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/feedback")
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
+@RequestMapping("/api/v1/feedbackEvent")
 public class FeedbackEventController {
-    private final FeedbackEventService feedbackService;
-
-    @Autowired
-    public FeedbackEventController(FeedbackEventService feedbackService) {
-        this.feedbackService = feedbackService;
+    private final FeedbackEventService feedbackEventService;
+    public FeedbackEventController(FeedbackEventService feedbackEventService) {
+        this.feedbackEventService = feedbackEventService;
     }
 
-    @GetMapping
-    public List<FeedbackEvent> getAllFeedbacks() {
-        return feedbackService.getAllFeedbacks();
+    @GetMapping("/getAll")
+    public List<FeedbackEvent> getAll(){
+        return feedbackEventService.findAll();
     }
 
-    @GetMapping("/event/{eventId}")
-    public List<ResFeedbackEventDTO> getFeedbacksByEventId(@PathVariable int eventId) {
-        return feedbackService.getFeedbacksByEventId(eventId).stream().map(feedback -> {
-            ResFeedbackEventDTO dto = new ResFeedbackEventDTO();
-            dto.setId(feedback.getId());
-            dto.setEventId(feedback.getEventId());
-            dto.setMemberId(feedback.getMember() != null ? feedback.getMember().getId() : null);
-            dto.setRating(feedback.getRating());
-            dto.setComment(feedback.getComment());
-            return dto;
-        }).collect(java.util.stream.Collectors.toList());
+    @PostMapping("/create")
+    public FeedbackEvent create(@RequestBody ReqFeedbackEventDTO dto){
+        return feedbackEventService.create(dto);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<FeedbackEvent> getFeedbackById(@PathVariable Integer id) {
-        try {
-            FeedbackEvent feedback = feedbackService.getFeedbackById(id);
-            return ResponseEntity.ok(feedback);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/getByMemberId/{memberId}")
+    public List<ResFeedbackEventDTO> getByMemberId(@PathVariable long memberId){
+        return feedbackEventService.findByMemberId(memberId);
     }
 
-    @PostMapping
-    public ResponseEntity<FeedbackEvent> addFeedback(@RequestBody FeedbackEvent feedback) {
-        try {
-            FeedbackEvent createdFeedback = feedbackService.createFeedback(feedback);
-            return ResponseEntity.ok(createdFeedback);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
+    @GetMapping("/getByEventId/{eventId}")
+    public List<ResFeedbackEventDTO> getByEventId(@PathVariable long eventId){
+        return feedbackEventService.findByEventId(eventId);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<FeedbackEvent> updateFeedback(@PathVariable Integer id, @RequestBody FeedbackEvent feedbackDetails) {
-        try {
-            FeedbackEvent updatedFeedback = feedbackService.updateFeedback(id, feedbackDetails);
-            return ResponseEntity.ok(updatedFeedback);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/rating/{rating}/{id}")
+    public ResFeedbackEventDTO updateRating(@PathVariable int rating,@PathVariable long id){
+        return feedbackEventService.ratingFeedbackEvent(rating,id);
+
     }
+}
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFeedback(@PathVariable Integer id) {
@@ -78,10 +55,4 @@ public class FeedbackEventController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/member/{memberId}")
-    public List<FeedbackEvent> getFeedbacksByMember(@PathVariable Long memberId) {
-        User member = new User();
-        member.setId(memberId);
-        return feedbackService.getFeedbacksByMember(member);
-    }
 }

@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 
 
 @Entity
@@ -39,4 +40,7 @@ public class Booking extends BaseEntity {
     @Column(name = "note",columnDefinition = "NVARCHAR(250)")
     private String note;
 
+    @OneToMany(mappedBy = "booking")
+    @JsonIgnore
+    private List<ConsultationSession> listOfConsultationSessions;
 }
