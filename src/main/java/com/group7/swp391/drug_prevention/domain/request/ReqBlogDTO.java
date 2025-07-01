@@ -15,5 +15,6 @@ public class ReqBlogDTO {
     private String content;
     private String type;
     private long managerId;
+    private String imageUrl;
 
 }

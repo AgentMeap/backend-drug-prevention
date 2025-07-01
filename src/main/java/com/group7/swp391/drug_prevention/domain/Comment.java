@@ -1,12 +1,13 @@
 package com.group7.swp391.drug_prevention.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "Comment")
 @Data
 public class Comment extends BaseEntity {
     @Id
@@ -21,12 +22,12 @@ public class Comment extends BaseEntity {
 
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIgnore // ✅ Ngắt vòng lặp khi User → Comment → User
+    @JoinColumn(name = "User_id")
+    @JsonIgnoreProperties({"listEvents", "listBlogs", "listComments", "listSchedule", "listBooking", "bookedList", "listCourse", "listEventUsers", "listTests", "userFeedbacks", "password", "refreshToken"})
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "blog_id")
+    @JoinColumn(name = "Blog_id")
     @JsonIgnore // ✅ Ngắt vòng lặp khi Blog → Comment → Blog
     private Blog blog;
 }

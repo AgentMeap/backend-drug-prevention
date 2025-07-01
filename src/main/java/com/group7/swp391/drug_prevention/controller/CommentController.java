@@ -2,6 +2,8 @@ package com.group7.swp391.drug_prevention.controller;
 
 import com.group7.swp391.drug_prevention.domain.Comment;
 import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.domain.request.ReqCommentDTO;
+import com.group7.swp391.drug_prevention.domain.Blog;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import com.group7.swp391.drug_prevention.service.CommentService;
 
@@ -30,18 +32,16 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<Comment> createComment(@Valid @RequestBody Comment comment,
-                                                 @AuthenticationPrincipal UserDetails userDetails) {
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        User user = userRepository.findByUsername(userDetails.getUsername());
+    public ResponseEntity<Comment> createComment(@Valid @RequestBody ReqCommentDTO reqCommentDTO) {
+        User user = userRepository.findById(reqCommentDTO.getUserId()).orElse(null);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
+        Comment comment = new Comment();
+        comment.setDescription(reqCommentDTO.getDescription());
         comment.setUser(user);
+        comment.setBlog(new Blog());
+        comment.getBlog().setId(reqCommentDTO.getBlogId());
         Comment savedComment = commentService.saveComment(comment);
         return ResponseEntity.ok(savedComment);
     }

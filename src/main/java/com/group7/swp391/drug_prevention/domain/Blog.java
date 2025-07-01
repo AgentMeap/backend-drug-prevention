@@ -1,6 +1,7 @@
 package com.group7.swp391.drug_prevention.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "blogs")
+@Table(name = "Blog")
 @Data
 public class Blog extends BaseEntity {
     @Id
@@ -29,12 +30,11 @@ public class Blog extends BaseEntity {
     private String imageUrl;
 
     @ManyToOne
-    @JoinColumn(name = "manager_id")
-    @JsonIgnore
+    @JoinColumn(name = "Manager_id")
+    @JsonIgnoreProperties({"listEvents", "listBlogs", "listComments", "listSchedule", "listBooking", "bookedList", "listCourse", "listEventUsers", "listTests", "userFeedbacks", "password", "refreshToken"})
     private User manager;
 
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonIgnore // ✅ Ngắt vòng lặp khi Blog → Comment → Blog
     private List<Comment> comments;
-
 }

@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.repository.UserRepository;
+import com.group7.swp391.drug_prevention.domain.request.ReqBlogDTO;
 
 import java.util.List;
 
@@ -15,6 +18,9 @@ import java.util.List;
 public class BlogController {
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public List<Blog> getAllBlogs() {
@@ -38,20 +44,36 @@ public class BlogController {
     }
 
     @PostMapping
-    public Blog createBlog(@RequestBody Blog blog) {
-        return blogService.saveBlog(blog);
+    public ResponseEntity<Blog> createBlog(@RequestBody ReqBlogDTO reqBlogDTO) {
+        User manager = userRepository.findById(reqBlogDTO.getManagerId()).orElse(null);
+        if (manager == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Blog blog = new Blog();
+        blog.setTitle(reqBlogDTO.getTitle());
+        blog.setContent(reqBlogDTO.getContent());
+        blog.setType(reqBlogDTO.getType());
+        blog.setManager(manager);
+        blog.setImageUrl(reqBlogDTO.getImageUrl());
+        Blog savedBlog = blogService.saveBlog(blog);
+        return ResponseEntity.ok(savedBlog);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Blog> updateBlog(@PathVariable Long id, @RequestBody Blog blogDetails) {
+    public ResponseEntity<Blog> updateBlog(@PathVariable Long id, @RequestBody ReqBlogDTO reqBlogDTO) {
         Blog blog = blogService.getBlogById(id);
         if (blog == null) {
             return ResponseEntity.notFound().build();
         }
-        blog.setTitle(blogDetails.getTitle());
-        blog.setContent(blogDetails.getContent());
-        blog.setType(blogDetails.getType());
-        blog.setImageUrl(blogDetails.getImageUrl());
+        User manager = userRepository.findById(reqBlogDTO.getManagerId()).orElse(null);
+        if (manager == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        blog.setTitle(reqBlogDTO.getTitle());
+        blog.setContent(reqBlogDTO.getContent());
+        blog.setType(reqBlogDTO.getType());
+        blog.setManager(manager);
+        blog.setImageUrl(reqBlogDTO.getImageUrl());
         Blog updatedBlog = blogService.saveBlog(blog);
         return ResponseEntity.ok(updatedBlog);
     }
