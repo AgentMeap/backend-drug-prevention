@@ -21,13 +21,13 @@ public class Course extends BaseEntity {
     private long id;
     @Column(name = "name",columnDefinition = "NVARCHAR(50)",nullable = false)
     private String name;
-    @Column(name = "description",columnDefinition = "NVARCHAR(250)",nullable = false)
+    @Column(name = "description",columnDefinition = "NVARCHAR(500)",nullable = false)
     private String description;
     @Column(name = "image",columnDefinition = "VARCHAR(250)",nullable = false)
     private String image;
     @Column(name = "video",columnDefinition = "VARCHAR(250)",nullable = false)
     private String videoUrl;
-    @Column(name = "status",columnDefinition = "NVARCHAR(10)",nullable = false)
+    @Column(name = "status",columnDefinition = "NVARCHAR(20)",nullable = false)
     private String status;
     private int duration;
     private Instant createdAt;
