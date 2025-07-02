@@ -47,7 +47,7 @@ public class UserController {
 
     //fetch all user
     @GetMapping("/users")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('CONSULTANT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CONSULTANT') or hasRole('MANAGER')")
     @ApiMessage("fetch all users")
     public ResponseEntity<ResultPaginationDTO> getAllUser(
             @Filter Specification<User> spec,

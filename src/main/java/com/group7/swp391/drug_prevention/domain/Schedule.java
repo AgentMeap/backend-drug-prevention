@@ -24,7 +24,7 @@ public class Schedule extends BaseEntity {
     private long id;
 
     @ManyToOne
-    @JsonIgnore
+
     @JoinColumn(name = "consultantId")
     private User consultant;
 
