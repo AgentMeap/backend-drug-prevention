@@ -59,7 +59,8 @@ public class SecurityConfiguration {
                 "/v3/api-docs/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
-                "/storage/**"
+                "/storage/**",
+                "api/v1/users/{id}/change-password"
         };
 
         http

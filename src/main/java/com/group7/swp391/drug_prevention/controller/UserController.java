@@ -1,11 +1,9 @@
 package com.group7.swp391.drug_prevention.controller;
 
 import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.domain.request.ReqChangePasswordDTO;
 import com.group7.swp391.drug_prevention.domain.request.ReqUpdateUserDTO;
-import com.group7.swp391.drug_prevention.domain.response.ResCreateUserDTO;
-import com.group7.swp391.drug_prevention.domain.response.ResUpdateUserDTO;
-import com.group7.swp391.drug_prevention.domain.response.ResUserDTO;
-import com.group7.swp391.drug_prevention.domain.response.ResultPaginationDTO;
+import com.group7.swp391.drug_prevention.domain.response.*;
 import com.group7.swp391.drug_prevention.service.UserService;
 import com.group7.swp391.drug_prevention.util.annotation.ApiMessage;
 import com.group7.swp391.drug_prevention.util.error.IdInvalidException;
@@ -90,5 +88,31 @@ public class UserController {
             throw new IdInvalidException("Không tìm thấy người dùng với ID: " + id);
         }
         return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(updatedUser));
+    }
+    @PostMapping("/users/{id}/change-password")
+    @ApiMessage("Change user password")
+    public ResponseEntity<ResChangePasswordDTO> changePassword(
+            @PathVariable("id") long id,
+            @Valid @RequestBody ReqChangePasswordDTO changePasswordDTO) throws IdInvalidException {
+        User user = userService.fetchUserById(id);
+        if (user == null) {
+            throw new IdInvalidException("Không tìm thấy người dùng với ID: " + id);
+        }
+
+        if (!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
+            throw new IdInvalidException("Mật khẩu cũ không chính xác.");
+        }
+
+        String hashedNewPassword = passwordEncoder.encode(changePasswordDTO.getNewPassword());
+        user.setPassword(hashedNewPassword);
+        userService.handleUpdateUserPassword(user);
+
+        ResChangePasswordDTO response = new ResChangePasswordDTO(
+                "Mật khẩu đã được thay đổi thành công.",
+                "success",
+                id
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

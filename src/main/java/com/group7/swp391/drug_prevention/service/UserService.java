@@ -143,4 +143,12 @@ public class UserService {
     public User getUserByRefreshTokenAndUsername(String refreshToken, String username) {
         return this.userRepository.findByRefreshTokenAndUsername(refreshToken, username);
     }
+
+    public void handleUpdateUserPassword(User user) {
+        User existingUser = fetchUserById(user.getId());
+        if (existingUser != null) {
+            existingUser.setPassword(user.getPassword());
+            this.userRepository.save(existingUser);
+        }
+    }
 }
