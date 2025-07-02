@@ -19,7 +19,7 @@ public class ReqUpdateUserDTO {
     @Pattern(regexp = "^(0|\\+84)(3|5|7|8|9)([0-9]{8})$",
             message = "Số điện thoại không hợp lệ.")
     private String phoneNumber;
-
+    private String avatar;
     private String email;
     private String dateOfBirth;
 }

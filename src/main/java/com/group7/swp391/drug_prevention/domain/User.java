@@ -40,6 +40,8 @@ public class User extends BaseEntity {
     private String email;
     private String dateOfBirth;
 
+    private String avatar;
+
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 

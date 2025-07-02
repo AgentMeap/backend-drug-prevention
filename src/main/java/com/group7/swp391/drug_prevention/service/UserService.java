@@ -73,6 +73,7 @@ public class UserService {
         if(existingUser != null) {
             existingUser.setFirstName(updateDTO.getFirstName());
             existingUser.setLastName(updateDTO.getLastName());
+            existingUser.setAvatar(updateDTO.getAvatar());
             existingUser.setPhoneNumber(updateDTO.getPhoneNumber());
             existingUser.setEmail(updateDTO.getEmail());
             existingUser.setDateOfBirth(updateDTO.getDateOfBirth());
@@ -127,6 +128,7 @@ public class UserService {
         res.setFirstName(updatedUser.getFirstName());
         res.setLastName(updatedUser.getLastName());
         res.setPhoneNumber(updatedUser.getPhoneNumber());
+        res.setAvatar(updatedUser.getAvatar());
         res.setEmail(updatedUser.getEmail());
         res.setDateOfBirth(updatedUser.getDateOfBirth());
         return res;
