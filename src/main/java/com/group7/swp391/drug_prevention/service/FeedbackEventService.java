@@ -89,6 +89,9 @@ public class FeedbackEventService {
         resFeedbackEventDTO.setMember(feedbackEvent.getMember());
         resFeedbackEventDTO.setEvent(feedbackEvent.getEvent());
 
+        feedbackEvent.setRating(rating);
+        feedbackEventRepository.save(feedbackEvent);
+
         return resFeedbackEventDTO;
     }
 }
