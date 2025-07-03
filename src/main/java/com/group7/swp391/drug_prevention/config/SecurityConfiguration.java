@@ -63,7 +63,8 @@ public class SecurityConfiguration {
                 "/api/v1/users/{id}/change-password",
                 "/api/v1/users",
                 "/api/blogs/**","/edit-blog/**",
-                "/api/events/**","/api/feedback/event/**","/api/feedback","/api/registrations",
+                "/api/events/**","/api/feedback/event/**","/api/feedback","/api/registrations", "/api/comments", "/api/comments/**",
+
         };
 
         http
@@ -71,15 +72,8 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(whiteList).permitAll()
-                        .requestMatchers("/api/blogs/**").permitAll()
-                        .requestMatchers("/edit-blog/**").permitAll()
-                        .requestMatchers("/api/comments", "/api/comments/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/events").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole("ADMIN","CONSULTANT")
-                        .requestMatchers("/api/events/**").permitAll()
-                        .requestMatchers("/api/feedback/event/**").permitAll()
-                        .requestMatchers("/api/feedback").permitAll()
-                        .requestMatchers("/api/registrations").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole("ADMIN","CONSULTANT","MANAGER")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
