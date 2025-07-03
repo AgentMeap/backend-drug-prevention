@@ -64,6 +64,7 @@ public class SecurityConfiguration {
                 "/api/v1/users",
                 "/api/blogs/**","/edit-blog/**",
                 "/api/events/**","/api/feedback/event/**","/api/feedback","/api/registrations", "/api/comments", "/api/comments/**",
+                "/api/v1/course/getAllCourse"
 
         };
 
