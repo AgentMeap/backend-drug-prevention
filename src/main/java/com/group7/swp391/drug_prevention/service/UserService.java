@@ -2,12 +2,11 @@ package com.group7.swp391.drug_prevention.service;
 
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqUpdateUserDTO;
-import com.group7.swp391.drug_prevention.domain.response.ResCreateUserDTO;
-import com.group7.swp391.drug_prevention.domain.response.ResUpdateUserDTO;
-import com.group7.swp391.drug_prevention.domain.response.ResUserDTO;
-import com.group7.swp391.drug_prevention.domain.response.ResultPaginationDTO;
+import com.group7.swp391.drug_prevention.domain.response.*;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
+import com.group7.swp391.drug_prevention.util.constant.RoleEnum;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -152,5 +151,22 @@ public class UserService {
             existingUser.setPassword(user.getPassword());
             this.userRepository.save(existingUser);
         }
+    }
+
+    public User handleUpdateUserRole(long id, RoleEnum newRole) {
+        User existingUser = fetchUserById(id);
+        if(existingUser != null) {
+            existingUser.setRole(newRole);
+            existingUser = this.userRepository.save(existingUser);
+        }
+        return existingUser;
+    }
+
+    public ResUpdateUserRoleDTO convertToResUpdateUserRoleDTO(User user) {
+        return new ResUpdateUserRoleDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getRole()
+        );
     }
 }

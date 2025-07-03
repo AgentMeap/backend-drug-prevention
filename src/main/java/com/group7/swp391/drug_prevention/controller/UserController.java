@@ -3,6 +3,7 @@ package com.group7.swp391.drug_prevention.controller;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqChangePasswordDTO;
 import com.group7.swp391.drug_prevention.domain.request.ReqUpdateUserDTO;
+import com.group7.swp391.drug_prevention.domain.request.ReqUpdateUserRoleDTO;
 import com.group7.swp391.drug_prevention.domain.response.*;
 import com.group7.swp391.drug_prevention.service.UserService;
 import com.group7.swp391.drug_prevention.util.annotation.ApiMessage;
@@ -112,6 +113,25 @@ public class UserController {
                 "success",
                 id
         );
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping("/users/{id}/role")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ApiMessage("Update user role")
+    public ResponseEntity<ResUpdateUserRoleDTO> updateUserRole(
+            @PathVariable("id") long id,
+            @Valid @RequestBody ReqUpdateUserRoleDTO updateRoleDTO) throws IdInvalidException {
+
+        User user = userService.fetchUserById(id);
+        if (user == null) {
+            throw new IdInvalidException("Không tìm thấy người dùng với ID: " + id);
+        }
+
+        User updatedUser = userService.handleUpdateUserRole(id, updateRoleDTO.getRole());
+
+        ResUpdateUserRoleDTO response = userService.convertToResUpdateUserRoleDTO(updatedUser);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
