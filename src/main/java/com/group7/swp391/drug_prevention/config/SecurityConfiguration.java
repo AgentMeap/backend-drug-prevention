@@ -60,19 +60,22 @@ public class SecurityConfiguration {
                 "/swagger-ui/**",
                 "/swagger-ui.html",
                 "/storage/**",
-                "api/v1/users/{id}/change-password"
+                "/api/v1/users/{id}/change-password",
+                "/api/v1/users",
+                "/api/blogs/**","/edit-blog/**",
+                "/api/events/**","/api/feedback/event/**","/api/feedback","/api/registrations",
         };
 
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                         .requestMatchers(whiteList).permitAll()
                         .requestMatchers("/api/blogs/**").permitAll()
                         .requestMatchers("/edit-blog/**").permitAll()
                         .requestMatchers("/api/comments", "/api/comments/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/events").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole("ADMIN","CONSULTANT")
                         .requestMatchers("/api/events/**").permitAll()
                         .requestMatchers("/api/feedback/event/**").permitAll()
                         .requestMatchers("/api/feedback").permitAll()
