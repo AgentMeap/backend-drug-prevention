@@ -2,6 +2,7 @@ package com.group7.swp391.drug_prevention.service;
 
 
 
+import com.group7.swp391.drug_prevention.domain.request.ReqEventDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,22 +30,33 @@ public class EventService {
                 .orElseThrow(() -> new RuntimeException("Event not found with id: " + id));
     }
 
-    public Event createEvent(Event event) {
+    public Event createEvent(ReqEventDTO dto) {
+        Event event = new Event();
+
+        event.setTitle(dto.getTitle());
+        event.setDescription(dto.getDescription());
+        event.setStartDate(dto.getStartDate());
+        event.setEndDate(dto.getEndDate());
+        event.setProgramCoordinator(dto.getProgramCoordinator());
+        event.setImageUrl(dto.getImageUrl());
+        event.setLocation(dto.getLocation());
+
         return eventRepository.save(event);
     }
 
-    public Event updateEvent(Integer id, Event eventDetails) {
-        Event event = getEventById(id);
-        event.setManager(eventDetails.getManager());
-        event.setTitle(eventDetails.getTitle());
-        event.setProgramCoordinator(eventDetails.getProgramCoordinator());
-        event.setDescription(eventDetails.getDescription());
-        event.setLocation(eventDetails.getLocation());
-        event.setImageUrl(eventDetails.getImageUrl());
-        event.setStartDate(eventDetails.getStartDate());
-        event.setEndDate(eventDetails.getEndDate());
-        event.setCreatedAt(eventDetails.getCreatedAt());
-        event.setUpdatedAt(eventDetails.getUpdatedAt());
+    public Event updateEvent(long id, ReqEventDTO dto) {
+
+        Event event = eventRepository.findById(id);
+
+        event.setDescription(dto.getDescription());
+        event.setLocation(dto.getLocation());
+        event.setEndDate(dto.getEndDate());
+        event.setStartDate(dto.getStartDate());
+        event.setImageUrl(event.getImageUrl());
+        event.setProgramCoordinator(event.getProgramCoordinator());
+        event.setTitle(event.getTitle());
+
+
         return eventRepository.save(event);
     }
 

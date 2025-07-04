@@ -56,13 +56,13 @@ public class BookingService {
         }
     }
 
-    public ResBookingDTO cancelBookingById(long id) {
+    public ResBookingDTO setStatusBookingById(long id,String status) {
         Booking booking = bookingRepository.findById(id).orElse(null);
-        booking.setStatus("Đã huỷ");
+        booking.setStatus(status);
         bookingRepository.save(booking);
         if (booking != null) {
             ResBookingDTO resBookingDTO = new ResBookingDTO();
-            resBookingDTO.setStatus("Đã huỷ");
+            resBookingDTO.setStatus(status);
             resBookingDTO.setBookingTime(booking.getBookingTime());
             resBookingDTO.setConsultant(booking.getConsultant());
             resBookingDTO.setMember(booking.getMember());
@@ -71,21 +71,6 @@ public class BookingService {
         return null;
     }
 
-    public ResBookingDTO confirmBookingById(long id) {
-
-        Booking booking = bookingRepository.findById(id).orElse(null);
-        booking.setStatus("Đã xác nhận");
-        bookingRepository.save(booking);
-        if (booking != null) {
-            ResBookingDTO resBookingDTO = new ResBookingDTO();
-            resBookingDTO.setStatus("Đã xác nhận");
-            resBookingDTO.setBookingTime(booking.getBookingTime());
-            resBookingDTO.setConsultant(booking.getConsultant());
-            resBookingDTO.setMember(booking.getMember());
-            return resBookingDTO;
-        }
-        return null;
-    }
 
     public List<ResBookingDTO> findAllBookingsByMemberId(long memberId) {
         User member = userRepository.findById(memberId).orElse(null);
@@ -121,23 +106,5 @@ public class BookingService {
         )).toList();
 
     }
-
-
-    public ResBookingDTO afterConsultationDone(long id) {
-        Booking booking = bookingRepository.findById(id).orElse(null);
-        booking.setStatus("Hoàn thành");
-        bookingRepository.save(booking);
-        ResBookingDTO resBookingDTO = new ResBookingDTO();
-        if (booking != null) {
-            resBookingDTO.setStatus("Hoàn thành");
-            resBookingDTO.setBookingTime(booking.getBookingTime());
-            resBookingDTO.setConsultant(booking.getConsultant());
-            resBookingDTO.setMember(booking.getMember());
-            resBookingDTO.setNote(booking.getNote());
-            return resBookingDTO;
-        }
-        return null;
-    }
-
 
 }

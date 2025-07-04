@@ -21,6 +21,7 @@ public class ReqEventDTO {
     private String location;
     @Column(name = "programCoordinator",columnDefinition = "NVARCHAR(100)", nullable = false)
     private String programCoordinator;
-    private Instant startTime;
-    private Instant endTime;
+    private Instant startDate;
+    private Instant endDate;
+    private String imageUrl;
 }

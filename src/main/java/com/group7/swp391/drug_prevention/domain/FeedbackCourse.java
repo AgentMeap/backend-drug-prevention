@@ -17,9 +17,6 @@ public class FeedbackCourse extends BaseEntity {
     @Column(name = "status",columnDefinition = "NVARCHAR(250)",nullable = false)
     private String status; //hide,active,flagged
 
-    @ManyToOne
-    @JoinColumn(name = "registrationId")
-    private Registration registration;
 
     @ManyToOne
     @JoinColumn(name = "courseId")

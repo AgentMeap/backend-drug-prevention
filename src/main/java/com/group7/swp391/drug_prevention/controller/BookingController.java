@@ -43,24 +43,6 @@ public class BookingController {
         }
     }
 
-    @PutMapping("/cancelBookingById/{id}")
-    public ResponseEntity<?> cancelBookingById(@PathVariable long id) {
-        if(bookingService.cancelBookingById(id) != null){
-            return new ResponseEntity<>(bookingService.cancelBookingById(id), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("Id is not exist!!", HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping("/confirmBookingById/{id}")
-    public ResponseEntity<?> confirmBookingById(@PathVariable long id) {
-        if(bookingService.confirmBookingById(id) != null){
-            return new ResponseEntity<>(bookingService.confirmBookingById(id), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("Id is not exist!!", HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @GetMapping("/getListBookingByMemberId/{memberId}")
     public ResponseEntity<?> getListBookingByMemberId(@PathVariable long memberId) {
         List<ResBookingDTO> dtos = bookingService.findAllBookingsByMemberId(memberId);
@@ -79,8 +61,8 @@ public class BookingController {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
-    @GetMapping("/afterConsultation/{id}")
-    public ResponseEntity<ResBookingDTO> afterConsultation(@PathVariable long id) {
-        return new ResponseEntity<>(bookingService.afterConsultationDone(id), HttpStatus.OK);
+    @PutMapping("/setStatusConsultation/{id}/{status}")
+    public ResponseEntity<ResBookingDTO> setStatusConsultation(@PathVariable long id,@PathVariable String status) {
+        return new ResponseEntity<>(bookingService.setStatusBookingById(id,status), HttpStatus.OK);
     }
 }

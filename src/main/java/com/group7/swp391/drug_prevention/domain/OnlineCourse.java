@@ -19,6 +19,7 @@ public class OnlineCourse extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "name",columnDefinition = "NVARCHAR(50)",nullable = false)
     private String name;
     @Column(name = "description",columnDefinition = "NVARCHAR(250)",nullable = false)
@@ -29,9 +30,9 @@ public class OnlineCourse extends BaseEntity {
     private String videoUrl;
     @Column(name = "status",columnDefinition = "NVARCHAR(10)",nullable = false)
     private String status;
+
     private int duration;
-    private Instant createdAt;
-    private Instant updatedAt;
+
 
     @ManyToOne
     @JoinColumn(name = "ageGroupId")

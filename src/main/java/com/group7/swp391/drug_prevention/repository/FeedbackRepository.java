@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface FeedbackRepository extends JpaRepository<FeedbackCourse,Long> {
-    List<FeedbackCourse> findByMemberId(Long memberId);
+    List<FeedbackCourse> findByRegistrationCourseMemberId(Long memberId);
 }

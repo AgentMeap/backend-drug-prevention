@@ -7,7 +7,7 @@ public class ReqFeedbackDTO {
     private String comment;
     private int rate;
     private String status;
-    private long memberId;
+    private long registrationCourseId;
     private long courseId;
 
 }

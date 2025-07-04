@@ -31,7 +31,7 @@ public class FeedbackEventService {
 
         FeedbackEvent feedbackEvent = new FeedbackEvent();
         User member = userRepository.getOne(dto.getMemberId());
-        Event event = eventRepository.getOne(dto.getEventId());
+        Event event = eventRepository.findById(dto.getEventId());
 
         feedbackEvent.setComment(dto.getComment());
         feedbackEvent.setRating(0);
@@ -55,13 +55,18 @@ public class FeedbackEventService {
         return resFeedbackEventDTO;
     }
 
-    public FeedbackEvent updateFeedback(Integer id, FeedbackEvent feedbackDetails) {
-        FeedbackEvent feedbackevent = getFeedbackById(id);
-        feedbackevent.setMember(feedbackDetails.getMember());
-        feedbackevent.setEventId(feedbackDetails.getEventId());
-        feedbackevent.setRating(feedbackDetails.getRating());
-        feedbackevent.setComment(feedbackDetails.getComment());
+    public FeedbackEvent updateFeedback(long id, ReqFeedbackEventDTO dto) {
+
+        FeedbackEvent feedbackevent = feedbackEventRepository.getOne(id);
+        User member = userRepository.getOne(dto.getMemberId());
+        Event event = eventRepository.findById(dto.getEventId());
+
+        feedbackevent.setComment(dto.getComment());
+        feedbackevent.setMember(member);
+        feedbackevent.setEvent(event);
+
         return feedbackEventRepository.save(feedbackevent);
+    }
     public List<ResFeedbackEventDTO> findByEventId(long eventId){
 
         List<FeedbackEvent> feedbackEvents = feedbackEventRepository.findByEventId(eventId);
@@ -75,7 +80,7 @@ public class FeedbackEventService {
         return resFeedbackEventDTO;
     }
 
-    public void deleteFeedback(Integer id) {
+    public void deleteFeedback(long id) {
         feedbackEventRepository.deleteById(id);
     }
     public ResFeedbackEventDTO ratingFeedbackEvent(int rating,long id){

@@ -2,11 +2,13 @@ package com.group7.swp391.drug_prevention.service;
 
 import com.group7.swp391.drug_prevention.domain.OnlineCourse;
 import com.group7.swp391.drug_prevention.domain.FeedbackCourse;
+import com.group7.swp391.drug_prevention.domain.RegistrationCourse;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.request.ReqFeedbackDTO;
 import com.group7.swp391.drug_prevention.domain.response.ResFeedbackDTO;
 import com.group7.swp391.drug_prevention.repository.CourseRepository;
 import com.group7.swp391.drug_prevention.repository.FeedbackRepository;
+import com.group7.swp391.drug_prevention.repository.RegistrationRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +18,13 @@ import java.util.stream.Collectors;
 @Service
 public class FeedbackService {
     private final FeedbackRepository feedbackRepository;
-    private final UserRepository userRepository;
     private final CourseRepository courseRepository;
+    private final RegistrationRepository registrationRepository;
 
-    public FeedbackService(FeedbackRepository feedbackRepository, UserRepository userRepository, CourseRepository courseRepository) {
+    public FeedbackService(FeedbackRepository feedbackRepository, UserRepository userRepository, CourseRepository courseRepository, RegistrationRepository registrationRepository) {
         this.feedbackRepository = feedbackRepository;
-        this.userRepository = userRepository;
         this.courseRepository = courseRepository;
+        this.registrationRepository = registrationRepository;
     }
 
     public List<FeedbackCourse> findAll() {
@@ -30,7 +32,7 @@ public class FeedbackService {
     }
 
     public FeedbackCourse create(ReqFeedbackDTO dto) {
-        User member = userRepository.findById(dto.getMemberId()).orElse(null);
+        RegistrationCourse registrationCourse = registrationRepository.getById(dto.getRegistrationCourseId());
         OnlineCourse onlineCourse = courseRepository.findById(dto.getCourseId()).orElse(null);
 
         FeedbackCourse feedbackCourse = new FeedbackCourse();
@@ -39,7 +41,7 @@ public class FeedbackService {
         feedbackCourse.setRate(dto.getRate());
         feedbackCourse.setStatus(dto.getStatus());
 
-        feedbackCourse.setMember(member);
+        feedbackCourse.setRegistrationCourse(registrationCourse);
         feedbackCourse.setOnlineCourse(onlineCourse);
 
         feedbackRepository.save(feedbackCourse);
@@ -48,12 +50,12 @@ public class FeedbackService {
     }
 
     public List<ResFeedbackDTO> findByMemberId(Long memberId) {
-        List<FeedbackCourse> feedbackCourses = feedbackRepository.findByMemberId(memberId);
+        List<FeedbackCourse> feedbackCourses = feedbackRepository.findByRegistrationCourseMemberId(memberId);
         List<ResFeedbackDTO> list = feedbackCourses.stream().map(feedback -> new ResFeedbackDTO(
                 feedback.getComment(),
                 feedback.getRate(),
                 feedback.getStatus(),
-                feedback.getMember().getUsername())).toList();
+                feedback.getRegistrationCourse().getMember().getUsername())).toList();
         return list;
     }
 

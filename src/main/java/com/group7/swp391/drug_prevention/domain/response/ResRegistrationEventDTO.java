@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class ResRegistrationEventDTO {
-    private Long id;
     private Long eventId;
     private Long memberId;
     private String registeredAt;

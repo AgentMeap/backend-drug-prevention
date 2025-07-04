@@ -15,14 +15,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "Event")
-public class Event {
+@Data
+public class Event extends  BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Manager_id")
-    private User manager;
 
     @Column(columnDefinition = "NVARCHAR(255)")
     private String title;
@@ -40,11 +38,9 @@ public class Event {
     private String imageUrl;
 
     @Column(name = "Start_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Instant startDate;
 
     @Column(name = "End_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Instant endDate;
 
     @JsonIgnore
@@ -61,4 +57,7 @@ public class Event {
     private List<FeedbackEvent> feedbackEvents;
 
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "event")
+    private List<EventRegistration> eventRegistrations;
 }

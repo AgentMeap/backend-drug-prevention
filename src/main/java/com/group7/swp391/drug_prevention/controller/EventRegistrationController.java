@@ -1,6 +1,7 @@
 package com.group7.swp391.drug_prevention.controller;
 
 
+import com.group7.swp391.drug_prevention.domain.request.ReqEventRegistrationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,20 +19,13 @@ public class EventRegistrationController {
     @Autowired
     private EventRegistrationService registrationService;
     @GetMapping
-    public List<ResRegistrationEventDTO> getAllRegistrations() {
-        return registrationService.getAllRegistrations().stream().map(reg -> {
-            ResRegistrationEventDTO dto = new ResRegistrationEventDTO();
-            dto.setId(reg.getId() != null ? reg.getId().longValue() : null);
-            dto.setEventId(reg.getEventId() != null ? reg.getEventId().longValue() : null);
-            dto.setMemberId(reg.getMember() != null ? reg.getMember().getId() : null);
-            // Nếu có trường registeredAt thì set, còn không thì bỏ qua
-            return dto;
-        }).collect(java.util.stream.Collectors.toList());
+    public List<EventRegistration> getAllRegistrations() {
+        return registrationService.getAllRegistrations();
     }
-    @PostMapping
-    public ResponseEntity<?> registerForEvent(@RequestBody EventRegistration registration) {
+    @PostMapping("/create")
+    public ResponseEntity<?> registerForEvent(@RequestBody ReqEventRegistrationDTO dto) {
         try {
-            EventRegistration result = registrationService.registerForEvent(registration);
+            EventRegistration result = registrationService.registerForEvent(dto);
             return ResponseEntity.ok(result);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

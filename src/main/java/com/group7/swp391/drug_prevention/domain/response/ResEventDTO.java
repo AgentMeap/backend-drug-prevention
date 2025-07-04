@@ -2,6 +2,8 @@ package com.group7.swp391.drug_prevention.domain.response;
 
 import lombok.Data;
 
+import java.time.Instant;
+
 @Data
 public class ResEventDTO {
     private int id;
@@ -10,10 +12,9 @@ public class ResEventDTO {
     private String location;
     private String imageUrl;
     private String programCoordinator;
-    private String startDate;
-    private String endDate;
-    private String createdAt;
-    private String updatedAt;
+    private Instant startDate;
+    private Instant endDate;
+
     private Long managerId;
     private String managerName;
 }

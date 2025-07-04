@@ -3,6 +3,7 @@ package com.group7.swp391.drug_prevention.controller;
 
 
 
+import com.group7.swp391.drug_prevention.domain.request.ReqEventDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,25 +28,8 @@ public class EventController {
     }
 
     @GetMapping
-    public List<ResEventDTO> getAllEvents() {
-        return eventService.getAllEvents().stream().map(event -> {
-            ResEventDTO dto = new ResEventDTO();
-            dto.setId(event.getId());
-            dto.setTitle(event.getTitle());
-            dto.setDescription(event.getDescription());
-            dto.setLocation(event.getLocation());
-            dto.setImageUrl(event.getImageUrl());
-            dto.setProgramCoordinator(event.getProgramCoordinator());
-            dto.setStartDate(event.getStartDate() != null ? event.getStartDate().toString() : null);
-            dto.setEndDate(event.getEndDate() != null ? event.getEndDate().toString() : null);
-            dto.setCreatedAt(event.getCreatedAt() != null ? event.getCreatedAt().toString() : null);
-            dto.setUpdatedAt(event.getUpdatedAt() != null ? event.getUpdatedAt().toString() : null);
-            if (event.getManager() != null) {
-                dto.setManagerId(event.getManager().getId());
-                dto.setManagerName(event.getManager().getFirstName() + " " + event.getManager().getLastName());
-            }
-            return dto;
-        }).collect(Collectors.toList());
+    public List<Event> getAllEvents() {
+        return eventService.getAllEvents();
     }
 
     @GetMapping("/{id}")
@@ -56,16 +40,14 @@ public class EventController {
                 return ResponseEntity.notFound().build();
             }
             ResEventDTO dto = new ResEventDTO();
-            dto.setId(event.getId());
             dto.setTitle(event.getTitle());
             dto.setDescription(event.getDescription());
             dto.setLocation(event.getLocation());
             dto.setImageUrl(event.getImageUrl());
             dto.setProgramCoordinator(event.getProgramCoordinator());
-            dto.setStartDate(event.getStartDate() != null ? event.getStartDate().toString() : null);
-            dto.setEndDate(event.getEndDate() != null ? event.getEndDate().toString() : null);
-            dto.setCreatedAt(event.getCreatedAt() != null ? event.getCreatedAt().toString() : null);
-            dto.setUpdatedAt(event.getUpdatedAt() != null ? event.getUpdatedAt().toString() : null);
+            dto.setStartDate(event.getStartDate() != null ? event.getStartDate() : null);
+            dto.setEndDate(event.getEndDate() != null ? event.getEndDate() : null);
+
             if (event.getManager() != null) {
                 dto.setManagerId(event.getManager().getId());
                 dto.setManagerName(event.getManager().getFirstName() + " " + event.getManager().getLastName());
@@ -77,9 +59,9 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+    public ResponseEntity<Event> createEvent(@RequestBody ReqEventDTO dto) {
         try {
-            Event createdEvent = eventService.createEvent(event);
+            Event createdEvent = eventService.createEvent(dto);
             return ResponseEntity.ok(createdEvent);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
@@ -87,9 +69,9 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Integer id, @RequestBody Event eventDetails) {
+    public ResponseEntity<Event> updateEvent(@PathVariable Integer id, @RequestBody ReqEventDTO dto) {
         try {
-            Event updatedEvent = eventService.updateEvent(id, eventDetails);
+            Event updatedEvent = eventService.updateEvent(id, dto);
             return ResponseEntity.ok(updatedEvent);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
