@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Data
@@ -12,7 +13,7 @@ public class TestResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private double score;
+    private long score;
     private Instant takenAt;
 
     @ManyToOne
@@ -23,6 +24,6 @@ public class TestResult {
     @JoinColumn(name = "memberId")
     private User member;
 
-    @OneToOne
-    private RiskRule riskRule;
+    @ManyToMany
+    private List<RiskRule> riskRule;
 }

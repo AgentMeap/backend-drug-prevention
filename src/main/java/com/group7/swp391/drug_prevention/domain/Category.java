@@ -10,14 +10,20 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "Category")
-public class Category extends BaseEntity {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
+    @Column(name = "description",columnDefinition = "NVARCHAR(100)")
     private String description;
 
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private List<Test> listTests;
+
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    private List<TestQuestion> listTestQuestions;
+
 }

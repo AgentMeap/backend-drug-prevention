@@ -1,0 +1,14 @@
+package com.group7.swp391.drug_prevention.repository;
+
+import com.group7.swp391.drug_prevention.domain.RiskRule;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface RiskRuleRepository extends JpaRepository<RiskRule, Long> {
+    @Query("SELECT r FROM RiskRule r WHERE :score BETWEEN r.minScore AND r.maxScore")
+    RiskRule findByScoreBetween(@Param("score") long score);
+
+}

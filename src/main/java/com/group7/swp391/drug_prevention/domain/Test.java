@@ -16,7 +16,6 @@ public class Test {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private double score;
     private String name;
 
     @ManyToOne
