@@ -11,5 +11,4 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Integer> {
     List<Event> findByManager(User manager);
-    Event findById(long id);
 }

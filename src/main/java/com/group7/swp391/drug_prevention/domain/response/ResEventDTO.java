@@ -10,11 +10,14 @@ public class ResEventDTO {
     private String title;
     private String description;
     private String location;
+
     private String imageUrl;
     private String programCoordinator;
-    private Instant startDate;
-    private Instant endDate;
 
+    private String startDate;
+    private String endDate;
+    private String createdAt;
+    private String updatedAt;
     private Long managerId;
     private String managerName;
 }

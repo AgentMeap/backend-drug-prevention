@@ -1,6 +1,5 @@
 package com.group7.swp391.drug_prevention.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import com.group7.swp391.drug_prevention.domain.User;
@@ -13,13 +12,10 @@ public class EventRegistration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private User member;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "eventId",nullable = false)
-    private Event event;
+    @Column(name = "event_id", nullable = false)
+    private Integer eventId;
 }

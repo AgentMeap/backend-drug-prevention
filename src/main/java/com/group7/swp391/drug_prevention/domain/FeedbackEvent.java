@@ -2,25 +2,65 @@ package com.group7.swp391.drug_prevention.domain;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
 
+import com.group7.swp391.drug_prevention.domain.User;
 
 @Entity
-@Table(name = "FeedbackEvent")
-@Data
+@Table(name = "Feedback_Event")
 public class FeedbackEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Member_id")
+    private User member;
+
+    @Column(name = "Event_id")
+    private int eventId;
+
     private int rating;
-    @Column(name = "comment",columnDefinition = "NVARCHAR(250)")
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String comment;
 
-    @ManyToOne
-    @JoinColumn(name = "eventId")
-    private Event event;
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "memberId")
-    private User member;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getMember() {
+        return member;
+    }
+
+    public void setMember(User member) {
+        this.member = member;
+    }
+
+    public int getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

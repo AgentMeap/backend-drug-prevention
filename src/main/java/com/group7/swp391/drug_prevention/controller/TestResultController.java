@@ -18,4 +18,5 @@ public class TestResultController {
     public double countAssistTest(@RequestBody ReqTestChoiceDTO dto) {
         return testChoiceService.countScoreCrafftTests(dto);
     }
+
 }

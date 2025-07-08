@@ -25,6 +25,7 @@ public class RiskRule {
     private List<TestResult> TestResult;
 
 
+
     @Column(name = "ortherAction",columnDefinition = "NVARCHAR(250)")
     private String ortherAction; // để thể hiện các hành động như
     // tiêm chích để đánh giá mức độ dựa trên việc này//

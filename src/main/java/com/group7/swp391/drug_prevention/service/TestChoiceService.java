@@ -29,8 +29,6 @@ public class TestChoiceService {
 
         long score = 0;
 
-        long totalScore = 0;
-
         TestResult testResult = new  TestResult();
         User member = userRepository.findById(dto.getMemberId()).orElse(null);
         Test test = testRepository.findById(dto.getTestId()).orElse(null);
@@ -53,4 +51,30 @@ public class TestChoiceService {
 
         return score;
     }
+
+    public double countAssistTest(ReqTestChoiceDTO dto){
+        long score = 0;
+        TestResult testResult = new  TestResult();
+        User member = userRepository.findById(dto.getMemberId()).orElse(null);
+        Test test = testRepository.findById(dto.getTestId()).orElse(null);
+        Category category = categoryRepository.getReferenceById(test.getCategory().getId());
+        for(ReqAnswerDTO answerDTO : dto.getAnswers()) {
+            List<TestChoice> testChoice = testChoiceRepository.findByTestQuestion_Id(answerDTO.getQuestionId());
+            for(TestChoice tc: testChoice){
+                if(answerDTO.getChoiceText().equals(tc.getChoiceText())){
+                    score += tc.getScore();
+                }
+            }
+        }
+
+        testResult.setScore(score);
+        testResult.setTakenAt(Instant.now());
+        testResult.setMember(member);
+        testResult.setTest(test);
+
+        testResultRepository.save(testResult);
+
+        return score;
+    }
+
 }
