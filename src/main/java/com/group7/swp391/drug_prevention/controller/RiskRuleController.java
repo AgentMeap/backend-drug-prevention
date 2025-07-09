@@ -5,6 +5,8 @@ import com.group7.swp391.drug_prevention.domain.response.ResRiskRuleDTO;
 import com.group7.swp391.drug_prevention.service.RiskRuleService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/riskRule")
 public class RiskRuleController {
@@ -14,7 +16,7 @@ public class RiskRuleController {
     }
 
     @PostMapping("/recommentRiskRule")
-    public ResRiskRuleDTO recommendRiskRule(@RequestBody ReqRiskRuleDTO dto) {
+    public List<ResRiskRuleDTO> recommendRiskRule(@RequestBody ReqRiskRuleDTO dto) {
         return riskRuleService.recommendRiskRule(dto);
     }
 }

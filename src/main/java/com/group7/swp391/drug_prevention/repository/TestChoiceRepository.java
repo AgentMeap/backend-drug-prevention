@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface TestChoiceRepository extends JpaRepository<TestChoice,Long> {
     List<TestChoice> findByTestQuestion_Id(long questionId);
+    List<TestChoice> findByTestQuestionIdBetween(long startTestQuestionId, long endTestQuestionId);
 
 }

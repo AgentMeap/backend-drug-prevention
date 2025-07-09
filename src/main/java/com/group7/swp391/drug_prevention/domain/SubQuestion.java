@@ -21,7 +21,7 @@ public class SubQuestion{
     @Column(name = "text",columnDefinition = "NVARCHAR(200)")
     private String text;
 
-    @OneToMany(mappedBy = "subQuestion")
-    @JsonIgnore
-    private List<TestQuestion> testQuestion;
+    @ManyToOne
+    @JoinColumn(name = "testQuestionId")
+    private TestQuestion testQuestion;
 }

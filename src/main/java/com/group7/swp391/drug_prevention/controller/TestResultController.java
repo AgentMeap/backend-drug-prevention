@@ -9,14 +9,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/testResult")
 public class TestResultController {
     private final TestChoiceService testChoiceService;
+    private final RiskRuleController riskRuleController;
 
-    public TestResultController(TestChoiceService testChoiceService) {
+    public TestResultController(TestChoiceService testChoiceService, RiskRuleController riskRuleController) {
         this.testChoiceService = testChoiceService;
+        this.riskRuleController = riskRuleController;
+    }
+
+    @PostMapping("/countCrafftTest/")
+    public double countCrafftTest(@RequestBody ReqTestChoiceDTO dto) {
+        return testChoiceService.countScoreCrafftTests(dto);
     }
 
     @PostMapping("/countAssistTest/")
     public double countAssistTest(@RequestBody ReqTestChoiceDTO dto) {
-        return testChoiceService.countScoreCrafftTests(dto);
+        return testChoiceService.countAssistTest(dto);
     }
-
 }

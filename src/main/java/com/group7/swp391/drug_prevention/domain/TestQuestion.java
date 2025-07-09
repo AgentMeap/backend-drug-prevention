@@ -26,9 +26,9 @@ public class TestQuestion {
     @JsonIgnore
     private List<TestChoice> listTestChoice;
 
-    @ManyToOne
-    @JoinColumn(name = "subQuestionId")
-    private SubQuestion subQuestion;
+    @OneToMany(mappedBy = "testQuestion") //danh sách câu trả lời cho câu hỏi có id = 101
+    @JsonIgnore
+    private List<SubQuestion> subQuestion;
 
 
 }

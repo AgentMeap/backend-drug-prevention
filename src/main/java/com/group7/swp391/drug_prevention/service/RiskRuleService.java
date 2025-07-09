@@ -8,6 +8,9 @@ import com.group7.swp391.drug_prevention.repository.RiskRuleRepository;
 import com.group7.swp391.drug_prevention.repository.TestResultRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class RiskRuleService {
     private final  RiskRuleRepository riskRuleRepository;
@@ -17,15 +20,22 @@ public class RiskRuleService {
         this.testResultRepository = testResultRepository;
     }
 
-    public ResRiskRuleDTO recommendRiskRule(ReqRiskRuleDTO dto) {
-        TestResult testResult = testResultRepository.findById(dto.getTestResultId()).orElse(null);
-        RiskRule riskRule = riskRuleRepository.findByScoreBetween(testResult.getScore());
-        ResRiskRuleDTO resRiskRuleDTO = new ResRiskRuleDTO();
-        resRiskRuleDTO.setRecommendation(riskRule.getRecommendations());
-        resRiskRuleDTO.setScore(testResult.getScore());
-        resRiskRuleDTO.setAction(riskRule.getAction());
-        resRiskRuleDTO.setRiskLevel(riskRule.getRiskLevel());
+    public List<ResRiskRuleDTO> recommendRiskRule(ReqRiskRuleDTO dto) {
+        List<ResRiskRuleDTO> resRiskRuleDTOList = new ArrayList<>();
+        List<TestResult> testResult = testResultRepository.findAllById(dto.getTestResultId());
+        for (TestResult testResult1 : testResult) {
+            List<RiskRule> riskRule = riskRuleRepository.findByScoreBetween(testResult1.getScore());
+            for(RiskRule riskRule1 : riskRule) {
+                ResRiskRuleDTO resRiskRuleDTO = new ResRiskRuleDTO();
+                resRiskRuleDTO.setRecommendation(riskRule1.getRecommendations());
+                resRiskRuleDTO.setScore(testResult1.getScore());
+                resRiskRuleDTO.setAction(riskRule1.getAction());
+                resRiskRuleDTO.setRiskLevel(riskRule1.getRiskLevel());
+                resRiskRuleDTOList.add(resRiskRuleDTO);
 
-        return resRiskRuleDTO;
+            }
+
+        }
+        return resRiskRuleDTOList;
     }
 }

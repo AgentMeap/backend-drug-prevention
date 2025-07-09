@@ -7,6 +7,7 @@ import com.group7.swp391.drug_prevention.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,8 +32,34 @@ public class TestChoiceService {
 
         TestResult testResult = new  TestResult();
         User member = userRepository.findById(dto.getMemberId()).orElse(null);
+        List<Test> test = testRepository.findAllById(dto.getTestId());
+        for (Test test1 : test) {
+            testResult.setTest(test1);
+        }
+        for(ReqAnswerDTO answerDTO : dto.getAnswers()) {
+            List<TestChoice> testChoice = testChoiceRepository.findByTestQuestion_Id(answerDTO.getQuestionId());
+            for(TestChoice tc: testChoice){
+                if(answerDTO.getChoiceText().equals(tc.getChoiceText())){
+                    score += tc.getScore();
+                }
+            }
+        }
+
+        testResult.setScore(score);
+        testResult.setTakenAt(Instant.now());
+        testResult.setMember(member);
+
+        testResultRepository.save(testResult);
+
+        return score;
+    }
+
+    public double countAssistTest(ReqTestChoiceDTO dto){
+
+        long score = 0;
+        TestResult testResult = new  TestResult();
+        User member = userRepository.findById(dto.getMemberId()).orElse(null);
         Test test = testRepository.findById(dto.getTestId()).orElse(null);
-        Category category = categoryRepository.getReferenceById(test.getCategory().getId());
         for(ReqAnswerDTO answerDTO : dto.getAnswers()) {
             List<TestChoice> testChoice = testChoiceRepository.findByTestQuestion_Id(answerDTO.getQuestionId());
             for(TestChoice tc: testChoice){
@@ -52,29 +79,13 @@ public class TestChoiceService {
         return score;
     }
 
-    public double countAssistTest(ReqTestChoiceDTO dto){
-        long score = 0;
-        TestResult testResult = new  TestResult();
-        User member = userRepository.findById(dto.getMemberId()).orElse(null);
-        Test test = testRepository.findById(dto.getTestId()).orElse(null);
-        Category category = categoryRepository.getReferenceById(test.getCategory().getId());
-        for(ReqAnswerDTO answerDTO : dto.getAnswers()) {
-            List<TestChoice> testChoice = testChoiceRepository.findByTestQuestion_Id(answerDTO.getQuestionId());
-            for(TestChoice tc: testChoice){
-                if(answerDTO.getChoiceText().equals(tc.getChoiceText())){
-                    score += tc.getScore();
-                }
-            }
-        }
+    public List<TestChoice> findAllTestChoicesCrafft(){
+        List<TestChoice> crafftTestChoices = testChoiceRepository.findByTestQuestionIdBetween(1,9);
+        return crafftTestChoices;
+    }
 
-        testResult.setScore(score);
-        testResult.setTakenAt(Instant.now());
-        testResult.setMember(member);
-        testResult.setTest(test);
-
-        testResultRepository.save(testResult);
-
-        return score;
+    public List<TestChoice> findAllTestChoiceAssist(){
+        return  testChoiceRepository.findByTestQuestionIdBetween(101,109);
     }
 
 }
