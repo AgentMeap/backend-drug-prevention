@@ -25,6 +25,7 @@ public class EventRegistrationService {
         }
         return registrationRepository.save(registration);
     }
+
     public List<EventRegistration> getAllRegistrations() {
         return registrationRepository.findAll();
     }

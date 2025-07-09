@@ -10,6 +10,7 @@ import lombok.*;
 public class ResConsultantDTO {
     private String firstName;
     private String lastName;
+    private String avatar;
     private long consultantId;
 
 

@@ -74,6 +74,7 @@ public class ScheduleService {
 
         List<ResConsultantDTO> resConsultantDTOs = lists.stream().map(user -> new ResConsultantDTO(user.getFirstName(),
                 user.getLastName(),
+                user.getAvatar(),
                 user.getId())).toList();
 
         return resConsultantDTOs;

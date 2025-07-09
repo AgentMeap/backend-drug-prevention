@@ -24,6 +24,7 @@ public class ResLoginDTO {
         private long id;
         private String username;
         private String firstName;
+        private String avatar;
         private String lastName;
         private String phoneNumber;
         private String email;

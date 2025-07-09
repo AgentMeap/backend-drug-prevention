@@ -56,6 +56,7 @@ public class AuthController {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
                     currentUserDB.getId(),
                     currentUserDB.getUsername(),
+                    currentUserDB.getAvatar(),
                     currentUserDB.getFirstName(),
                     currentUserDB.getLastName(),
                     currentUserDB.getPhoneNumber(),
@@ -137,6 +138,7 @@ public class AuthController {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
                     currentUserDB.getId(),
                     currentUserDB.getUsername(),
+                    currentUserDB.getAvatar(),
                     currentUserDB.getFirstName(),
                     currentUserDB.getLastName(),
                     currentUserDB.getPhoneNumber(),
