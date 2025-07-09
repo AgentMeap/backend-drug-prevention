@@ -82,4 +82,8 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
+
+    public void deleteCourse(long id) {
+        courseRepository.deleteById(id);
+    }
 }

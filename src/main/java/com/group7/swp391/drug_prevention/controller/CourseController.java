@@ -40,4 +40,9 @@ public class CourseController {
         return new ResponseEntity<>(courseService.getAllCoursesForMember(),HttpStatus.OK);
     }
 
+    @DeleteMapping("/deleteCourse")
+    public ResponseEntity<?> deleteCourse(long id) {
+        courseService.deleteCourse(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
