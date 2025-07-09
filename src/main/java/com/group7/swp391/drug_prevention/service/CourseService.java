@@ -35,7 +35,7 @@ public class CourseService {
         onlineCourse.setAgeGroup(ageGroup);
         onlineCourse.setName(dto.getName());
         onlineCourse.setDescription(dto.getDescription());
-        onlineCourse.setStatus(dto.getStatus());
+        onlineCourse.setStatus("Đang hoạt động");
         onlineCourse.setDuration(dto.getDuration());
         onlineCourse.setImage(dto.getImage());
         onlineCourse.setVideoUrl(dto.getVideoUrl());
@@ -50,7 +50,7 @@ public class CourseService {
     }
 
 
-    public OnlineCourse updateSchedule(long id, ReqCourseDTO dto) {
+    public OnlineCourse updateCourse(long id, ReqCourseDTO dto) {
         OnlineCourse onlineCourse = courseRepository.findById(id).orElse(null);
 
         AgeGroup ageGroup = ageGroupRepository.getById(dto.getAgeGroupId());

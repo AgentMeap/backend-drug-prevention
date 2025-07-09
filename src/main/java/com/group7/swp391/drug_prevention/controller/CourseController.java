@@ -26,7 +26,7 @@ public class CourseController {
 
     @PutMapping("/updateCourse/{id}")
     public ResponseEntity<?> updateCourse(@RequestParam long id,@RequestBody ReqCourseDTO dto) {
-        courseService.updateSchedule(id, dto);
+        courseService.updateCourse(id, dto);
         return new ResponseEntity<>("Updated!!!",HttpStatus.OK);
     }
 
