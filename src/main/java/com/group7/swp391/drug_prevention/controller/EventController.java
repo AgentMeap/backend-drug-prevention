@@ -6,6 +6,7 @@ package com.group7.swp391.drug_prevention.controller;
 import com.group7.swp391.drug_prevention.domain.request.ReqEventDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.group7.swp391.drug_prevention.domain.Event;
@@ -49,6 +50,7 @@ public class EventController {
         }).collect(Collectors.toList());
     }
         @GetMapping("/{id}")
+        @PreAuthorize("hasAnyRole('MANAGER')")
         public ResponseEntity<ResEventDTO> getEventById(@PathVariable Integer id) {
             try {
                 Event event = eventService.getEventById(id);
@@ -76,6 +78,7 @@ public class EventController {
             }
         }
         @PostMapping
+        @PreAuthorize("hasAnyRole('MANAGER')")
         public ResponseEntity<Event> createEvent(@RequestBody Event event) {
             try {
                 Event createdEvent = eventService.createEvent(event);
@@ -85,6 +88,7 @@ public class EventController {
             }
         }
             @PutMapping("/{id}")
+            @PreAuthorize("hasAnyRole('MANAGER')")
             public ResponseEntity<Event> updateEvent(@PathVariable Integer id, @RequestBody Event eventDetails) {
                 try {
                     Event updatedEvent = eventService.updateEvent(id, eventDetails);
@@ -95,6 +99,7 @@ public class EventController {
             }
 
             @DeleteMapping("/{id}")
+            @PreAuthorize("hasAnyRole('MANAGER')")
             public ResponseEntity<Void> deleteEvent(@PathVariable Integer id) {
                 eventService.deleteEvent(id);
                 return ResponseEntity.noContent().build();

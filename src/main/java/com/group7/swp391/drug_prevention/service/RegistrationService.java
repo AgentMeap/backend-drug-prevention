@@ -11,7 +11,6 @@ import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,7 +46,6 @@ public class RegistrationService {
 
     public List<ResRegistrationDTO> getRegistrationByMemberId(long memberId) {
         List<RegistrationCourse> dtos = registrationRepository.findByMemberId(memberId);
-        List<ResRegistrationDTO> dtoList = new ArrayList<>();
 
         return dtos.stream().map(registration -> new ResRegistrationDTO(
                 registration.getStatus(),

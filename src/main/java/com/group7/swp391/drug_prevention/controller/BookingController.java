@@ -6,6 +6,7 @@ import com.group7.swp391.drug_prevention.domain.response.ResBookingDTO;
 import com.group7.swp391.drug_prevention.service.BookingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public class BookingController {
     }
 
     @PutMapping("/setStatusConsultation/{id}/{status}")
+    @PreAuthorize("hasAnyRole('MANAGER') or hasAnyRole('CONSULTANT')")
     public ResponseEntity<ResBookingDTO> setStatusConsultation(@PathVariable long id,@PathVariable String status) {
         return new ResponseEntity<>(bookingService.setStatusBookingById(id,status), HttpStatus.OK);
     }

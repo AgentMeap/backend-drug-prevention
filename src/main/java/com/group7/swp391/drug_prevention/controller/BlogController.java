@@ -5,6 +5,7 @@ import com.group7.swp391.drug_prevention.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
@@ -44,6 +45,7 @@ public class BlogController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('MANAGER')")
     public ResponseEntity<Blog> createBlog(@RequestBody ReqBlogDTO reqBlogDTO) {
         User manager = userRepository.findById(reqBlogDTO.getManagerId()).orElse(null);
         if (manager == null) {
@@ -60,6 +62,7 @@ public class BlogController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER')")
     public ResponseEntity<Blog> updateBlog(@PathVariable Long id, @RequestBody ReqBlogDTO reqBlogDTO) {
         Blog blog = blogService.getBlogById(id);
         if (blog == null) {
@@ -79,6 +82,7 @@ public class BlogController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER')")
     public ResponseEntity<Void> deleteBlog(@PathVariable Long id) {
         blogService.deleteBlog(id);
         return ResponseEntity.noContent().build();

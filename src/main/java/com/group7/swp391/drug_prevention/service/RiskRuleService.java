@@ -23,14 +23,21 @@ public class RiskRuleService {
     public List<ResRiskRuleDTO> recommendRiskRule(ReqRiskRuleDTO dto) {
         List<ResRiskRuleDTO> resRiskRuleDTOList = new ArrayList<>();
         List<TestResult> testResult = testResultRepository.findAllById(dto.getTestResultId());
+
         for (TestResult testResult1 : testResult) {
+
             List<RiskRule> riskRule = riskRuleRepository.findByScoreBetween(testResult1.getScore());
+
             for(RiskRule riskRule1 : riskRule) {
                 ResRiskRuleDTO resRiskRuleDTO = new ResRiskRuleDTO();
                 resRiskRuleDTO.setRecommendation(riskRule1.getRecommendations());
                 resRiskRuleDTO.setScore(testResult1.getScore());
                 resRiskRuleDTO.setAction(riskRule1.getAction());
                 resRiskRuleDTO.setRiskLevel(riskRule1.getRiskLevel());
+                riskRule1.getTestResult().add(testResult1);
+                riskRuleRepository.save(riskRule1);
+                testResult1.getRiskRule().add(riskRule1);
+                testResultRepository.save(testResult1);
                 resRiskRuleDTOList.add(resRiskRuleDTO);
 
             }

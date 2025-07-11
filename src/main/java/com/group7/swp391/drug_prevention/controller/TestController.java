@@ -9,6 +9,7 @@ import com.group7.swp391.drug_prevention.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class TestController {
     }
 
     @PostMapping("/createTest")
+    @PreAuthorize("hasAnyRole('MANAGER')")
     public ResponseEntity<Test> createTest(@RequestBody ReqTestDTO dto) {
         return new ResponseEntity<>(testService.createTest(dto), HttpStatus.CREATED);
     }
