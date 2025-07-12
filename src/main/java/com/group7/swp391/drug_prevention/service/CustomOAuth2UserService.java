@@ -32,29 +32,28 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String email = oauth2User.getAttribute("email");
         String avatarUrl = oauth2User.getAttribute("picture");
 
-        // FIX: Wrap the result in Optional.ofNullable() to handle a plain User object
         Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(email));
 
         User user;
-        if (userOptional.isPresent()) {
+        if (userOptional.isPresent() && userOptional.get() != null) {
             user = userOptional.get();
-            // Optionally update user details
+            // Update existing user's info
             user.setFirstName(oauth2User.getAttribute("given_name"));
             user.setLastName(oauth2User.getAttribute("family_name"));
-        } else {
-            // Create a new user if they don't exist
-            user = new User();
-            user.setUsername(email); // Using email as username
-            user.setEmail(email);
             user.setAvatar(avatarUrl);
+        } else {
+            user = new User();
+            user.setUsername(email);
+
+            user.setEmail(email);
             user.setFirstName(oauth2User.getAttribute("given_name"));
             user.setLastName(oauth2User.getAttribute("family_name"));
+            user.setAvatar(avatarUrl);
             String randomPassword = UUID.randomUUID().toString();
             user.setPassword(this.passwordEncoder.encode(randomPassword));
-            user.setRole(RoleEnum.valueOf("MEMBER"));// Default role
+            user.setRole(RoleEnum.MEMBER);
         }
-        userRepository.save(user);
-
+        userRepository.saveAndFlush(user);
         return oauth2User;
     }
 }

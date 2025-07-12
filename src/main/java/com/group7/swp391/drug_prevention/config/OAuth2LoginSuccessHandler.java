@@ -26,7 +26,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     @Value("${project.jwt.refresh-token-validity-in-seconds}")
     private long refreshTokenExpiration;
 
-    @Value("${project.frontend.url}") // Add this to your application.properties
+    @Value("${project.frontend.url}")
     private String frontendUrl;
 
     public OAuth2LoginSuccessHandler(SecurityUtil securityUtil, UserService userService) {
@@ -37,11 +37,15 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        String username = oAuth2User.getAttribute("email"); // Using email as the unique identifier
+        String email = oAuth2User.getAttribute("email");
 
-        // Fetch the user from DB
-        User currentUserDB = userService.handleGetUserByUsername(username);
+        User currentUserDB = userService.handleGetUserByUsername(email);
 
+        if (currentUserDB == null) {
+            throw new RuntimeException("User not found in database after OAuth2 login. Email: " + email);
+        }
+
+        String dbUsername = currentUserDB.getUsername();
         // Create the DTO to be used for token generation
         ResLoginDTO res = new ResLoginDTO();
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
@@ -56,12 +60,10 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         );
         res.setUser(userLogin);
 
-        // Create Access Token
-        String accessToken = this.securityUtil.createAccessToken(username, res.getUser());
-
-        // Create Refresh Token
-        String refreshToken = this.securityUtil.createRefreshToken(username, res);
-        this.userService.updateUserToken(refreshToken, username);
+        // Create Access and Refresh Tokens using the database username
+        String accessToken = this.securityUtil.createAccessToken(dbUsername, res.getUser());
+        String refreshToken = this.securityUtil.createRefreshToken(dbUsername, res);
+        this.userService.updateUserToken(refreshToken, dbUsername);
 
         // Set Refresh Token as a cookie
         ResponseCookie resCookie = ResponseCookie.from("refresh_token", refreshToken)
