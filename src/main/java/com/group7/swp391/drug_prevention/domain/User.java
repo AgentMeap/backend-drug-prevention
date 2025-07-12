@@ -86,6 +86,11 @@ public class User extends BaseEntity {
     private List<Test>  listTests;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<UserAnswer> userAnswers;
+
+
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<FeedbackCourse> userFeedbackCourses;
 
