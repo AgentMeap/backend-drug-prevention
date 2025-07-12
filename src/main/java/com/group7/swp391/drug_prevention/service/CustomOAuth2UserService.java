@@ -30,7 +30,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oauth2User = super.loadUser(userRequest);
 
         String email = oauth2User.getAttribute("email");
-        String name = oauth2User.getAttribute("name");
+        String avatarUrl = oauth2User.getAttribute("picture");
 
         // FIX: Wrap the result in Optional.ofNullable() to handle a plain User object
         Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(email));
@@ -46,6 +46,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user = new User();
             user.setUsername(email); // Using email as username
             user.setEmail(email);
+            user.setAvatar(avatarUrl);
             user.setFirstName(oauth2User.getAttribute("given_name"));
             user.setLastName(oauth2User.getAttribute("family_name"));
             String randomPassword = UUID.randomUUID().toString();
