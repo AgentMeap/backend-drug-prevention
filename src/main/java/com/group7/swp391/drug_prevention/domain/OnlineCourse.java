@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,5 +42,9 @@ public class OnlineCourse extends BaseEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "onlineCourse")
     private List<RegistrationCourse> listRegistrationCourse;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "onlineCourse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OnlineCourseQuestion> questions = new ArrayList<>();
 
 }

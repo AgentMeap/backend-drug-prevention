@@ -87,6 +87,10 @@ public class User extends BaseEntity {
     @JsonIgnore
     private List<Test> listTestManager;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<UserAnswer> userAnswers;
+
     @OneToMany(mappedBy = "consultant")
     @JsonIgnore
     private List<Certificate>  listCertificate;
