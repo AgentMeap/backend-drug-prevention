@@ -8,4 +8,5 @@ public class ResRegistrationEventDTO {
     private Long eventId;
     private Long memberId;
     private String registeredAt;
+    private String status;
 }

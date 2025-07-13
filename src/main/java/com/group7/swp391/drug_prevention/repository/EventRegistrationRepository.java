@@ -16,4 +16,5 @@ public interface EventRegistrationRepository extends JpaRepository<EventRegistra
     boolean existsByMemberIdAndEventId(Integer memberId, Integer eventId);
     List<EventRegistration> findByMember(User member);
     List<EventRegistration> findByMemberAndEventId(User member, Integer eventId);
+    List<EventRegistration> findByStatus(com.group7.swp391.drug_prevention.domain.EventRegistrationStatus status);
 }

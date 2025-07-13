@@ -50,7 +50,7 @@ public class EventController {
         }).collect(Collectors.toList());
     }
         @GetMapping("/{id}")
-        @PreAuthorize("hasAnyRole('MANAGER')")
+        
         public ResponseEntity<ResEventDTO> getEventById(@PathVariable Integer id) {
             try {
                 Event event = eventService.getEventById(id);

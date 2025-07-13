@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ReqEventRegistrationDTO {
-    private long memberId;
-    private long eventId;
+    private Long memberId;
+    private Long eventId;
 }
