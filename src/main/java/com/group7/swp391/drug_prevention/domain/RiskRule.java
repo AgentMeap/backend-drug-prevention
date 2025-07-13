@@ -14,6 +14,7 @@ public class RiskRule {
     private Long id;
     private double minScore;
     private double maxScore;
+//    private Long testId;
 
     @Column(name = "riskLevel",columnDefinition = "NVARCHAR(15)")
     private String riskLevel;
@@ -32,4 +33,8 @@ public class RiskRule {
 
     @Column(name = "action",columnDefinition = "NVARCHAR(40)")
     private String action; //trong phaần gợi ý để xuất ra màn hình là đặt lịch, đăng ký khoá học...
+
+    @ManyToOne
+    @JoinColumn(name = "testId")
+    private Test test;
 }

@@ -13,4 +13,7 @@ public interface RiskRuleRepository extends JpaRepository<RiskRule, Long> {
     @Query("SELECT r FROM RiskRule r WHERE :score BETWEEN r.minScore AND r.maxScore")
     List<RiskRule> findByScoreBetween(@Param("score") long score);
 
+    @Query("SELECT r FROM RiskRule r WHERE :score BETWEEN r.minScore AND r.maxScore AND :testId = r.test.id")
+    List<RiskRule> findByScoreBetweenByTestId(@Param("score") long score, @Param("testId") long testId);
+
 }

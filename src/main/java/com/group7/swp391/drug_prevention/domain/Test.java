@@ -29,4 +29,8 @@ public class Test {
     @JsonIgnore
     @OneToMany(mappedBy = "test")
     private List<TestResult> testResults;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "test")
+    private List<RiskRule> riskRules;
 }

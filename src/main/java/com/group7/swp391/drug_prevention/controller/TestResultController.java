@@ -2,6 +2,7 @@ package com.group7.swp391.drug_prevention.controller;
 
 import com.group7.swp391.drug_prevention.domain.TestResult;
 import com.group7.swp391.drug_prevention.domain.request.ReqTestChoiceDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResTestDetailDTO;
 import com.group7.swp391.drug_prevention.service.TestChoiceService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class TestResultController {
     }
 
     @PostMapping("/countCrafftTest/")
-    public double countCrafftTest(@RequestBody ReqTestChoiceDTO dto) {
+    public ResTestDetailDTO countCrafftTest(@RequestBody ReqTestChoiceDTO dto) {
         return testChoiceService.countScoreCrafftTests(dto);
     }
 

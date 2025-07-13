@@ -3,6 +3,7 @@ package com.group7.swp391.drug_prevention.service;
 import com.group7.swp391.drug_prevention.domain.*;
 import com.group7.swp391.drug_prevention.domain.request.ReqAnswerDTO;
 import com.group7.swp391.drug_prevention.domain.request.ReqTestChoiceDTO;
+import com.group7.swp391.drug_prevention.domain.response.ResTestDetailDTO;
 import com.group7.swp391.drug_prevention.repository.*;
 import org.springframework.stereotype.Service;
 
@@ -17,53 +18,62 @@ public class TestChoiceService {
     private final UserRepository userRepository;
     private final TestRepository testRepository;
     private final CategoryRepository categoryRepository;
+    private final RiskRuleRepository riskRuleRepository;
 
-    public TestChoiceService(TestChoiceRepository testChoiceRepository, TestResultRepository testResultRepository, UserRepository userRepository, TestRepository testRepository, CategoryRepository categoryRepository) {
+    public TestChoiceService(TestChoiceRepository testChoiceRepository, TestResultRepository testResultRepository, UserRepository userRepository, TestRepository testRepository, CategoryRepository categoryRepository, RiskRuleRepository riskRuleRepository) {
         this.testChoiceRepository = testChoiceRepository;
         this.testResultRepository = testResultRepository;
         this.userRepository = userRepository;
         this.testRepository = testRepository;
         this.categoryRepository = categoryRepository;
+        this.riskRuleRepository = riskRuleRepository;
     }
 
-    public double countScoreCrafftTests(ReqTestChoiceDTO dto){
+    public ResTestDetailDTO countScoreCrafftTests(ReqTestChoiceDTO dto) {
 
         long score = 0;
 
-        TestResult testResult = new  TestResult();
+        TestResult testResult = new TestResult();
         User member = userRepository.findById(dto.getMemberId()).orElse(null);
-        List<Test> test = testRepository.findAllById(dto.getTestId());
-        for (Test test1 : test) {
-            testResult.setTest(test1);
+        List<Test> tests = testRepository.findAllById(dto.getTestId());
+        for (Test test : tests) {
+            testResult.setTest(test);
         }
-        for(ReqAnswerDTO answerDTO : dto.getAnswers()) {
+        for (ReqAnswerDTO answerDTO : dto.getAnswers()) {
             List<TestChoice> testChoice = testChoiceRepository.findByTestQuestion_Id(answerDTO.getQuestionId());
-            for(TestChoice tc: testChoice){
-                if(answerDTO.getChoiceText().equals(tc.getChoiceText())){
+            for (TestChoice tc : testChoice) {
+                if (answerDTO.getChoiceText().equals(tc.getChoiceText())) {
                     score += tc.getScore();
                 }
             }
         }
 
+        RiskRule riskRule = riskRuleRepository.findByScoreBetweenByTestId(score, dto.getTestId()).getFirst();
+
         testResult.setScore(score);
         testResult.setTakenAt(Instant.now());
         testResult.setMember(member);
-
         testResultRepository.save(testResult);
 
-        return score;
+        ResTestDetailDTO response = new ResTestDetailDTO();
+        response.setScore(score);
+        response.setRiskLevel(riskRule.getRiskLevel());
+        response.setRecommendations(riskRule.getRecommendations());
+        response.setAction(riskRule.getAction());
+        response.setOtherAction(riskRule.getOrtherAction());
+        return response;
     }
 
-    public double countAssistTest(ReqTestChoiceDTO dto){
+    public double countAssistTest(ReqTestChoiceDTO dto) {
 
         long score = 0;
-        TestResult testResult = new  TestResult();
+        TestResult testResult = new TestResult();
         User member = userRepository.findById(dto.getMemberId()).orElse(null);
         Test test = testRepository.findById(dto.getTestId()).orElse(null);
-        for(ReqAnswerDTO answerDTO : dto.getAnswers()) {
+        for (ReqAnswerDTO answerDTO : dto.getAnswers()) {
             List<TestChoice> testChoice = testChoiceRepository.findByTestQuestion_Id(answerDTO.getQuestionId());
-            for(TestChoice tc: testChoice){
-                if(answerDTO.getChoiceText().equals(tc.getChoiceText())){
+            for (TestChoice tc : testChoice) {
+                if (answerDTO.getChoiceText().equals(tc.getChoiceText())) {
                     score += tc.getScore();
                 }
             }
@@ -79,13 +89,13 @@ public class TestChoiceService {
         return score;
     }
 
-    public List<TestChoice> findAllTestChoicesCrafft(){
-        List<TestChoice> crafftTestChoices = testChoiceRepository.findByTestQuestionIdBetween(1,9);
+    public List<TestChoice> findAllTestChoicesCrafft() {
+        List<TestChoice> crafftTestChoices = testChoiceRepository.findByTestQuestionIdBetween(1, 9);
         return crafftTestChoices;
     }
 
-    public List<TestChoice> findAllTestChoiceAssist(){
-        return  testChoiceRepository.findByTestQuestionIdBetween(101,109);
+    public List<TestChoice> findAllTestChoiceAssist() {
+        return testChoiceRepository.findByTestQuestionIdBetween(101, 109);
     }
 
 }

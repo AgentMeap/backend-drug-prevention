@@ -27,7 +27,6 @@ public class TestQuestion {
     private List<TestChoice> listTestChoice;
 
     @OneToMany(mappedBy = "testQuestion") //danh sách câu trả lời cho câu hỏi có id = 101
-    @JsonIgnore
     private List<SubQuestion> subQuestion;
 
 

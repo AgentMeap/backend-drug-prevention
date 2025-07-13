@@ -23,5 +23,6 @@ public class SubQuestion{
 
     @ManyToOne
     @JoinColumn(name = "testQuestionId")
+    @JsonIgnore
     private TestQuestion testQuestion;
 }
