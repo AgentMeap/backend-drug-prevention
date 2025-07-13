@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.group7.swp391.drug_prevention.domain.EventRegistration;
 import com.group7.swp391.drug_prevention.domain.User;
+import com.group7.swp391.drug_prevention.util.constant.EventRegistrationStatus;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface EventRegistrationRepository extends JpaRepository<EventRegistra
     boolean existsByMemberIdAndEventId(Integer memberId, Integer eventId);
     List<EventRegistration> findByMember(User member);
     List<EventRegistration> findByMemberAndEventId(User member, Integer eventId);
-    List<EventRegistration> findByStatus(com.group7.swp391.drug_prevention.domain.EventRegistrationStatus status);
+    List<EventRegistration> findByStatus(EventRegistrationStatus status);
 }

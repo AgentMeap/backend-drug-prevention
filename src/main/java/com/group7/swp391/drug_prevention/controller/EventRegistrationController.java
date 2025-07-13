@@ -11,6 +11,7 @@ import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.domain.response.ResRegistrationEventDTO;
 import com.group7.swp391.drug_prevention.domain.request.ReqEventRegistrationDTO;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
+import com.group7.swp391.drug_prevention.util.constant.EventRegistrationStatus;
 
 import java.util.List;
 
@@ -76,9 +77,9 @@ public class EventRegistrationController {
 
     @GetMapping("/search-by-status")
     public List<ResRegistrationEventDTO> getRegistrationsByStatus(@RequestParam String status) {
-        com.group7.swp391.drug_prevention.domain.EventRegistrationStatus enumStatus;
+        EventRegistrationStatus enumStatus;
         try {
-            enumStatus = com.group7.swp391.drug_prevention.domain.EventRegistrationStatus.valueOf(status.toUpperCase());
+            enumStatus = EventRegistrationStatus.valueOf(status.toUpperCase());
         } catch (Exception e) {
             throw new IllegalArgumentException("Trạng thái không hợp lệ. Chọn một trong: PENDING, APPROVED, REJECTED");
         }

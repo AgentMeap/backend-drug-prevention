@@ -3,7 +3,7 @@ package com.group7.swp391.drug_prevention.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 import com.group7.swp391.drug_prevention.domain.User;
-import com.group7.swp391.drug_prevention.domain.EventRegistrationStatus;
+import com.group7.swp391.drug_prevention.util.constant.EventRegistrationStatus;
 
 @Data
 @Entity

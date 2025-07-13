@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.group7.swp391.drug_prevention.domain.EventRegistration;
-import com.group7.swp391.drug_prevention.domain.EventRegistrationStatus;
+import com.group7.swp391.drug_prevention.util.constant.EventRegistrationStatus;
 import com.group7.swp391.drug_prevention.domain.User;
 import com.group7.swp391.drug_prevention.repository.EventRegistrationRepository;
 
