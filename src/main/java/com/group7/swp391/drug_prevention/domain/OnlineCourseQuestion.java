@@ -1,5 +1,6 @@
 package com.group7.swp391.drug_prevention.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.group7.swp391.drug_prevention.util.constant.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class OnlineCourseQuestion extends BaseEntity {
     @Column(nullable = false, columnDefinition = "NVARCHAR(MAX)")
     private String questionText;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "onlineCourseId", nullable = false)
     private OnlineCourse onlineCourse;

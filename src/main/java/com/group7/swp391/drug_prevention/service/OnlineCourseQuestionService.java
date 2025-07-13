@@ -2,6 +2,7 @@ package com.group7.swp391.drug_prevention.service;
 
 import com.group7.swp391.drug_prevention.domain.*;
 import com.group7.swp391.drug_prevention.repository.*;
+import com.group7.swp391.drug_prevention.util.error.IdInvalidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,5 +77,17 @@ public class OnlineCourseQuestionService {
         public int getCorrect() { return correct; }
         public int getTotal() { return total; }
         public boolean isPassed() { return passed; }
+    }
+
+
+    public List<OnlineCourseQuestion> getQuestionsByCourseId(Long courseId) {
+        return questionRepository.findByOnlineCourseId(courseId);
+    }
+
+    public List<OnlineCourseAnswer> getAnswersByQuestionId(Long questionId) throws IdInvalidException {
+        if (!questionRepository.existsById(questionId)) {
+            throw new IdInvalidException("Question ID is invalid: " + questionId);
+        }
+        return answerRepository.findByQuestionId(questionId);
     }
 }

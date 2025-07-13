@@ -51,6 +51,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
                 currentUserDB.getId(),
                 currentUserDB.getUsername(),
+                currentUserDB.getAvatar(),
                 currentUserDB.getFirstName(),
                 currentUserDB.getLastName(),
                 currentUserDB.getPhoneNumber(),

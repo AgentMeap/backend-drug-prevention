@@ -67,7 +67,7 @@ public class SecurityConfiguration {
                 "/api/events/**","/api/feedback/event/**","/api/feedback","/api/registrations", "/api/comments", "/api/comments/**",
                 "/api/v1/course/getAllCourse",
                 "/oauth2/**",
-                "/login/oauth2/code/google"
+                "/login/oauth2/code/google",
                 "/api/v1/course/getAllCourse","api/v1/feedback/getAllFeedback",
                 "api/blogs","api/comments"
 

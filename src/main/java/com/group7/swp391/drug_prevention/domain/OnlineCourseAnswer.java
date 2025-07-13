@@ -22,7 +22,8 @@ public class OnlineCourseAnswer extends BaseEntity {
     @Column(nullable = false)
     private boolean isCorrect;
 
-    @JsonIgnore @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "questionId", nullable = false)
     private OnlineCourseQuestion question;
 
