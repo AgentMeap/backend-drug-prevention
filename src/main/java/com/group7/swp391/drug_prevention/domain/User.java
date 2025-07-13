@@ -15,6 +15,8 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
+@Getter
+@Setter
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,6 +88,10 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "manager")
     @JsonIgnore
     private List<Test> listTestManager;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<UserAnswer> userAnswers;
 
     @OneToMany(mappedBy = "consultant")
     @JsonIgnore

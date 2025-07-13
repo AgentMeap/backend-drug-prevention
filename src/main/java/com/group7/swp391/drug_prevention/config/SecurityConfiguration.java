@@ -1,5 +1,6 @@
 package com.group7.swp391.drug_prevention.config;
 
+import com.group7.swp391.drug_prevention.service.CustomOAuth2UserService;
 import com.group7.swp391.drug_prevention.util.SecurityUtil;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
@@ -50,7 +51,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomOAuth2UserService customOAuth2UserService, OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) throws Exception {
 
         String[] whiteList = {
                 "/",
@@ -64,6 +65,9 @@ public class SecurityConfiguration {
                 "/api/v1/users",
                 "/api/blogs/**","/edit-blog/**",
                 "/api/events/**","/api/feedback/event/**","/api/feedback","/api/registrations", "/api/comments", "/api/comments/**",
+                "/api/v1/course/getAllCourse",
+                "/oauth2/**",
+                "/login/oauth2/code/google",
                 "/api/v1/course/getAllCourse","api/v1/feedback/getAllFeedback",
                 "api/blogs","api/comments"
 
@@ -76,8 +80,15 @@ public class SecurityConfiguration {
                         .requestMatchers(whiteList).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/events").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole("ADMIN","CONSULTANT")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/online-courses/{courseId}/submit-answers").hasAnyRole("MEMBER")
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyRole("ADMIN","CONSULTANT","MANAGER")
                         .anyRequest().authenticated())
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .successHandler(oAuth2LoginSuccessHandler)
+                )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(authenticationEntryPoint)) // 401
