@@ -49,8 +49,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setFirstName(oauth2User.getAttribute("given_name"));
             user.setLastName(oauth2User.getAttribute("family_name"));
             user.setAvatar(avatarUrl);
-            String randomPassword = UUID.randomUUID().toString();
-            user.setPassword(this.passwordEncoder.encode(randomPassword));
+            user.setPassword(this.passwordEncoder.encode("123456"));
             user.setRole(RoleEnum.MEMBER);
         }
         userRepository.saveAndFlush(user);
