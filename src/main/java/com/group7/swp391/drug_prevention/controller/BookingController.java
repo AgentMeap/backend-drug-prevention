@@ -63,7 +63,6 @@ public class BookingController {
     }
 
     @PutMapping("/setStatusConsultation/{id}/{status}")
-    @PreAuthorize("hasAnyRole('MANAGER') or hasAnyRole('CONSULTANT')")
     public ResponseEntity<ResBookingDTO> setStatusConsultation(@PathVariable long id,@PathVariable String status) {
         return new ResponseEntity<>(bookingService.setStatusBookingById(id,status), HttpStatus.OK);
     }

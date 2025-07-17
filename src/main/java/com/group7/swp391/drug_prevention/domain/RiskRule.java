@@ -14,7 +14,6 @@ public class RiskRule {
     private Long id;
     private double minScore;
     private double maxScore;
-//    private Long testId;
 
     @Column(name = "riskLevel",columnDefinition = "NVARCHAR(15)")
     private String riskLevel;
