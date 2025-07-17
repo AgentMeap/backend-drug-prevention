@@ -64,7 +64,7 @@ public class TestChoiceService {
         return response;
     }
 
-    public double countAssistTest(ReqTestChoiceDTO dto) {
+    public ResTestDetailDTO countAssistTest(ReqTestChoiceDTO dto) {
 
         long score = 0;
         TestResult testResult = new TestResult();
@@ -85,8 +85,14 @@ public class TestChoiceService {
         testResult.setTest(test);
 
         testResultRepository.save(testResult);
-
-        return score;
+        RiskRule riskRule = riskRuleRepository.findByScoreBetweenByTestId(score, dto.getTestId()).getFirst();
+        ResTestDetailDTO response = new ResTestDetailDTO();
+        response.setScore(score);
+        response.setRiskLevel(riskRule.getRiskLevel());
+        response.setRecommendations(riskRule.getRecommendations());
+        response.setAction(riskRule.getAction());
+        response.setOtherAction(riskRule.getOrtherAction());
+        return response;
     }
 
     public List<TestChoice> findAllTestChoicesCrafft() {

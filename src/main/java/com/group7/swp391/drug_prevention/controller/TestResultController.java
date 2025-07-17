@@ -23,7 +23,7 @@ public class TestResultController {
     }
 
     @PostMapping("/countAssistTest/")
-    public double countAssistTest(@RequestBody ReqTestChoiceDTO dto) {
+    public ResTestDetailDTO countAssistTest(@RequestBody ReqTestChoiceDTO dto) {
         return testChoiceService.countAssistTest(dto);
     }
 }

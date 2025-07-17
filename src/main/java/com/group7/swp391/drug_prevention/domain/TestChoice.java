@@ -9,7 +9,6 @@ import org.aspectj.weaver.patterns.TypePatternQuestions;
 @Table(name = "TestChoice")
 public class TestChoice {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "choiceText",columnDefinition = "NVARCHAR(200)")
