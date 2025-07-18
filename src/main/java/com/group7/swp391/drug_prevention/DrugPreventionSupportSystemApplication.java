@@ -8,6 +8,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Drug API",
+                version = "1.0"
+        ),
+        servers = {
+                @Server(url = "https://backend-drug-prevention.onrender.com",description = "Render Server")
+        }
+)
 
 @SpringBootApplication
 public class DrugPreventionSupportSystemApplication {
