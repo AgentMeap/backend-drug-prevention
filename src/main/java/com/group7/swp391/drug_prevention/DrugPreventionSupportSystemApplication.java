@@ -1,5 +1,8 @@
 package com.group7.swp391.drug_prevention;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.core.env.Environment;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +22,7 @@ public class DrugPreventionSupportSystemApplication {
 
         System.out.println(">>> DB_USERNAME = " + username);
         System.out.println(">>> DB_PASSWORD = " + password);
+
     }
 
 }
