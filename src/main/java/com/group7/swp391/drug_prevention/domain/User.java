@@ -101,5 +101,10 @@ public class User extends BaseEntity {
     @JsonIgnore
     private List<FeedbackEvent> listFeedbackEvent;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "eventRegistrationId")
+    private EventRegistration eventRegistration;
+
     private String googleMeetLink;
 }

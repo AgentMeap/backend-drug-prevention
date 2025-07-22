@@ -2,6 +2,7 @@ package com.group7.swp391.drug_prevention.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,9 @@ public class EventRegistrationController {
     private EventRegistrationService registrationService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EventRegistrationService eventRegistrationService;
+
     @GetMapping
     public List<ResRegistrationEventDTO> getAllRegistrations() {
         return registrationService.getAllRegistrations().stream().map(reg -> {
@@ -113,5 +117,10 @@ public class EventRegistrationController {
         dto.setMemberId(reg.getMember() != null ? reg.getMember().getId() : null);
         dto.setStatus(reg.getStatus() != null ? reg.getStatus().name() : null);
         return dto;
+    }
+
+    @PostMapping("/checkOut/{memberId}{eventId}{status}")
+    public ResponseEntity<?> checkOut(@PathVariable Long memberId, @PathVariable Integer eventId, @RequestParam EventRegistrationStatus status) {
+        return new ResponseEntity<>(eventRegistrationService.checkOut(memberId,eventId,status), HttpStatus.OK);
     }
 }

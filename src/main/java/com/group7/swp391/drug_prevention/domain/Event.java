@@ -58,6 +58,11 @@ public class Event {
     @Column(name = "Updated_at")
     private Date updatedAt;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "eventRegistrationId")
+    private EventRegistration eventRegistration;
+
     @ManyToMany
     @JoinTable(
             name = "event_user",

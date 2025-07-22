@@ -4,6 +4,9 @@ package com.group7.swp391.drug_prevention.service;
 
 import java.util.List;
 
+import com.group7.swp391.drug_prevention.domain.Event;
+import com.group7.swp391.drug_prevention.repository.EventRepository;
+import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,15 @@ import com.group7.swp391.drug_prevention.repository.EventRegistrationRepository;
 public class EventRegistrationService {
     @Autowired
     private EventRegistrationRepository registrationRepository;
+    private final UserRepository userRepository;
+    private final EventRepository eventRepository;
+
+    public EventRegistrationService(UserRepository userRepository, EventRepository eventRepository) {
+        this.userRepository = userRepository;
+        this.eventRepository = eventRepository;
+    }
+
+
 
     public EventRegistration registerForEvent(EventRegistration registration) {
         // Check if user is already registered
@@ -56,5 +68,16 @@ public class EventRegistrationService {
 
     public List<EventRegistration> getRegistrationsByStatus(EventRegistrationStatus status) {
         return registrationRepository.findByStatus(status);
+    }
+
+    public EventRegistration checkOut(long memberId,int eventId,EventRegistrationStatus status) {
+        EventRegistration eventRegistration = new EventRegistration();
+        User member = userRepository.getReferenceById(memberId);
+        Event event = eventRepository.getReferenceById(eventId);
+        eventRegistration.setStatus(status);
+        eventRegistration.setMember(member);
+        eventRegistration.getEvents().add(event);
+
+        return eventRegistration;
     }
 }
