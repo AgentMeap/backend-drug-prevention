@@ -2,9 +2,13 @@ package com.group7.swp391.drug_prevention.service;
 
 
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.group7.swp391.drug_prevention.domain.Event;
+import com.group7.swp391.drug_prevention.domain.response.ResRegistrationEventDTO;
+import com.group7.swp391.drug_prevention.domain.response.file.ResEventRegistrationDTO;
 import com.group7.swp391.drug_prevention.repository.EventRepository;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,14 +74,36 @@ public class EventRegistrationService {
         return registrationRepository.findByStatus(status);
     }
 
-    public EventRegistration checkOut(long memberId,int eventId,EventRegistrationStatus status) {
+    public ResEventRegistrationDTO checkOut(long memberId,int eventId,EventRegistrationStatus status) {
         EventRegistration eventRegistration = new EventRegistration();
         User member = userRepository.getReferenceById(memberId);
         Event event = eventRepository.getReferenceById(eventId);
-        eventRegistration.setStatus(status);
-        eventRegistration.setMember(member);
-        eventRegistration.getEvents().add(event);
 
-        return eventRegistration;
+
+        if (eventRegistration.getEvents() == null) {
+            eventRegistration.setEvents(new ArrayList<>());
+        }
+
+        eventRegistration.setEventId(eventId);
+        eventRegistration.setMember(member);
+        eventRegistration.setStatus(status);
+        eventRegistration.setRegistrationDate(Instant.now());
+        registrationRepository.save(eventRegistration);
+
+
+        ResEventRegistrationDTO dto = new ResEventRegistrationDTO();
+        dto.setEmail(member.getEmail());
+        dto.setPhoneNumber(member.getPhoneNumber());
+        dto.setMemberName(member.getLastName() + " " + member.getFirstName());
+
+        dto.setTitle(event.getTitle());
+        dto.setLocation(event.getLocation());
+        dto.setStartDate(event.getStartDate());
+        dto.setEndDate(event.getEndDate());
+
+        dto.setStatus(status);
+        dto.setRegistrationDate(eventRegistration.getRegistrationDate());
+
+        return dto;
     }
 }

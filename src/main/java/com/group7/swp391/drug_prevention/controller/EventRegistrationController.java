@@ -1,6 +1,7 @@
 package com.group7.swp391.drug_prevention.controller;
 
 
+import com.group7.swp391.drug_prevention.domain.response.file.ResEventRegistrationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -119,8 +120,9 @@ public class EventRegistrationController {
         return dto;
     }
 
-    @PostMapping("/checkOut/{memberId}{eventId}{status}")
+    @PostMapping("/checkOut/{memberId}/{eventId}/{status}")
     public ResponseEntity<?> checkOut(@PathVariable Long memberId, @PathVariable Integer eventId, @RequestParam EventRegistrationStatus status) {
-        return new ResponseEntity<>(eventRegistrationService.checkOut(memberId,eventId,status), HttpStatus.OK);
+        ResEventRegistrationDTO dto = eventRegistrationService.checkOut(memberId,eventId,status);
+        return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 }
