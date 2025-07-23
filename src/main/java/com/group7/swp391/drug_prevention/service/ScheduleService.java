@@ -60,7 +60,7 @@ public class ScheduleService {
     }
 
     public List<ResScheduleDTO> getScheduleByConsultantId(Long consultantId) {
-        List<Schedule> lists = scheduleRepository.findAll();
+        List<Schedule> lists = scheduleRepository.getSchedulesByConsultantId(consultantId);
         List<ResScheduleDTO> dtos = lists.stream().map(schedule -> new ResScheduleDTO(schedule.getStartTime(),
                 schedule.getEndTime(),schedule.getDay())).toList();
         return  dtos;
@@ -79,4 +79,5 @@ public class ScheduleService {
 
         return resConsultantDTOs;
     }
+
 }

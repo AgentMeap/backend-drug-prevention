@@ -13,5 +13,6 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> getConsultantByDay(LocalDate day);
+    List<Schedule> getSchedulesByConsultantId(Long consultantId);
 
 }

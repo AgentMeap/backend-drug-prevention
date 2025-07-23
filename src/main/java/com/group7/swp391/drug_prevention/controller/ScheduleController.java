@@ -65,4 +65,9 @@ public class ScheduleController {
     public List<ResConsultantDTO> getScheduleByDay(@PathVariable LocalDate day) {
         return scheduleService.getConsultantByDay(day);
     }
+
+    @GetMapping("/findAllScheduleByConsultantId/{consultantId}")
+    public List<ResScheduleDTO> findAllScheduleByConsultantId(@PathVariable long consultantId) {
+        return scheduleService.findAllByConsultantId(consultantId);
+    }
 }

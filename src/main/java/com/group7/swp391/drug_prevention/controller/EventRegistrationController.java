@@ -5,6 +5,7 @@ import com.group7.swp391.drug_prevention.domain.response.file.ResEventRegistrati
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.group7.swp391.drug_prevention.domain.EventRegistration;
@@ -121,6 +122,7 @@ public class EventRegistrationController {
     }
 
     @PostMapping("/checkOut/{memberId}/{eventId}/{status}")
+    @PreAuthorize("hasAnyRole('STAFF')")
     public ResponseEntity<?> checkOut(@PathVariable Long memberId, @PathVariable Integer eventId, @RequestParam EventRegistrationStatus status) {
         ResEventRegistrationDTO dto = eventRegistrationService.checkOut(memberId,eventId,status);
         return new ResponseEntity<>(dto,HttpStatus.OK);
