@@ -21,6 +21,7 @@ public class ResUserDTO {
     private String email;
     private String dateOfBirth;
     private RoleEnum role;
+    private String avatar;
     private Instant createdAt;
     private Instant updatedAt;
 }

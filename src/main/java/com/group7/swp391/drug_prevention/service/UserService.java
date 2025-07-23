@@ -61,6 +61,7 @@ public class UserService {
                 item.getEmail(),
                 item.getDateOfBirth(),
                 item.getRole(),
+                item.getAvatar(),
                 item.getCreatedAt(),
                 item.getUpdatedAt())).collect(Collectors.toList());
         rs.setResult(listUser);
