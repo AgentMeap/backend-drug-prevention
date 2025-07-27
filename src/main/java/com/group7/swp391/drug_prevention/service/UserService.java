@@ -5,8 +5,6 @@ import com.group7.swp391.drug_prevention.domain.request.ReqUpdateUserDTO;
 import com.group7.swp391.drug_prevention.domain.response.*;
 import com.group7.swp391.drug_prevention.repository.UserRepository;
 import com.group7.swp391.drug_prevention.util.constant.RoleEnum;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

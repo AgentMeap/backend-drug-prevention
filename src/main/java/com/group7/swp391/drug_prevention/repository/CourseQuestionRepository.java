@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OnlineCourseQuestionRepository extends JpaRepository<OnlineCourseQuestion, Long> {
+public interface CourseQuestionRepository extends JpaRepository<OnlineCourseQuestion, Long> {
     List<OnlineCourseQuestion> findByOnlineCourseId(Long onlineCourseId);
 
-    boolean existsByQuestionTextAndOnlineCourseId(String questionText, long onlineCourseId);
+    boolean existsByQuestionTextAndOnlineCourseId(String questionText, Long onlineCourseId);
 }

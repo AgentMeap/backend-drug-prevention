@@ -49,7 +49,6 @@ public class OnlineCourseQuestionController {
             return ResponseEntity.status(401).body("User not found for the provided token.");
         }
 
-        // Pass the correct user object to the service.
         SubmissionResult result = onlineCourseQuestionService.submitAnswers(courseId, submissions, member);
         return ResponseEntity.ok(result);
     }

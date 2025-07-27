@@ -75,11 +75,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .build();
         response.addHeader("Set-Cookie", resCookie.toString());
 
-        // Redirect to frontend with the access token
-        String redirectUrl = UriComponentsBuilder.fromUriString(frontendUrl)
-                .queryParam("token", accessToken)
-                .build().toUriString();
-
-        getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+        getRedirectStrategy().sendRedirect(request, response, frontendUrl);
     }
 }

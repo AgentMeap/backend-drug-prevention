@@ -6,6 +6,7 @@ import com.group7.swp391.drug_prevention.domain.request.ReqUpdateUserDTO;
 import com.group7.swp391.drug_prevention.domain.request.ReqUpdateUserRoleDTO;
 import com.group7.swp391.drug_prevention.domain.response.*;
 import com.group7.swp391.drug_prevention.service.UserService;
+import com.group7.swp391.drug_prevention.util.SecurityUtil;
 import com.group7.swp391.drug_prevention.util.annotation.ApiMessage;
 import com.group7.swp391.drug_prevention.util.error.IdInvalidException;
 import com.turkraft.springfilter.boot.Filter;
@@ -18,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 
 
 @RestController
@@ -135,4 +137,26 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    @GetMapping("/auth/me")
+    public ResponseEntity<?> getCurrentUser() {
+        Optional<String> username = SecurityUtil.getCurrentUserLogin();
+        if (username.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not logged in");
+        }
+
+        User user = userService.handleGetUserByUsername(username.get());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
+                user.getId(), user.getUsername(), user.getFirstName(), user.getAvatar(),
+                user.getLastName(), user.getPhoneNumber(), user.getEmail(),
+                user.getDateOfBirth(), user.getRole()
+        );
+
+        return ResponseEntity.ok(userLogin);
+    }
+
 }
