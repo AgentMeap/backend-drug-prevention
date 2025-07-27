@@ -124,7 +124,7 @@ public class EventRegistrationController {
 
     @PostMapping("/checkOut/{memberId}/{eventId}/{status}")
     @PreAuthorize("hasAnyRole('STAFF')")
-    public ResponseEntity<?> checkOut(@PathVariable Long memberId, @PathVariable Integer eventId, @RequestParam EventRegistrationStatus status) {
+    public ResponseEntity<?> checkOut(@PathVariable Long memberId, @PathVariable Integer eventId, @PathVariable EventRegistrationStatus status) {
         ResEventRegistrationDTO dto = eventRegistrationService.checkOut(memberId,eventId,status);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
