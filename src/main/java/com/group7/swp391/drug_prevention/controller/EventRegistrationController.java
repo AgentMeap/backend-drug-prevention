@@ -40,6 +40,7 @@ public class EventRegistrationController {
             return dto;
         }).collect(java.util.stream.Collectors.toList());
     }
+
     @PostMapping
     public ResponseEntity<?> registerForEvent(@RequestBody ReqEventRegistrationDTO dto) {
         try {

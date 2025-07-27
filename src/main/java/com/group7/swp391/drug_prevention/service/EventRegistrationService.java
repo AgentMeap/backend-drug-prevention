@@ -41,11 +41,10 @@ public class EventRegistrationService {
             throw new IllegalArgumentException("Bạn đã đăng ký sự kiện này rồi");
         }
         registration.setStatus(EventRegistrationStatus.PENDING);
-        if(registration.getMembers() == null){
-            registration.setMembers(new ArrayList<>());
-        }
+        Event event = eventRepository.getReferenceById(registration.getEventId());
         User user = userRepository.getReferenceById(registration.getMember().getId());
-        registration.getMembers().add(user);
+        event.getMember().add(user);
+        eventRepository.save(event);
         return registrationRepository.save(registration);
     }
 

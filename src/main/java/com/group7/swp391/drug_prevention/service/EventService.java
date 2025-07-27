@@ -56,4 +56,10 @@ public class EventService {
     public List<Event> getEventsByManager(User manager) {
         return eventRepository.findByManager(manager);
     }
+
+    public List<User> getListUserByEventId(Integer eventId) {
+        Event event = eventRepository.getReferenceById(eventId);
+        List<User> users = event.getMember();
+        return users;
+    }
 }

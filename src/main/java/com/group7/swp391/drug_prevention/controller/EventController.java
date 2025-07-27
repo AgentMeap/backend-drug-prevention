@@ -111,4 +111,9 @@ public class EventController {
                 manager.setId(managerId);
                 return eventService.getEventsByManager(manager);
             }
+
+            @GetMapping("/getListMember{eventId}")
+            public List<User> getListMember(@PathVariable Integer eventId) {
+                return eventService.getListUserByEventId(eventId);
+            }
 }

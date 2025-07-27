@@ -36,7 +36,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/schedules")
-    @PreAuthorize("hasRole('CONSULTANT')")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> createSchedule(@Valid @RequestBody ReqScheduleDTO reqScheduleDTO) {
         try {
             Schedule savedSchedule = scheduleService.createSchedule(reqScheduleDTO);
